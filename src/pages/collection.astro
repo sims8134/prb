@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Collection | People's Republic of Bulgaria</title>
+  <meta name="description" content="Collection of objects from the People's Republic of Bulgaria — medals, uniforms, badges, documents and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.ico" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 62.5%; }
+    body { font-family: 'Roboto', sans-serif; font-size: 1.6rem; background: #1a1a1a; color: #f0ebe0; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    /* TOPBAR */
+    .topbar { background: #111; border-bottom: 1px solid #333; padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .topbar-social { display: flex; gap: 14px; align-items: center; }
+    .topbar-social img { height: 20px; width: auto; opacity: 0.75; }
+    .topbar-social a:hover img { opacity: 1; }
+    .topbar-lang { display: flex; gap: 8px; align-items: center; }
+    .topbar-lang a img { height: 18px; width: 26px; object-fit: cover; border-radius: 2px; border: 2px solid transparent; opacity: 0.6; }
+    .topbar-lang a:hover img, .topbar-lang a.active img { opacity: 1; border-color: #D62612; }
+
+    /* HEADER */
+    .site-header {
+      position: relative;
+      text-align: center;
+      padding: 60px 20px 50px;
+      background: url('/home/Collection.jpg') center 40%/cover no-repeat;
+      min-height: 240px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .site-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.88) 100%);
+    }
+    .site-header img.logo { position: relative; height: 80px; margin: 0 auto 12px; }
+    .site-header h1 { position: relative; font-family: 'Oswald', sans-serif; font-size: 3.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #f0ebe0; margin-bottom: 4px; }
+    .site-header .tagline { position: relative; font-size: 1.3rem; color: #ccc; font-style: italic; }
+
+    /* NAV */
+    nav { background: #D62612; }
+    nav ul {display: flex;flex-wrap: wrap;justify-content: center;}
+    nav ul li a { display: block; padding: 12px 22px; font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; }
+    nav ul li a:hover { background: rgba(0,0,0,0.2); }
+    nav ul li a.active { background: rgba(0,0,0,0.3); }
+
+    /* PAGE */
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+    .page-title { font-family: 'Oswald', sans-serif; font-size: 2.8rem; font-weight: 700; text-transform: uppercase; color: #f0ebe0; border-bottom: 3px solid #D62612; padding-bottom: 10px; margin-bottom: 8px; }
+    .page-subtitle { font-size: 1.45rem; color: #888; margin-bottom: 10px; font-style: italic; }
+    .notice-box { background: #242424; border-left: 4px solid #D62612; padding: 14px 18px; margin-bottom: 28px; font-size: 1.35rem; color: #888; font-style: italic; line-height: 1.7; }
+
+    /* CATALOGUE LINK */
+    .catalogue-box {
+      background: #242424;
+      border: 1px solid #333;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .catalogue-box p { font-size: 1.45rem; color: #aaa; }
+    .btn-red { display: inline-block; padding: 9px 20px; background: #D62612; color: #fff; font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .btn-red:hover { background: #9B1B0C; }
+
+    /* LIGHTBOX GRID */
+    .section-label { font-family: 'Oswald', sans-serif; font-size: 1.7rem; font-weight: 700; text-transform: uppercase; color: #D62612; border-bottom: 2px solid #333; padding-bottom: 8px; margin-bottom: 18px; }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 40px;
+    }
+    .photo-item {
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      background: #242424;
+      border: 1px solid #2e2e2e;
+      cursor: pointer;
+    }
+    .photo-item:hover { border-color: #D62612; }
+    .photo-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .photo-item:hover img { transform: scale(1.05); }
+
+    /* LIGHTBOX */
+    .lightbox {
+      display: none;
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.92);
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border: 2px solid #333;
+    }
+    .lightbox-close {
+      position: fixed; top: 16px; right: 20px;
+      font-size: 3.2rem; color: #aaa; cursor: pointer;
+      font-family: 'Oswald', sans-serif; font-weight: 400;
+      line-height: 1;
+    }
+    .lightbox-close:hover { color: #fff; }
+    .lightbox-prev, .lightbox-next {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      font-size: 3rem; color: #aaa; cursor: pointer;
+      font-family: 'Oswald', sans-serif;
+      background: rgba(0,0,0,0.5);
+      padding: 10px 18px;
+      user-select: none;
+    }
+    .lightbox-prev:hover, .lightbox-next:hover { color: #fff; background: rgba(214,38,18,0.7); }
+    .lightbox-prev { left: 10px; }
+    .lightbox-next { right: 10px; }
+    .lightbox-counter { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); font-size: 1.4rem; color: #666; font-family: 'Oswald', sans-serif; }
+
+    /* FOOTER */
+    footer { background: #111; border-top: 3px solid #D62612; padding: 24px 20px; text-align: center; margin-top: 10px; }
+    .footer-nav { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 14px; }
+    .footer-nav a { font-size: 1.4rem; color: #888; }
+    .footer-nav a:hover { color: #D62612; text-decoration: underline; }
+    .footer-social { display: flex; justify-content: center; gap: 16px; margin-bottom: 14px; }
+    .footer-social img { height: 22px; width: auto; opacity: 0.6; }
+    footer p { font-size: 1.25rem; color: #555; }
+
+    @media (max-width: 800px) { .photo-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 560px) { .photo-grid { grid-template-columns: repeat(2, 1fr); } nav ul li a { padding: 10px 14px; font-size: 1.3rem; } }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/instagram.webp" alt="Instagram" /></a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer"><img src="png/Youtube_logo.png" alt="YouTube" /></a>
+    </div>
+    <div class="topbar-lang">
+      <a href="collection.html" class="active"><img src="png/ukFlag.png" alt="EN" /></a>
+      <a href="collection-fr.html"><img src="png/franceFlag.png" alt="FR" /></a>
+      <a href="collection-es.html"><img src="png/spainFlag.png" alt="ES" /></a>
+      <a href="collection-bg.html"><img src="png/bulgariaFlag.png" alt="BG" /></a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <img class="logo" src="png/PRB_logo.png" alt="People's Republic Of Bulgaria" onerror="this.style.display='none'" />
+    <h1>People's Republic Of Bulgaria</h1>
+    <p class="tagline">1944 — 1990 &nbsp;|&nbsp; Cultural &amp; Historical Archive</p>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="collection.html" class="active">Collection</a></li>
+      <li><a href="tourism.html">Tourism</a></li>
+      <li><a href="video.html">video</a></li>
+      
+    </ul>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="page-wrap">
+
+    <h1 class="page-title">Collection</h1>
+    <p class="page-subtitle">"If objects could speak..."</p>
+    <div class="notice-box">This website has been created for cultural and historical purposes only. It is in no way the tool of any political ideology.</div>
+
+    <!-- Catalogue download -->
+    <div class="catalogue-box">
+      <p>📄 Download the full collection catalogue (PDF)</p>
+      <a href="[Collection Catalog] Peoples Republic Of Bulgaria 2023 - 2024.pdf" target="_blank" rel="noopener noreferrer" class="btn-red">Download Catalogue</a>
+    </div>
+
+    <!-- Photo grid -->
+    <p class="section-label">Photo Gallery</p>
+    <div class="photo-grid" id="photoGrid">
+      <div class="photo-item" onclick="openLightbox(0)"><img src="collection/Diaporama/diaporama/20221221_193920.jpg" alt="Collection 1" /></div>
+      <div class="photo-item" onclick="openLightbox(1)"><img src="collection/Diaporama/diaporama/20230103_200009.jpg" alt="Collection 2" /></div>
+      <div class="photo-item" onclick="openLightbox(2)"><img src="collection/Diaporama/diaporama/20230328_140524.jpg" alt="Collection 3" /></div>
+      <div class="photo-item" onclick="openLightbox(3)"><img src="collection/Diaporama/diaporama/20231027_200838.jpg" alt="Collection 4" /></div>
+      <div class="photo-item" onclick="openLightbox(4)"><img src="collection/Diaporama/diaporama/20231027_201308.jpg" alt="Collection 5" /></div>
+      <div class="photo-item" onclick="openLightbox(5)"><img src="collection/Diaporama/diaporama/20231027_205843.jpg" alt="Collection 6" /></div>
+      <div class="photo-item" onclick="openLightbox(6)"><img src="collection/Diaporama/diaporama/20231027_210303.jpg" alt="Collection 7" /></div>
+      <div class="photo-item" onclick="openLightbox(7)"><img src="collection/Diaporama/diaporama/20231101_182648.jpg" alt="Collection 8" /></div>
+      <div class="photo-item" onclick="openLightbox(8)"><img src="collection/Diaporama/diaporama/20231103_182119.jpg" alt="Collection 9" /></div>
+      <div class="photo-item" onclick="openLightbox(9)"><img src="collection/Diaporama/diaporama/20231109_210242.jpg" alt="Collection 10" /></div>
+      <div class="photo-item" onclick="openLightbox(10)"><img src="collection/Diaporama/diaporama/20231111_171916.jpg" alt="Collection 11" /></div>
+      <div class="photo-item" onclick="openLightbox(11)"><img src="collection/Diaporama/diaporama/IMG_20230501_144838_952.jpg" alt="Collection 12" /></div>
+    </div>
+
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+    <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+    <span class="lightbox-prev" onclick="event.stopPropagation(); moveLight(-1)">&#8249;</span>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+    <span class="lightbox-next" onclick="event.stopPropagation(); moveLight(1)">&#8250;</span>
+    <span class="lightbox-counter" id="lightboxCounter"></span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/instagram.webp" alt="Instagram" /></a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer"><img src="png/Youtube_logo.png" alt="YouTube" /></a>
+    </div>
+    <div class="footer-nav">
+      <a href="contact.html">Contact</a>
+      <a href="about.html">About</a>
+      <a href="legal.html">Legal Notice</a>
+    </div>
+    <p>© 2024 People's Republic of Bulgaria — All rights reserved</p>
+  </footer>
+
+  <script>
+    const imgs = Array.from(document.querySelectorAll('.photo-item img')).map(i => i.src);
+    let cur = 0;
+
+    function openLightbox(idx) {
+      cur = idx;
+      document.getElementById('lightboxImg').src = imgs[cur];
+      document.getElementById('lightboxCounter').textContent = (cur + 1) + ' / ' + imgs.length;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function closeLightboxOutside(e) {
+      if (e.target === document.getElementById('lightbox')) closeLightbox();
+    }
+    function moveLight(dir) {
+      cur = (cur + dir + imgs.length) % imgs.length;
+      document.getElementById('lightboxImg').src = imgs[cur];
+      document.getElementById('lightboxCounter').textContent = (cur + 1) + ' / ' + imgs.length;
+    }
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('lightbox').classList.contains('open')) return;
+      if (e.key === 'ArrowRight') moveLight(1);
+      if (e.key === 'ArrowLeft') moveLight(-1);
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+
+</body>
+</html>

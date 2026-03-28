@@ -1,0 +1,400 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import {
+  supportedLangs,
+  siteContent,
+  getLangFromParams,
+  buildNav,
+  buildFooter,
+} from "../../data/site";
+import { getPlaylistVideos } from "../../data/youtube";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromParams(Astro.params.lang);
+const t = siteContent[lang];
+
+const latestVideos = await getPlaylistVideos(import.meta.env.PLAYLIST_LATEST);
+const latestVideo = latestVideos[0] ?? null;
+---
+
+<MainLayout
+  lang={lang}
+  title={t.home.title}
+  description={t.home.description}
+  nav={buildNav(lang, t)}
+  footer={buildFooter(lang, t)}
+  active="home"
+  heroImage="/home/BackGroundHome.jpg"
+>
+
+<style>
+.page-wrap { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+
+.welcome-box {
+  background: #242424;
+  border-left: 4px solid #D62612;
+  padding: 20px 24px;
+  margin-bottom: 30px;
+}
+
+.welcome-box h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0ebe0;
+  margin-bottom: 10px;
+}
+
+.welcome-box p {
+  font-size: 1.5rem;
+  color: #aaa;
+  line-height: 1.8;
+}
+
+.notice {
+  font-size: 1.35rem;
+  color: #888;
+  font-style: italic;
+  border-top: 1px solid #333;
+  padding-top: 12px;
+  margin-top: 14px;
+}
+
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #D62612;
+  border-bottom: 2px solid #333;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.home-card {
+  background: #242424;
+  border: 1px solid #333;
+  overflow: hidden;
+}
+
+.home-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.home-card-body { padding: 14px 16px; }
+
+.home-card-body h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0ebe0;
+  margin-bottom: 6px;
+}
+
+.home-card-body p {
+  font-size: 1.35rem;
+  color: #888;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.btn-red {
+  display: inline-block;
+  padding: 8px 18px;
+  background: #D62612;
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-red:hover { background: #9B1B0C; }
+
+.video-wrap {
+  margin-bottom: 30px;
+  background: #242424;
+  border: 1px solid #333;
+  padding: 18px;
+}
+
+.video-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  background: #000;
+}
+
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-link {
+  display: block;
+  text-align: right;
+  margin-top: 10px;
+  font-size: 1.35rem;
+  color: #D62612;
+}
+
+.video-link:hover { text-decoration: underline; }
+
+.insta-box {
+  background: #242424;
+  border: 1px solid #333;
+  padding: 18px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.newsletter-box {
+  background: #242424;
+  border: 1px solid #333;
+  padding: 24px;
+  margin-bottom: 30px;
+}
+
+.newsletter-text {
+  font-size: 1.45rem;
+  color: #aaa;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+.newsletter-form {
+    display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.newsletter-form input[type="email"] {
+  width: 100%;
+  max-width: 400px;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  color: #f0ebe0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem;
+  padding: 10px 14px;
+  outline: none;
+}
+
+.newsletter-form input[type="email"]:focus {
+  border-color: #D62612;
+}
+.newsletter-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 1.35rem;
+  line-height: 1.6;
+  color: #aaa;
+  margin-top: 4px;
+  margin-bottom: 14px;
+}
+
+.newsletter-consent input {
+  margin-top: 2px;
+  flex: 0 0 auto;
+}
+@media (max-width: 560px) {
+  .newsletter-form {
+    flex-direction: column;
+  }
+
+  .newsletter-form .btn-red {
+    width: 100%;
+    text-align: center;
+  }
+}
+.insta-box p {
+  font-size: 1.45rem;
+  color: #aaa;
+  margin-bottom: 14px;
+}
+
+.insta-box .handle {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  color: #D62612;
+  display: block;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 700px) {
+  .home-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="welcome-box">
+  <h2>{t.home.welcomeTitle}</h2>
+  <p>{t.home.welcomeText}</p>
+  <p class="notice">{t.home.notice}</p>
+</div>
+
+<h2 class="section-title">{t.home.explore}</h2>
+
+<div class="home-grid">
+  <a href={`/${lang}/history`} class="home-card">
+    <img src="/home/History.jpg" alt={t.home.cards.history.title} />
+    <div class="home-card-body">
+      <h3>{t.home.cards.history.title}</h3>
+      <p>{t.home.cards.history.desc}</p>
+      <span class="btn-red">{t.home.cards.history.btn}</span>
+    </div>
+  </a>
+
+  <a href={`/${lang}/collection`} class="home-card">
+    <img src="/home/Collection.jpg" alt={t.home.cards.collection.title} />
+    <div class="home-card-body">
+      <h3>{t.home.cards.collection.title}</h3>
+      <p>{t.home.cards.collection.desc}</p>
+      <span class="btn-red">{t.home.cards.collection.btn}</span>
+    </div>
+  </a>
+
+  <a href={`/${lang}/tourism`} class="home-card">
+    <img src="/home/Tourism.webp" alt={t.home.cards.tourism.title} />
+    <div class="home-card-body">
+      <h3>{t.home.cards.tourism.title}</h3>
+      <p>{t.home.cards.tourism.desc}</p>
+      <span class="btn-red">{t.home.cards.tourism.btn}</span>
+    </div>
+  </a>
+
+  <a href={`/${lang}/videos`} class="home-card">
+    <img src="/home/background_videos.jpg" alt={t.home.cards.videos.title} />
+    <div class="home-card-body">
+      <h3>{t.home.cards.videos.title}</h3>
+      <p>{t.home.cards.videos.desc}</p>
+      <span class="btn-red">{t.home.cards.videos.btn}</span>
+    </div>
+  </a>
+</div>
+
+<div class="video-wrap">
+  <h2 class="section-title">{t.home.latestVideo}</h2>
+
+  {latestVideo ? (
+    <>
+      <div class="video-embed">
+        <iframe
+          src={`https://www.youtube.com/embed/${latestVideo.videoId}?rel=0`}
+          title={latestVideo.title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+        <a class="btn-red" href={`https://www.youtube.com/watch?v=${latestVideo.videoId}`} target="_blank" rel="noopener noreferrer">
+          {t.home.watchOnYoutube}
+        </a>
+        <a class="btn-red" href={`/${lang}/videos`}>
+          {t.home.allVideos}
+        </a>
+      </div>
+    </>
+  ) : (
+    <p style="color:#888;">{t.home.noVideo}</p>
+  )}
+</div>
+<div class="newsletter-box">
+  <h2 class="section-title">{t.home.newsletter.title}</h2>
+  <p class="newsletter-text">{t.home.newsletter.text}</p>
+
+  <form id="newsletter-form" action="/api/newsletter" method="POST" class="newsletter-form"
+    data-subscribing={t.home.newsletter.subscribing}
+    data-success={t.home.newsletter.success}
+    data-success-hint={t.home.newsletter.successHint}
+    data-error={t.home.newsletter.error}
+    data-error-network={t.home.newsletter.errorNetwork}
+  >
+    <input type="text" name="website" style="display:none !important" tabindex="-1" autocomplete="off" />
+    <input type="email" name="email" id="newsletter-email" placeholder={t.home.newsletter.placeholder} required />
+    <label class="newsletter-consent">
+      <input type="checkbox" id="newsletter-consent" name="consent" required />
+      {t.home.newsletter.consent}
+    </label>
+    <button type="submit" class="btn-red">{t.home.newsletter.button}</button>
+  </form>
+  <div id="newsletter-feedback" class="form-feedback"></div>
+</div>
+<div class="insta-box">
+  <h2 class="section-title" style="text-align:center;border-bottom:none;margin-bottom:12px;">
+    {t.home.instagramTitle}
+  </h2>
+
+  <span class="handle">@peoplesrepublicofbulgaria</span>
+
+  <p>{t.home.instagramText}</p>
+
+  <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer" class="btn-red">
+    {t.home.followOnInstagram}
+  </a>
+</div><script>
+  const newsletterForm = document.getElementById("newsletter-form");
+  const newsletterFeedback = document.getElementById("newsletter-feedback");
+
+  newsletterForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const msgs = {
+      subscribing: newsletterForm.dataset.subscribing,
+      success: newsletterForm.dataset.success,
+      successHint: newsletterForm.dataset.successHint,
+      error: newsletterForm.dataset.error,
+      errorNetwork: newsletterForm.dataset.errorNetwork,
+    };
+
+    newsletterFeedback.textContent = msgs.subscribing;
+    newsletterFeedback.className = "form-feedback";
+
+    const formData = new FormData(newsletterForm);
+
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        newsletterFeedback.innerHTML = `
+          ${msgs.success}<br>
+          <span style="font-size:1.3rem;color:#888;">${msgs.successHint}</span>
+        `;
+        newsletterFeedback.className = "form-feedback success";
+        newsletterForm.reset();
+      } else {
+        newsletterFeedback.textContent = data.error || msgs.error;
+        newsletterFeedback.className = "form-feedback error";
+      }
+    } catch {
+      newsletterFeedback.textContent = msgs.errorNetwork;
+      newsletterFeedback.className = "form-feedback error";
+    }
+  });
+</script>
+</MainLayout>

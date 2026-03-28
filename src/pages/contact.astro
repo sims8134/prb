@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | People's Republic of Bulgaria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.ico" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 62.5%; }
+    body { font-family: 'Roboto', sans-serif; font-size: 1.6rem; background: #1a1a1a; color: #f0ebe0; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    .topbar { background: #111; border-bottom: 1px solid #333; padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .topbar-social { display: flex; gap: 14px; align-items: center; }
+    .topbar-social img { height: 20px; width: auto; opacity: 0.75; }
+    .topbar-social a:hover img { opacity: 1; }
+    .topbar-lang { display: flex; gap: 8px; align-items: center; }
+    .topbar-lang a img { height: 18px; width: 26px; object-fit: cover; border-radius: 2px; border: 2px solid transparent; opacity: 0.6; }
+    .topbar-lang a:hover img, .topbar-lang a.active img { opacity: 1; border-color: #D62612; }
+
+    .site-header {
+      position: relative; text-align: center; padding: 60px 20px 50px;
+      background: url('/home/Contact.jpg') center 40%/cover no-repeat;
+      min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .site-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.88) 100%); }
+    .site-header img.logo { position: relative; height: 80px; margin: 0 auto 12px; }
+    .site-header h1 { position: relative; font-family: 'Oswald', sans-serif; font-size: 3.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #f0ebe0; margin-bottom: 4px; }
+    .site-header .tagline { position: relative; font-size: 1.3rem; color: #ccc; font-style: italic; }
+
+    nav { background: #D62612; }
+    nav ul {display: flex;flex-wrap: wrap;justify-content: center;}
+    nav ul li a { display: block; padding: 12px 22px; font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; }
+    nav ul li a:hover { background: rgba(0,0,0,0.2); }
+
+    .page-wrap { max-width: 700px; margin: 0 auto; padding: 30px 20px 60px; }
+    .page-title { font-family: 'Oswald', sans-serif; font-size: 2.8rem; font-weight: 700; text-transform: uppercase; color: #f0ebe0; border-bottom: 3px solid #D62612; padding-bottom: 10px; margin-bottom: 28px; }
+    .page-subtitle { font-size: 1.5rem; color: #888; margin-bottom: 28px; line-height: 1.7; }
+
+    /* FORM */
+    .form-card { background: #242424; border: 1px solid #333; padding: 28px; margin-bottom: 20px; }
+    .form-card h3 { font-family: 'Oswald', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; color: #f0ebe0; margin-bottom: 20px; border-left: 4px solid #D62612; padding-left: 12px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 1.35rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; font-family: 'Oswald', sans-serif; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: #1a1a1a; border: 1px solid #444; color: #f0ebe0; font-family: 'Roboto', sans-serif; font-size: 1.5rem; padding: 10px 14px; outline: none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #D62612; }
+    .form-group select option { background: #1a1a1a; }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-card button { width: 100%; padding: 12px; background: #D62612; color: #fff; border: none; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 1.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px; }
+    .form-card button:hover { background: #9B1B0C; }
+    .form-feedback { margin-top: 14px; font-size: 1.4rem; text-align: center; min-height: 24px; }
+    .form-feedback.success { color: #4caf50; }
+    .form-feedback.error { color: #D62612; }
+
+    .contact-card {
+      background: #242424; border: 1px solid #333;
+      padding: 30px; margin-bottom: 20px; text-align: center;
+    }
+    .contact-card .icon { font-size: 3.6rem; margin-bottom: 14px; }
+    .contact-card h3 { font-family: 'Oswald', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; color: #f0ebe0; margin-bottom: 10px; }
+    .contact-card p { font-size: 1.45rem; color: #888; line-height: 1.7; margin-bottom: 14px; }
+    .contact-card a.email-link {
+      display: inline-block;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.8rem; font-weight: 700;
+      color: #D62612;
+      word-break: break-all;
+    }
+    .contact-card a.email-link:hover { text-decoration: underline; }
+
+    .socials-card {
+      background: #242424; border: 1px solid #333;
+      padding: 24px; margin-bottom: 20px;
+    }
+    .socials-card h3 { font-family: 'Oswald', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; color: #f0ebe0; margin-bottom: 16px; border-left: 4px solid #D62612; padding-left: 12px; }
+    .social-list { display: flex; flex-direction: column; gap: 12px; }
+    .social-item { display: flex; align-items: center; gap: 14px; padding: 12px; background: #1a1a1a; border: 1px solid #2e2e2e; }
+    .social-item:hover { border-color: #D62612; }
+    .social-item img { height: 26px; width: auto; }
+    .social-item span { font-size: 1.45rem; color: #aaa; }
+    .social-item strong { color: #f0ebe0; display: block; font-size: 1.5rem; }
+
+    footer { background: #111; border-top: 3px solid #D62612; padding: 24px 20px; text-align: center; }
+    .footer-nav { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 14px; }
+    .footer-nav a { font-size: 1.4rem; color: #888; }
+    .footer-nav a:hover { color: #D62612; text-decoration: underline; }
+    .footer-social { display: flex; justify-content: center; gap: 16px; margin-bottom: 14px; }
+    .footer-social img { height: 22px; width: auto; opacity: 0.6; }
+    footer p { font-size: 1.25rem; color: #555; }
+
+    @media (max-width: 560px) { nav ul li a { padding: 10px 14px; font-size: 1.3rem; } }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/instagram.webp" alt="Instagram" /></a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer"><img src="png/Youtube_logo.png" alt="YouTube" /></a>
+    </div>
+    <div class="topbar-lang">
+      <a href="contact.html" class="active"><img src="png/ukFlag.png" alt="EN" /></a>
+      <a href="contact-fr.html"><img src="png/franceFlag.png" alt="FR" /></a>
+      <a href="contact-es.html"><img src="png/spainFlag.png" alt="ES" /></a>
+      <a href="contact-bg.html"><img src="png/bulgariaFlag.png" alt="BG" /></a>
+    </div>
+  </div>
+
+  <div class="site-header">
+    <img class="logo" src="png/PRB_logo.png" alt="People's Republic Of Bulgaria" onerror="this.style.display='none'" />
+    <h1>People's Republic Of Bulgaria</h1>
+    <p class="tagline">1944 — 1990 &nbsp;|&nbsp; Cultural &amp; Historical Archive</p>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="collection.html">Collection</a></li>
+      <li><a href="tourism.html">Tourism</a></li>
+      <li><a href="video.html">video</a></li>
+      
+    </ul>
+  </nav>
+
+  <div class="page-wrap">
+    <h1 class="page-title">Contact</h1>
+    <p class="page-subtitle">A question? A request? A suggestion? Don't hesitate to get in touch!</p>
+
+    <!-- FORM -->
+   <div class="form-card">
+  <h3>Send a message</h3>
+  
+  <form action="/api/contact" method="POST" id="prb-contact-form">
+    
+    <input type="text" name="website" style="display:none !important" tabindex="-1" autocomplete="off">
+
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your name" required />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="your@email.com" required />
+    </div>
+
+    <div class="form-group">
+      <label for="subject">Subject</label>
+      <select id="subject" name="subject" required>
+        <option value="">— Select a subject —</option>
+        <option value="Collection">Collection</option>
+        <option value="Tourism / Private visit">Tourism / Private visit</option>
+        <option value="Partnership / Press">Partnership / Press</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="6" placeholder="Your message..." required></textarea>
+    </div>
+
+    <button type="submit">Send message</button>
+  </form>
+
+  <div id="form-feedback" class="form-feedback"></div>
+</div>
+
+    <div class="contact-card">
+      <div class="icon">✉️</div>
+      <h3>Email</h3>
+      <p>For any question about the collection, tourism, the store or the website :</p>
+      <a href="mailto:contact@peoplesrepublicofbulgaria.com" class="email-link">contact@peoplesrepublicofbulgaria.com</a>
+    </div>
+
+    <div class="socials-card">
+      <h3>Follow us</h3>
+      <div class="social-list">
+        <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer" class="social-item">
+          <img src="png/instagram.webp" alt="Instagram" />
+          <div><strong>@peoplesrepublicofbulgaria</strong><span>Instagram — Photos, collection, urbex</span></div>
+        </a>
+        <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer" class="social-item">
+          <img src="png/Youtube_logo.png" alt="YouTube" />
+          <div><strong>@PeoplesRepublicOfBulgaria1505</strong><span>YouTube — video, urbex, vlogs, edits</span></div>
+        </a>
+        <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer" class="social-item">
+          <img src="png/facebook.png" alt="Facebook" />
+          <div><strong>People's Republic Of Bulgaria</strong><span>Facebook Page</span></div>
+        </a>
+        <a href="https://www.tiktok.com/@peoplesrepublicof70" target="_blank" rel="noopener noreferrer" class="social-item">
+          <img src="png/Tiktok_icon.png" alt="TikTok" />
+          <div><strong>People's Republic Of Bulgaria</strong><span>TikTok</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/instagram.webp" alt="Instagram" /></a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer"><img src="png/Youtube_logo.png" alt="YouTube" /></a>
+    </div>
+    <div class="footer-nav">
+      <a href="contact.html">Contact</a>
+      <a href="about.html">About</a>
+      <a href="legal.html">Legal Notice</a>
+    </div>
+    <p>© 2024 People's Republic of Bulgaria — All rights reserved</p>
+  </footer>
+
+  <script>
+const form = document.getElementById("prb-contact-form");
+const feedback = document.getElementById("form-feedback");
+
+form?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  feedback.textContent = "Sending...";
+  feedback.className = "form-feedback";
+
+  const formData = new FormData(form);
+
+  try {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      feedback.textContent = "✓ Message sent successfully, Comrade!";
+      feedback.className = "form-feedback success";
+      form.reset();
+    } else {
+      feedback.textContent = data.error || "Something went wrong.";
+      feedback.className = "form-feedback error";
+    }
+  } catch {
+    feedback.textContent = "⚠ Unable to send message.";
+    feedback.className = "form-feedback error";
+  }
+});
+</script>
+</body>
+</html>

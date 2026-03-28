@@ -1,0 +1,479 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import {
+  supportedLangs,
+  siteContent,
+  getLangFromParams,
+  buildNav,
+  buildFooter,
+} from "../../data/site";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromParams(Astro.params.lang);
+const t = siteContent[lang];
+
+const intro = {
+  en: {
+    title: "History",
+    subtitle: '"Those who do not learn from history are condemned to repeat it."',
+    notice:
+      "This website has been created for cultural and historical purposes only. It is in no way the tool of any political ideology.",
+  },
+  fr: {
+    title: "Histoire",
+    subtitle: "« Ceux qui n’apprennent pas de l’histoire sont condamnés à la répéter. »",
+    notice:
+      "Ce site a été créé à des fins culturelles et historiques uniquement. Il n’est en aucun cas l’outil d’une idéologie politique.",
+  },
+  es: {
+    title: "Historia",
+    subtitle: "« Quienes no aprenden de la historia están condenados a repetirla. »",
+    notice:
+      "Este sitio ha sido creado únicamente con fines culturales e históricos. No es en modo alguno una herramienta de ninguna ideología política.",
+  },
+  bg: {
+    title: "История",
+    subtitle: "„Който не се учи от историята, е обречен да я повтори.“",
+    notice:
+      "Този сайт е създаден само с културна и историческа цел. По никакъв начин не е инструмент на политическа идеология.",
+  },
+}[lang];
+
+const timeline = [
+  {
+    date: "9 Sept.\n1944",
+    image: "/history/1-Partizan.jfif",
+    title: {
+      en: "The Coup",
+      fr: "Le coup d\u2019État",
+      es: "El golpe de Estado",
+      bg: "Държавният преврат",
+    },
+    text: {
+      en: "Communist partisans backed by the USSR overthrow the royalist government allied with Nazi Germany. The beginning of socialism in Bulgaria.",
+      fr: "Des partisans communistes soutenus par l’URSS renversent le gouvernement royaliste allié à l’Allemagne nazie. C’est le début du socialisme en Bulgarie.",
+      es: "Partisanos comunistas apoyados por la URSS derrocan al gobierno monárquico aliado con la Alemania nazi. Es el comienzo del socialismo en Bulgaria.",
+      bg: "Комунистически партизани, подкрепени от СССР, свалят царското правителство, съюзено с нацистка Германия. Това бележи началото на социализма в България.",
+    },
+  },
+  {
+    date: "15 Sept.\n1946",
+    image: "/history/2-Referendum.jpg",
+    title: {
+      en: "Referendum — People's Republic",
+      fr: "Référendum — République populaire",
+      es: "Referéndum — República Popular",
+      bg: "Референдум — Народна република",
+    },
+    text: {
+      en: "The 1946 referendum takes place on September 15th. The country is declared a People's Republic.",
+      fr: "Le référendum de 1946 a lieu le 15 septembre. Le pays est déclaré République populaire.",
+      es: "El referéndum de 1946 tiene lugar el 15 de septiembre. El país es declarado República Popular.",
+      bg: "Референдумът от 1946 г. се провежда на 15 септември. Страната е обявена за Народна република.",
+    },
+  },
+  {
+    date: "6 Dec.\n1947",
+    image: "/history/3-GeorgiDimitrov.jpg",
+    title: {
+      en: "Georgi Dimitrov Constitution",
+      fr: "Constitution de Georgi Dimitrov",
+      es: "Constitución de Georgi Dimitrov",
+      bg: "Конституция на Георги Димитров",
+    },
+    text: {
+      en: "The Georgi Dimitrov Constitution is adopted and remains in force until 1971.",
+      fr: "La Constitution de Georgi Dimitrov est adoptée et reste en vigueur jusqu’en 1971.",
+      es: "La Constitución de Georgi Dimitrov es adoptada y permanece en vigor hasta 1971.",
+      bg: "Конституцията на Георги Димитров е приета и остава в сила до 1971 г.",
+    },
+  },
+  {
+    date: "2 Jul.\n1949",
+    image: "/history/4-Mosoleum.jpg",
+    title: {
+      en: "Death of Georgi Dimitrov",
+      fr: "Mort de Georgi Dimitrov",
+      es: "Muerte de Georgi Dimitrov",
+      bg: "Смъртта на Георги Димитров",
+    },
+    text: {
+      en: "Georgi Dimitrov dies on July 2nd, 1949, and is displayed in the Georgi Dimitrov Mausoleum.",
+      fr: "Georgi Dimitrov meurt le 2 juillet 1949 et son corps est exposé dans le mausolée Georgi Dimitrov.",
+      es: "Georgi Dimitrov muere el 2 de julio de 1949 y su cuerpo es expuesto en el Mausoleo de Georgi Dimitrov.",
+      bg: "Георги Димитров умира на 2 юли 1949 г., а тялото му е положено в мавзолея на Георги Димитров.",
+    },
+  },
+  {
+    date: "20 Dec.\n1949",
+    image: "/history/5-Valko.webp",
+    title: {
+      en: "Valko Chervenkov takes power",
+      fr: "Valko Chervenkov prend le pouvoir",
+      es: "Valko Chervenkov toma el poder",
+      bg: "Вълко Червенков идва на власт",
+    },
+    text: {
+      en: "Valko Chervenkov succeeds Georgi Dimitrov as General Secretary of the Communist Party until 1954.",
+      fr: "Valko Chervenkov succède à Georgi Dimitrov comme secrétaire général du Parti communiste jusqu’en 1954.",
+      es: "Valko Chervenkov sucede a Georgi Dimitrov como secretario general del Partido Comunista hasta 1954.",
+      bg: "Вълко Червенков наследява Георги Димитров като генерален секретар на Комунистическата партия до 1954 г.",
+    },
+  },
+  {
+    date: "4 Mar.\n1954",
+    image: "/history/6-Todor.jpg",
+    title: {
+      en: "Todor Zhivkov rises to power",
+      fr: "Todor Zhivkov arrive au pouvoir",
+      es: "Todor Zhivkov asciende al poder",
+      bg: "Тодор Живков идва на власт",
+    },
+    text: {
+      en: "Todor Zhivkov succeeds Valko Chervenkov as head of the Communist Party. He becomes the longest-serving leader in modern Bulgarian history.",
+      fr: "Todor Zhivkov succède à Valko Chervenkov à la tête du Parti communiste. Il devient le dirigeant le plus durable de l’histoire moderne bulgare.",
+      es: "Todor Zhivkov sucede a Valko Chervenkov al frente del Partido Comunista. Se convierte en el dirigente más duradero de la historia moderna búlgara.",
+      bg: "Тодор Живков наследява Вълко Червенков начело на Комунистическата партия. Той става най-дълго управлявалият лидер в съвременната българска история.",
+    },
+  },
+  {
+    date: "28 Mar.\n1965",
+    image: "/history/7-TodorBis.jpg",
+    title: {
+      en: "The April Conspiracy",
+      fr: "La conspiration d’avril",
+      es: "La conspiración de abril",
+      bg: "Априлският заговор",
+    },
+    text: {
+      en: 'The "April Conspiracy" is revealed on March 28th, 1965. The attempted coup aimed to overthrow Todor Zhivkov.',
+      fr: 'La « conspiration d’avril » est révélée le 28 mars 1965. La tentative de coup visait à renverser Todor Zhivkov.',
+      es: 'La "Conspiración de abril" es descubierta el 28 de marzo de 1965. El intento de golpe buscaba derrocar a Todor Zhivkov.',
+      bg: '„Априлският заговор“ е разкрит на 28 март 1965 г. Опитът за преврат цели свалянето на Тодор Живков.',
+    },
+  },
+  {
+    date: "8 May\n1971",
+    image: "/history/8-TodorConstitution.jpg",
+    title: {
+      en: "Zhivkov Constitution",
+      fr: "Constitution de Zhivkov",
+      es: "Constitución de Zhivkov",
+      bg: "Живкова конституция",
+    },
+    text: {
+      en: 'The "Zhivkov Constitution" is established and remains in force until the end of the People\'s Republic of Bulgaria.',
+      fr: 'La « Constitution de Zhivkov » est mise en place et reste en vigueur jusqu’à la fin de la République populaire de Bulgarie.',
+      es: 'La "Constitución de Zhivkov" entra en vigor y permanece hasta el fin de la República Popular de Bulgaria.',
+      bg: '„Живковата конституция“ е установена и остава в сила до края на Народна република България.',
+    },
+  },
+  {
+    date: "10 Apr.\n1979",
+    image: "/history/9-Georgi-Ivanov.jpg",
+    title: {
+      en: "First Bulgarian Cosmonaut",
+      fr: "Premier cosmonaute bulgare",
+      es: "Primer cosmonauta búlgaro",
+      bg: "Първи български космонавт",
+    },
+    text: {
+      en: "Bulgaria's first cosmonaut Georgi Ivanov is launched into space on the Soyuz 33 mission.",
+      fr: "Le premier cosmonaute bulgare, Georgi Ivanov, est envoyé dans l’espace lors de la mission Soyouz 33.",
+      es: "El primer cosmonauta búlgaro, Georgi Ivanov, es lanzado al espacio en la misión Soyuz 33.",
+      bg: "Първият български космонавт Георги Иванов излита в космоса с мисията Союз 33.",
+    },
+  },
+  {
+    date: "6 May\n1981",
+    image: "/history/10-MilleAns.jpg",
+    title: {
+      en: "1300 Years of Bulgaria",
+      fr: "1300 ans de Bulgarie",
+      es: "1300 años de Bulgaria",
+      bg: "1300 години България",
+    },
+    text: {
+      en: "The Bulgarian nation celebrates 1300 years of existence. The largest military parade in Sofia's history takes place on this occasion.",
+      fr: "La nation bulgare célèbre 1300 ans d’existence. La plus grande parade militaire de l’histoire de Sofia a lieu à cette occasion.",
+      es: "La nación búlgara celebra 1300 años de existencia. Con esta ocasión se celebra el mayor desfile militar de la historia de Sofía.",
+      bg: "Българският народ отбелязва 1300 години държавност. По този повод в София се провежда най-големият военен парад в историята на града.",
+    },
+  },
+  {
+    date: "23 Aug.\n1981",
+    image: "/history/11-Buzludzha.jpg",
+    title: {
+      en: "Buzludzha Monument Inaugurated",
+      fr: "Inauguration du monument Buzludzha",
+      es: "Inauguración del monumento de Buzludzha",
+      bg: "Откриване на паметника Бузлуджа",
+    },
+    text: {
+      en: 'The monumental house of the Bulgarian Communist Party "Buzludzha" is inaugurated.',
+      fr: 'La maison monumentale du Parti communiste bulgare « Buzludzha » est inaugurée.',
+      es: 'Se inaugura la monumental casa del Partido Comunista Búlgaro "Buzludzha".',
+      bg: 'Открит е монументалният дом на Българската комунистическа партия „Бузлуджа“.',
+    },
+  },
+  {
+    date: "10 Nov.\n1989",
+    image: "/history/12-Protests.webp",
+    title: {
+      en: "End of Zhivkov's Rule",
+      fr: "Fin du règne de Zhivkov",
+      es: "Fin del mandato de Zhivkov",
+      bg: "Краят на управлението на Живков",
+    },
+    text: {
+      en: "One day after the fall of the Berlin Wall, communist leader Todor Zhivkov is removed from his position as General Secretary of the Communist Party.",
+      fr: "Un jour après la chute du mur de Berlin, le dirigeant communiste Todor Zhivkov est écarté de son poste de secrétaire général du Parti communiste.",
+      es: "Un día después de la caída del Muro de Berlín, el líder comunista Todor Zhivkov es destituido de su cargo de secretario general del Partido Comunista.",
+      bg: "Ден след падането на Берлинската стена комунистическият лидер Тодор Живков е отстранен от поста генерален секретар на Комунистическата партия.",
+    },
+  },
+  {
+    date: "15 Nov.\n1990",
+    image: "/history/13-EndCommunism.jpg",
+    title: {
+      en: "End of the People's Republic",
+      fr: "Fin de la République populaire",
+      es: "Fin de la República Popular",
+      bg: "Краят на Народната република",
+    },
+    text: {
+      en: "The Assembly votes to rename the country the Republic of Bulgaria and removes the communist emblem from the national flag.",
+      fr: "L’Assemblée vote pour renommer le pays République de Bulgarie et retire l’emblème communiste du drapeau national.",
+      es: "La Asamblea vota cambiar el nombre del país a República de Bulgaria y elimina el emblema comunista de la bandera nacional.",
+      bg: "Народното събрание гласува преименуването на страната в Република България и премахва комунистическия герб от националния флаг.",
+    },
+  },
+];
+---
+
+<MainLayout
+  lang={lang}
+  title={t.history.title}
+  description={t.history.description}
+  nav={buildNav(lang, t)}
+  footer={buildFooter(lang, t)}
+  active="history"
+  heroImage="/home/BackGroundHome.jpg"
+>
+
+<style>
+.page-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.page-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0ebe0;
+  border-bottom: 3px solid #D62612;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+}
+
+.page-subtitle {
+  font-size: 1.45rem;
+  color: #888;
+  margin-bottom: 10px;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.notice-box {
+  background: #242424;
+  border-left: 4px solid #D62612;
+  padding: 14px 18px;
+  margin-bottom: 34px;
+  font-size: 1.35rem;
+  color: #888;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 110px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #D62612;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.tl-date {
+  width: 110px;
+  flex-shrink: 0;
+  padding: 22px 16px 22px 0;
+  text-align: right;
+}
+
+.tl-date span {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #D62612;
+  line-height: 1.2;
+  display: block;
+  white-space: pre-line;
+}
+
+.tl-dot {
+  width: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.tl-dot::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #D62612;
+  border: 3px solid #1a1a1a;
+  margin-left: 3px;
+  flex-shrink: 0;
+}
+
+.tl-content {
+  flex: 1;
+  padding: 18px 0 18px 22px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.timeline-item:last-child .tl-content {
+  border-bottom: none;
+}
+
+.tl-content-inner {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.tl-img {
+  width: 120px;
+  flex-shrink: 0;
+  border: 1px solid #333;
+}
+
+.tl-img img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  display: block;
+}
+
+.tl-text h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #f0ebe0;
+  margin-bottom: 6px;
+}
+
+.tl-text p {
+  font-size: 1.4rem;
+  color: #aaa;
+  line-height: 1.75;
+}
+
+@media (max-width: 680px) {
+  .timeline::before {
+    left: 0;
+  }
+
+  .tl-date {
+    width: auto;
+    padding: 16px 0 0;
+    text-align: left;
+  }
+
+  .tl-dot {
+    display: none;
+  }
+
+  .timeline-item {
+    flex-direction: column;
+    padding-left: 14px;
+    border-left: 3px solid #D62612;
+    margin-bottom: 20px;
+  }
+
+  .tl-content {
+    padding: 8px 0 0;
+    border-bottom: none;
+  }
+
+  .tl-content-inner {
+    flex-direction: column;
+  }
+
+  .tl-img {
+    width: 100%;
+  }
+
+  .tl-img img {
+    height: 160px;
+  }
+}
+</style>
+
+<div class="page-wrap">
+  <h1 class="page-title">{intro.title}</h1>
+  <p class="page-subtitle">{intro.subtitle}</p>
+  <div class="notice-box">{intro.notice}</div>
+
+  <div class="timeline">
+    {timeline.map((item) => (
+      <div class="timeline-item">
+        <div class="tl-date">
+          <span>{item.date}</span>
+        </div>
+
+        <div class="tl-dot"></div>
+
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img">
+              <img src={item.image} alt={item.title[lang]} />
+            </div>
+
+            <div class="tl-text">
+              <h3>{item.title[lang]}</h3>
+              <p>{item.text[lang]}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+</MainLayout>

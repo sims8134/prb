@@ -1,0 +1,482 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import {
+  supportedLangs,
+  siteContent,
+  getLangFromParams,
+  buildNav,
+  buildFooter,
+} from "../../data/site";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromParams(Astro.params.lang);
+const t = siteContent[lang];
+
+const copy = {
+  en: {
+    title: "Contact",
+    subtitle: "A question? A request? A suggestion? Don't hesitate to get in touch!",
+    sendMessage: "Send a message",
+    name: "Name",
+    email: "Email",
+    subject: "Subject",
+    message: "Message",
+    yourName: "Your name",
+    yourEmail: "your@email.com",
+    yourMessage: "Your message...",
+    selectSubject: "— Select a subject —",
+    s1: "Collection",
+    s2: "Tourism / Private visit",
+    s3: "Store",
+    s4: "Partnership / Press",
+    s5: "Other",
+    send: "Send message",
+    emailTitle: "Email",
+    emailText: "For any question about the collection, tourism, the store or the website:",
+    follow: "Follow us",
+    igText: "Instagram — Photos, collection, urbex",
+    ytText: "YouTube — videos, urbex, vlogs, edits",
+    fbText: "Facebook Page",
+    errFields: "⚠ Please fill in all fields.",
+    errEmail: "⚠ Please enter a valid email address.",
+    ok: "✓ Message sent successfully!",
+  },
+  fr: {
+    title: "Contact",
+    subtitle: "Une question ? Une demande ? Une suggestion ? N'hésitez pas à me contacter !",
+    sendMessage: "Envoyer un message",
+    name: "Nom",
+    email: "Email",
+    subject: "Sujet",
+    message: "Message",
+    yourName: "Votre nom",
+    yourEmail: "votre@email.com",
+    yourMessage: "Votre message...",
+    selectSubject: "— Sélectionnez un sujet —",
+    s1: "Collection",
+    s2: "Tourisme / Visite privée",
+    s3: "Boutique",
+    s4: "Partenariat / Presse",
+    s5: "Autre",
+    send: "Envoyer le message",
+    emailTitle: "Email",
+    emailText: "Pour toute question concernant la collection, le tourisme, la boutique ou le site :",
+    follow: "Suivez-nous",
+    igText: "Instagram — Photos, collection, urbex",
+    ytText: "YouTube — vidéos, urbex, vlogs, montages",
+    fbText: "Page Facebook",
+    errFields: "⚠ Veuillez remplir tous les champs.",
+    errEmail: "⚠ Veuillez entrer une adresse email valide.",
+    ok: "✓ Message envoyé avec succès !",
+  },
+  es: {
+    title: "Contacto",
+    subtitle: "¿Una pregunta? ¿Una solicitud? ¿Una sugerencia? ¡No dudes en ponerte en contacto!",
+    sendMessage: "Enviar un mensaje",
+    name: "Nombre",
+    email: "Email",
+    subject: "Asunto",
+    message: "Mensaje",
+    yourName: "Tu nombre",
+    yourEmail: "tu@email.com",
+    yourMessage: "Tu mensaje...",
+    selectSubject: "— Selecciona un asunto —",
+    s1: "Colección",
+    s2: "Turismo / Visita privada",
+    s3: "Tienda",
+    s4: "Colaboración / Prensa",
+    s5: "Otro",
+    send: "Enviar mensaje",
+    emailTitle: "Email",
+    emailText: "Para cualquier pregunta sobre la colección, el turismo, la tienda o el sitio web:",
+    follow: "Síguenos",
+    igText: "Instagram — Fotos, colección, urbex",
+    ytText: "YouTube — vídeos, urbex, vlogs, edits",
+    fbText: "Página de Facebook",
+    errFields: "⚠ Por favor, completa todos los campos.",
+    errEmail: "⚠ Por favor, introduce un email válido.",
+    ok: "✓ ¡Mensaje enviado con éxito!",
+  },
+  bg: {
+    title: "Контакт",
+    subtitle: "Въпрос? Запитване? Предложение? Не се колебайте да се свържете!",
+    sendMessage: "Изпрати съобщение",
+    name: "Име",
+    email: "Имейл",
+    subject: "Тема",
+    message: "Съобщение",
+    yourName: "Вашето име",
+    yourEmail: "your@email.com",
+    yourMessage: "Вашето съобщение...",
+    selectSubject: "— Изберете тема —",
+    s1: "Колекция",
+    s2: "Туризъм / Частно посещение",
+    s3: "Магазин",
+    s4: "Партньорство / Преса",
+    s5: "Друго",
+    send: "Изпрати съобщение",
+    emailTitle: "Имейл",
+    emailText: "За въпроси относно колекцията, туризма, магазина или уебсайта:",
+    follow: "Последвайте ни",
+    igText: "Instagram — Снимки, колекция, urbex",
+    ytText: "YouTube — видеа, urbex, влогове, монтажи",
+    fbText: "Facebook страница",
+    errFields: "⚠ Моля, попълнете всички полета.",
+    errEmail: "⚠ Моля, въведете валиден имейл адрес.",
+    ok: "✓ Съобщението беше изпратено успешно!",
+  },
+}[lang];
+---
+
+<MainLayout
+  lang={lang}
+  title={t.contact.title}
+  description={t.contact.description}
+  nav={buildNav(lang, t)}
+  footer={buildFooter(lang, t)}
+  active="contact"
+  heroImage="/home/BackGroundHome.jpg"
+>
+
+<style>
+.page-wrap {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+.page-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0ebe0;
+  border-bottom: 3px solid #D62612;
+  padding-bottom: 10px;
+  margin-bottom: 28px;
+}
+
+.page-subtitle {
+  font-size: 1.5rem;
+  color: #888;
+  margin-bottom: 28px;
+  line-height: 1.7;
+}
+
+.form-card {
+  background: #242424;
+  border: 1px solid #333;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.form-card h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0ebe0;
+  margin-bottom: 20px;
+  border-left: 4px solid #D62612;
+  padding-left: 12px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1.35rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  font-family: 'Oswald', sans-serif;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  color: #f0ebe0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem;
+  padding: 10px 14px;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #D62612;
+}
+
+.form-group select option {
+  background: #1a1a1a;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-card button {
+  width: 100%;
+  padding: 12px;
+  background: #D62612;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+}
+
+.form-card button:hover {
+  background: #9B1B0C;
+}
+
+.form-feedback {
+  margin-top: 14px;
+  font-size: 1.4rem;
+  text-align: center;
+  min-height: 24px;
+}
+
+.form-feedback.success {
+  color: #4caf50;
+}
+
+.form-feedback.error {
+  color: #D62612;
+}
+
+.contact-card {
+  background: #242424;
+  border: 1px solid #333;
+  padding: 30px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.contact-card .icon {
+  font-size: 3.6rem;
+  margin-bottom: 14px;
+}
+
+.contact-card h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0ebe0;
+  margin-bottom: 10px;
+}
+
+.contact-card p {
+  font-size: 1.45rem;
+  color: #888;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.contact-card a.email-link {
+  display: inline-block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #D62612;
+  word-break: break-all;
+}
+
+.contact-card a.email-link:hover {
+  text-decoration: underline;
+}
+
+.socials-card {
+  background: #242424;
+  border: 1px solid #333;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.socials-card h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0ebe0;
+  margin-bottom: 16px;
+  border-left: 4px solid #D62612;
+  padding-left: 12px;
+}
+
+.social-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.social-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  background: #1a1a1a;
+  border: 1px solid #2e2e2e;
+}
+
+.social-item:hover {
+  border-color: #D62612;
+}
+
+.social-item img {
+  height: 26px;
+  width: auto;
+}
+
+.social-item span {
+  font-size: 1.45rem;
+  color: #aaa;
+}
+
+.social-item strong {
+  color: #f0ebe0;
+  display: block;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 560px) {
+  .social-item {
+    align-items: flex-start;
+  }
+}
+</style>
+
+<div class="page-wrap">
+  <h1 class="page-title">{copy.title}</h1>
+  <p class="page-subtitle">{copy.subtitle}</p>
+
+<div class="form-card">
+  <h3>{copy.sendMessage}</h3>
+
+  <form action="/api/contact" method="POST" id="prb-contact-form">
+    <input type="text" name="website" style="display:none !important" tabindex="-1" autocomplete="off" />
+
+    <div class="form-group">
+      <label for="name">{copy.name}</label>
+      <input type="text" id="name" name="name" placeholder={copy.yourName} required />
+    </div>
+
+    <div class="form-group">
+      <label for="email">{copy.email}</label>
+      <input type="email" id="email" name="email" placeholder={copy.yourEmail} required />
+    </div>
+
+    <div class="form-group">
+      <label for="subject">{copy.subject}</label>
+      <select id="subject" name="subject" required>
+        <option value="">{copy.selectSubject}</option>
+        <option value={copy.s1}>{copy.s1}</option>
+        <option value={copy.s2}>{copy.s2}</option>
+        <option value={copy.s3}>{copy.s3}</option>
+        <option value={copy.s4}>{copy.s4}</option>
+        <option value={copy.s5}>{copy.s5}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="message">{copy.message}</label>
+      <textarea id="message" name="message" rows="6" placeholder={copy.yourMessage} required></textarea>
+    </div>
+
+    <button type="submit">{copy.send}</button>
+  </form>
+
+  <div id="form-feedback" class="form-feedback"></div>
+</div>
+
+  <div class="contact-card">
+    <div class="icon">✉️</div>
+    <h3>{copy.emailTitle}</h3>
+    <p>{copy.emailText}</p>
+    <a href="mailto:contact@peoplesrepublicofbulgaria.com" class="email-link">
+      contact@peoplesrepublicofbulgaria.com
+    </a>
+  </div>
+
+  <div class="socials-card">
+    <h3>{copy.follow}</h3>
+    <div class="social-list">
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer" class="social-item">
+        <img src="/png/instagram.webp" alt="Instagram" />
+        <div>
+          <strong>@peoplesrepublicofbulgaria</strong>
+          <span>{copy.igText}</span>
+        </div>
+      </a>
+
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer" class="social-item">
+        <img src="/png/Youtube_logo.png" alt="YouTube" />
+        <div>
+          <strong>@PeoplesRepublicOfBulgaria1505</strong>
+          <span>{copy.ytText}</span>
+        </div>
+      </a>
+
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer" class="social-item">
+        <img src="/png/facebook.png" alt="Facebook" />
+        <div>
+          <strong>People's Republic Of Bulgaria</strong>
+          <span>{copy.fbText}</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ copy }}>
+  const form = document.getElementById("prb-contact-form");
+  const feedback = document.getElementById("form-feedback");
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    feedback.textContent = "Sending...";
+    feedback.className = "form-feedback";
+
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        feedback.textContent = copy.ok;
+        feedback.className = "form-feedback success";
+        form.reset();
+      } else {
+        feedback.textContent = data.error || "Something went wrong.";
+        feedback.className = "form-feedback error";
+      }
+    } catch {
+      feedback.textContent = "⚠ Unable to send message.";
+      feedback.className = "form-feedback error";
+    }
+  });
+</script>
+
+</MainLayout>

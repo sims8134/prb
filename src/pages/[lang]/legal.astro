@@ -1,0 +1,238 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import {
+  supportedLangs,
+  siteContent,
+  getLangFromParams,
+  buildNav,
+  buildFooter,
+} from "../../data/site";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromParams(Astro.params.lang);
+const t = siteContent[lang];
+
+const copy = {
+  en: {
+    title: "Legal Notice",
+    notice:
+      "In accordance with the provisions of Law No. 2004-575 of June 21, 2004 for confidence in the digital economy, users of the site peoplesrepublicofbulgaria.com are informed of the identity of the various participants in its creation and monitoring.",
+    publisher: "Website Publisher",
+    publisherText1:
+      "This site, accessible at https://www.peoplesrepublicofbulgaria.com, is published by:",
+    publisherText2:
+      "Simon Beltran, resident of Sofia, Bulgaria, French nationality, born on 06/17/1993.",
+    publisherText3: "Contact:",
+    hosting: "Hosting",
+    hostingText:
+      "This website is hosted by LWS, 10 Rue Penthièvre, 75008 Paris, France. Tel: +33 1 77 62 30 03.",
+    director: "Publication Director",
+    directorText: "The Publication Director of this site is Simon Beltran.",
+    intellectual: "Intellectual Property",
+    intellectualText:
+      "All content on this site (texts, images, videos) is the exclusive property of Simon Beltran — People's Republic of Bulgaria, unless otherwise stated. Any reproduction without prior written consent is strictly prohibited.",
+    purpose: "Purpose of the Site",
+    purposeText:
+      "This website has been created and published online for cultural and historical purposes only. It is in no way the tool of any political ideology.",
+    contact: "Contact",
+    contactText: "For any question regarding this legal notice:",
+  },
+  fr: {
+    title: "Mentions légales",
+    notice:
+      "Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique, les utilisateurs du site peoplesrepublicofbulgaria.com sont informés de l’identité des différents intervenants dans le cadre de sa réalisation et de son suivi.",
+    publisher: "Éditeur du site",
+    publisherText1:
+      "Le présent site, accessible à l’adresse https://www.peoplesrepublicofbulgaria.com, est publié par :",
+    publisherText2:
+      "Simon Beltran, résidant à Sofia, Bulgarie, de nationalité française, né le 17/06/1993.",
+    publisherText3: "Contact :",
+    hosting: "Hébergement",
+    hostingText:
+      "Ce site est hébergé par LWS, 10 Rue Penthièvre, 75008 Paris, France. Tél. : +33 1 77 62 30 03.",
+    director: "Directeur de publication",
+    directorText: "Le directeur de la publication du présent site est Simon Beltran.",
+    intellectual: "Propriété intellectuelle",
+    intellectualText:
+      "L’ensemble des contenus présents sur ce site (textes, images, vidéos) est la propriété exclusive de Simon Beltran — People's Republic of Bulgaria, sauf mention contraire. Toute reproduction sans autorisation écrite préalable est strictement interdite.",
+    purpose: "Finalité du site",
+    purposeText:
+      "Ce site a été créé et mis en ligne uniquement à des fins culturelles et historiques. Il n’est en aucun cas l’outil d’une idéologie politique.",
+    contact: "Contact",
+    contactText: "Pour toute question concernant ces mentions légales :",
+  },
+  es: {
+    title: "Aviso legal",
+    notice:
+      "De conformidad con las disposiciones de la Ley n.º 2004-575 de 21 de junio de 2004 para la confianza en la economía digital, se informa a los usuarios del sitio peoplesrepublicofbulgaria.com sobre la identidad de los distintos participantes en su creación y seguimiento.",
+    publisher: "Editor del sitio web",
+    publisherText1:
+      "Este sitio, accesible en https://www.peoplesrepublicofbulgaria.com, es publicado por:",
+    publisherText2:
+      "Simon Beltran, residente en Sofía, Bulgaria, de nacionalidad francesa, nacido el 17/06/1993.",
+    publisherText3: "Contacto:",
+    hosting: "Alojamiento",
+    hostingText:
+      "Este sitio web está alojado por LWS, 10 Rue Penthièvre, 75008 París, Francia. Tel.: +33 1 77 62 30 03.",
+    director: "Director de publicación",
+    directorText: "El director de publicación de este sitio es Simon Beltran.",
+    intellectual: "Propiedad intelectual",
+    intellectualText:
+      "Todo el contenido de este sitio (textos, imágenes, vídeos) es propiedad exclusiva de Simon Beltran — People's Republic of Bulgaria, salvo indicación contraria. Cualquier reproducción sin autorización previa por escrito está estrictamente prohibida.",
+    purpose: "Finalidad del sitio",
+    purposeText:
+      "Este sitio web ha sido creado y publicado únicamente con fines culturales e históricos. No es en modo alguno una herramienta de ninguna ideología política.",
+    contact: "Contacto",
+    contactText: "Para cualquier pregunta sobre este aviso legal:",
+  },
+  bg: {
+    title: "Правна информация",
+    notice:
+      "Съгласно разпоредбите на Закон № 2004-575 от 21 юни 2004 г. относно доверието в цифровата икономика, потребителите на сайта peoplesrepublicofbulgaria.com се информират за самоличността на различните участници в неговото създаване и поддръжка.",
+    publisher: "Издател на сайта",
+    publisherText1:
+      "Този сайт, достъпен на адрес https://www.peoplesrepublicofbulgaria.com, се публикува от:",
+    publisherText2:
+      "Симон Белтран, живеещ в София, България, с френско гражданство, роден на 17.06.1993 г.",
+    publisherText3: "Контакт:",
+    hosting: "Хостинг",
+    hostingText:
+      "Този уебсайт е хостван от LWS, 10 Rue Penthièvre, 75008 Paris, France. Тел.: +33 1 77 62 30 03.",
+    director: "Отговорен редактор",
+    directorText: "Отговорен редактор на този сайт е Симон Белтран.",
+    intellectual: "Интелектуална собственост",
+    intellectualText:
+      "Цялото съдържание на този сайт (текстове, изображения, видеа) е изключителна собственост на Simon Beltran — People's Republic of Bulgaria, освен ако не е посочено друго. Всяко възпроизвеждане без предварително писмено съгласие е строго забранено.",
+    purpose: "Цел на сайта",
+    purposeText:
+      "Този уебсайт е създаден и публикуван само с културна и историческа цел. По никакъв начин не е инструмент на политическа идеология.",
+    contact: "Контакт",
+    contactText: "За въпроси относно тази правна информация:",
+  },
+}[lang];
+---
+
+<MainLayout
+  lang={lang}
+  title={t.legal.title}
+  description={t.legal.description}
+  nav={buildNav(lang, t)}
+  footer={buildFooter(lang, t)}
+  active="legal"
+  heroImage="/home/BackGroundHome.jpg"
+>
+
+<style>
+.page-wrap {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+.page-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0ebe0;
+  border-bottom: 3px solid #D62612;
+  padding-bottom: 10px;
+  margin-bottom: 28px;
+}
+
+.legal-block {
+  margin-bottom: 30px;
+}
+
+.legal-block h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #D62612;
+  border-left: 4px solid #D62612;
+  padding-left: 12px;
+  margin-bottom: 12px;
+}
+
+.legal-block p {
+  font-size: 1.45rem;
+  color: #aaa;
+  line-height: 1.85;
+  margin-bottom: 8px;
+}
+
+.legal-block a {
+  color: #D62612;
+}
+
+.legal-block a:hover {
+  text-decoration: underline;
+}
+
+.notice-box {
+  background: #242424;
+  border-left: 4px solid #D62612;
+  padding: 14px 18px;
+  margin-bottom: 28px;
+  font-size: 1.35rem;
+  color: #888;
+  font-style: italic;
+  line-height: 1.7;
+}
+</style>
+
+<div class="page-wrap">
+  <h1 class="page-title">{copy.title}</h1>
+
+  <div class="notice-box">{copy.notice}</div>
+
+  <div class="legal-block">
+    <h2>{copy.publisher}</h2>
+    <p>{copy.publisherText1}</p>
+    <p>{copy.publisherText2}</p>
+    <p>
+      {copy.publisherText3}
+      {" "}
+      <a href="mailto:contact@peoplesrepublicofbulgaria.com">
+        contact@peoplesrepublicofbulgaria.com
+      </a>
+    </p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.hosting}</h2>
+    <p>{copy.hostingText}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.director}</h2>
+    <p>{copy.directorText}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.intellectual}</h2>
+    <p>{copy.intellectualText}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.purpose}</h2>
+    <p>{copy.purposeText}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.contact}</h2>
+    <p>
+      {copy.contactText}
+      <br />
+      <a href="mailto:contact@peoplesrepublicofbulgaria.com">
+        contact@peoplesrepublicofbulgaria.com
+      </a>
+    </p>
+  </div>
+</div>
+
+</MainLayout>

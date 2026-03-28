@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | People's Republic of Bulgaria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.ico" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 62.5%; }
+    body { font-family: 'Roboto', sans-serif; font-size: 1.6rem; background: #1a1a1a; color: #f0ebe0; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    .topbar { background: #111; border-bottom: 1px solid #333; padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .topbar-social { display: flex; gap: 14px; align-items: center; }
+    .topbar-social img { height: 20px; width: auto; opacity: 0.75; }
+    .topbar-social a:hover img { opacity: 1; }
+    .topbar-lang { display: flex; gap: 8px; align-items: center; }
+    .topbar-lang a img { height: 18px; width: 26px; object-fit: cover; border-radius: 2px; border: 2px solid transparent; opacity: 0.6; }
+    .topbar-lang a:hover img, .topbar-lang a.active img { opacity: 1; border-color: #D62612; }
+
+    .site-header {
+      position: relative; text-align: center; padding: 60px 20px 50px;
+      background: url('/home/About.jpg') center 30%/cover no-repeat;
+      min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .site-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.88) 100%); }
+    .site-header img.logo { position: relative; height: 80px; margin: 0 auto 12px; }
+    .site-header h1 { position: relative; font-family: 'Oswald', sans-serif; font-size: 3.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #f0ebe0; margin-bottom: 4px; }
+    .site-header .tagline { position: relative; font-size: 1.3rem; color: #ccc; font-style: italic; }
+
+    nav { background: #D62612; }
+    nav ul {display: flex;flex-wrap: wrap;justify-content: center;}
+    nav ul li a { display: block; padding: 12px 22px; font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; }
+    nav ul li a:hover { background: rgba(0,0,0,0.2); }
+    nav ul li a.active { background: rgba(0,0,0,0.3); }
+
+    .page-wrap { max-width: 860px; margin: 0 auto; padding: 30px 20px 60px; }
+    .page-title { font-family: 'Oswald', sans-serif; font-size: 2.8rem; font-weight: 700; text-transform: uppercase; color: #f0ebe0; border-bottom: 3px solid #D62612; padding-bottom: 10px; margin-bottom: 28px; }
+
+    /* ABOUT PHOTO */
+    .about-photo {
+      float: right;
+      width: 220px;
+      margin: 0 0 20px 28px;
+      border: 2px solid #333;
+    }
+    .about-photo img { width: 100%; display: block; }
+
+    /* SECTIONS */
+    .about-section { margin-bottom: 36px; }
+    .about-section h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem; font-weight: 700;
+      text-transform: uppercase;
+      color: #D62612;
+      border-left: 4px solid #D62612;
+      padding-left: 12px;
+      margin-bottom: 14px;
+    }
+    .about-section p {
+      font-size: 1.5rem; color: #aaa; line-height: 1.85;
+      margin-bottom: 12px;
+    }
+    .about-section a { color: #D62612; }
+    .about-section a:hover { text-decoration: underline; }
+
+    .clearfix::after { content: ''; display: table; clear: both; }
+
+    footer { background: #111; border-top: 3px solid #D62612; padding: 24px 20px; text-align: center; }
+    .footer-nav { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 14px; }
+    .footer-nav a { font-size: 1.4rem; color: #888; }
+    .footer-nav a:hover { color: #D62612; text-decoration: underline; }
+    .footer-social { display: flex; justify-content: center; gap: 16px; margin-bottom: 14px; }
+    .footer-social img { height: 22px; width: auto; opacity: 0.6; }
+    footer p { font-size: 1.25rem; color: #555; }
+
+    @media (max-width: 560px) {
+      .about-photo { float: none; width: 100%; margin: 0 0 20px 0; }
+      nav ul li a { padding: 10px 14px; font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/instagram.webp" alt="Instagram" /></a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer"><img src="png/Youtube_logo.png" alt="YouTube" /></a>
+    </div>
+    <div class="topbar-lang">
+      <a href="about.html" class="active"><img src="png/ukFlag.png" alt="EN" /></a>
+      <a href="apropos.html"><img src="png/franceFlag.png" alt="FR" /></a>
+      <a href="sobremi.html"><img src="png/spainFlag.png" alt="ES" /></a>
+      <a href="about-bg.html"><img src="png/bulgariaFlag.png" alt="BG" /></a>
+    </div>
+  </div>
+
+  <div class="site-header">
+    <img class="logo" src="png/PRB_logo.png" alt="People's Republic Of Bulgaria" onerror="this.style.display='none'" />
+    <h1>People's Republic Of Bulgaria</h1>
+    <p class="tagline">1944 — 1990 &nbsp;|&nbsp; Cultural &amp; Historical Archive</p>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="collection.html">Collection</a></li>
+      <li><a href="tourism.html">Tourism</a></li>
+      <li><a href="video.html">video</a></li>
+      
+    </ul>
+  </nav>
+
+  <div class="page-wrap clearfix">
+    <h1 class="page-title">About</h1>
+
+    <div class="about-photo">
+      <img src="/home/aboutPic.jpg" alt="Simon Beltran" onerror="this.style.display='none'" />
+    </div>
+
+    <div class="about-section">
+      <h2>Who am I?</h2>
+      <p>I have been living in Sofia, Bulgaria for a few years now, and I have been passionate about history since I was a child. From the World War I battlefields in Alsace to the World War II bunkers in the south of France, and now to the abandoned Cold War bases here in Bulgaria — history has always been how I spend my free time.</p>
+      <p>A big fan of flea markets, I started collecting historical objects at the age of 12. Since moving to Sofia, I decided to dedicate all my free time to the subject of the People's Republic of Bulgaria.</p>
+    </div>
+
+    <div class="about-section">
+      <h2>Why this website?</h2>
+      <p>After noticing a lack of information and a kind of "taboo" around the People's Republic of Bulgaria here in Bulgaria, I decided in 2023 to create an Instagram page dedicated to my collection: <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer">Instagram Page</a>. This way, people from all over the world could learn more about this short historical period (1944–1990).</p>
+      <p>Then in 2024, as a full-time enthusiast, I built this website to bring together the history of the People's Republic of Bulgaria, my collection, tourist sites to visit, and souvenirs to buy — all in one place. So anyone interested in this topic doesn't need to search through 10 different websites to find what they're looking for.</p>
+      <p>History can of course be controversial. In creating this site, I tried to be as neutral as possible. As stated, this website has been created for cultural and historical purposes only — it is in no way the tool of any political ideology. This way, this historical period can be preserved for future generations.</p>
+    </div>
+
+    <div class="about-section">
+      <h2>Who is this website for?</h2>
+      <p>This website is for anyone who is deeply interested in history — particularly the Cold War era in the countries of the communist bloc. It is also a useful place for curious visitors who have heard of Bulgaria and would like to visit, or who want to buy a souvenir from the former People's Republic of Bulgaria.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/instagram.webp" alt="Instagram" /></a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer"><img src="png/Youtube_logo.png" alt="YouTube" /></a>
+    </div>
+    <div class="footer-nav">
+      <a href="contact.html">Contact</a>
+      <a href="about.html">About</a>
+      <a href="legal.html">Legal Notice</a>
+    </div>
+    <p>© 2024 People's Republic of Bulgaria — All rights reserved</p>
+  </footer>
+
+</body>
+</html>

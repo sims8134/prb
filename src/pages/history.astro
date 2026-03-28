@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>History | People's Republic of Bulgaria</title>
+  <meta name="description" content="Timeline of the People's Republic of Bulgaria, from 1944 to 1990." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.ico" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 62.5%; }
+    body { font-family: 'Roboto', sans-serif; font-size: 1.6rem; background: #1a1a1a; color: #f0ebe0; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    /* TOPBAR */
+    .topbar { background: #111; border-bottom: 1px solid #333; padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .topbar-social { display: flex; gap: 14px; align-items: center; }
+    .topbar-social img { height: 20px; width: auto; opacity: 0.75; }
+    .topbar-social a:hover img { opacity: 1; }
+    .topbar-lang { display: flex; gap: 8px; align-items: center; }
+    .topbar-lang a img { height: 18px; width: 26px; object-fit: cover; border-radius: 2px; border: 2px solid transparent; opacity: 0.6; }
+    .topbar-lang a:hover img, .topbar-lang a.active img { opacity: 1; border-color: #D62612; }
+
+    /* HEADER */
+    .site-header {
+      position: relative;
+      text-align: center;
+      padding: 60px 20px 50px;
+      background: url('/home/History.jpg') center 30%/cover no-repeat;
+      min-height: 240px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .site-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.88) 100%);
+    }
+    .site-header img.logo { position: relative; height: 80px; margin: 0 auto 12px; }
+    .site-header h1 { position: relative; font-family: 'Oswald', sans-serif; font-size: 3.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #f0ebe0; margin-bottom: 4px; }
+    .site-header .tagline { position: relative; font-size: 1.3rem; color: #ccc; font-style: italic; }
+
+    /* NAV */
+    nav { background: #D62612; }
+    nav ul {display: flex;flex-wrap: wrap;justify-content: center;}
+    nav ul li a { display: block; padding: 12px 22px; font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; }
+    nav ul li a:hover { background: rgba(0,0,0,0.2); }
+    nav ul li a.active { background: rgba(0,0,0,0.3); }
+
+    /* PAGE */
+    .page-wrap { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+    .page-title { font-family: 'Oswald', sans-serif; font-size: 2.8rem; font-weight: 700; text-transform: uppercase; color: #f0ebe0; border-bottom: 3px solid #D62612; padding-bottom: 10px; margin-bottom: 8px; }
+    .page-subtitle { font-size: 1.45rem; color: #888; margin-bottom: 10px; line-height: 1.6; font-style: italic; }
+    .notice-box { background: #242424; border-left: 4px solid #D62612; padding: 14px 18px; margin-bottom: 34px; font-size: 1.35rem; color: #888; font-style: italic; line-height: 1.7; }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 0; }
+
+    /* Red vertical line */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 110px;
+      top: 0; bottom: 0;
+      width: 3px;
+      background: #D62612;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      position: relative;
+    }
+
+    /* DATE column */
+    .tl-date {
+      width: 110px;
+      flex-shrink: 0;
+      padding: 22px 16px 22px 0;
+      text-align: right;
+    }
+    .tl-date span {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #D62612;
+      line-height: 1.2;
+      display: block;
+    }
+
+    /* DOT on the line */
+    .tl-dot {
+      width: 20px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-start;
+      padding-top: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .tl-dot::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #D62612;
+      border: 3px solid #1a1a1a;
+      margin-left: 3px;
+      flex-shrink: 0;
+    }
+
+    /* CONTENT */
+    .tl-content {
+      flex: 1;
+      padding: 18px 0 18px 22px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .timeline-item:last-child .tl-content { border-bottom: none; }
+
+    .tl-content-inner {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .tl-img {
+      width: 120px;
+      flex-shrink: 0;
+      border: 1px solid #333;
+    }
+    .tl-img img { width: 100%; height: 90px; object-fit: cover; display: block; }
+    .tl-text h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.8rem; font-weight: 700;
+      color: #f0ebe0;
+      margin-bottom: 6px;
+    }
+    .tl-text p { font-size: 1.4rem; color: #aaa; line-height: 1.75; }
+
+    /* FOOTER */
+    footer { background: #111; border-top: 3px solid #D62612; padding: 24px 20px; text-align: center; margin-top: 20px; }
+    .footer-nav { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 14px; }
+    .footer-nav a { font-size: 1.4rem; color: #888; }
+    .footer-nav a:hover { color: #D62612; text-decoration: underline; }
+    .footer-social { display: flex; justify-content: center; gap: 16px; margin-bottom: 14px; }
+    .footer-social img { height: 22px; width: auto; opacity: 0.6; }
+    footer p { font-size: 1.25rem; color: #555; }
+
+    @media (max-width: 680px) {
+      .timeline::before { left: 0; }
+      .tl-date { width: auto; padding: 16px 0 0; text-align: left; }
+      .tl-dot { display: none; }
+      .timeline-item { flex-direction: column; padding-left: 14px; border-left: 3px solid #D62612; margin-bottom: 20px; }
+      .tl-content { padding: 8px 0 0; border-bottom: none; }
+      .tl-content-inner { flex-direction: column; }
+      .tl-img { width: 100%; }
+      .tl-img img { height: 160px; }
+      nav ul li a { padding: 10px 14px; font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/instagram.webp" alt="Instagram" /></a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer"><img src="png/Youtube_logo.png" alt="YouTube" /></a>
+    </div>
+    <div class="topbar-lang">
+      <a href="history.html" class="active"><img src="png/ukFlag.png" alt="EN" /></a>
+      <a href="histoire.html"><img src="png/franceFlag.png" alt="FR" /></a>
+      <a href="historia.html"><img src="png/spainFlag.png" alt="ES" /></a>
+      <a href="history-bg.html"><img src="png/bulgariaFlag.png" alt="BG" /></a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <img class="logo" src="png/PRB_logo.png" alt="People's Republic Of Bulgaria" onerror="this.style.display='none'" />
+    <h1>People's Republic Of Bulgaria</h1>
+    <p class="tagline">1944 — 1990 &nbsp;|&nbsp; Cultural &amp; Historical Archive</p>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="history.html" class="active">History</a></li>
+      <li><a href="collection.html">Collection</a></li>
+      <li><a href="tourism.html">Tourism</a></li>
+      <li><a href="video.html">video</a></li>
+      
+    </ul>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="page-wrap">
+
+    <h1 class="page-title">History</h1>
+    <p class="page-subtitle">"Those who do not learn from history are condemned to repeat it."</p>
+    <div class="notice-box">This website has been created for cultural and historical purposes only. It is in no way the tool of any political ideology.</div>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>9 Sept.<br/>1944</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/1-Partizan.jfif" alt="Coup d'état 1944" /></div>
+            <div class="tl-text">
+              <h3>The Coup d'état</h3>
+              <p>Communist partisans backed by the USSR overthrow the royalist government allied with Nazi Germany. The beginning of socialism in Bulgaria.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>15 Sept.<br/>1946</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/2-Referendum.jpg" alt="Referendum 1946" /></div>
+            <div class="tl-text">
+              <h3>Referendum — People's Republic</h3>
+              <p>The 1946 referendum takes place on September 15th. The country is declared a People's Republic.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>6 Dec.<br/>1947</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/3-GeorgiDimitrov.jpg" alt="Georgi Dimitrov Constitution" /></div>
+            <div class="tl-text">
+              <h3>Georgi Dimitrov Constitution</h3>
+              <p>The Georgi Dimitrov Constitution is adopted and remains in force until 1971.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>2 Jul.<br/>1949</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/4-Mosoleum.jpg" alt="Georgi Dimitrov death" /></div>
+            <div class="tl-text">
+              <h3>Death of Georgi Dimitrov</h3>
+              <p>Georgi Dimitrov dies on July 2nd, 1949, and is displayed in the Georgi Dimitrov Mausoleum.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>20 Dec.<br/>1949</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/5-Valko.webp" alt="Valko Chervenkov" /></div>
+            <div class="tl-text">
+              <h3>Valko Chervenkov takes power</h3>
+              <p>Valko Chervenkov succeeds Georgi Dimitrov as General Secretary of the Communist Party until 1954.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>4 Mar.<br/>1954</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/6-Todor.jpg" alt="Todor Zhivkov" /></div>
+            <div class="tl-text">
+              <h3>Todor Zhivkov rises to power</h3>
+              <p>Todor Zhivkov succeeds Valko Chervenkov as head of the Communist Party. He becomes the longest-serving leader (non-monarchy) in Bulgarian history.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>28 Mar.<br/>1965</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/7-TodorBis.jpg" alt="April Conspiracy" /></div>
+            <div class="tl-text">
+              <h3>The April Conspiracy</h3>
+              <p>The "April Conspiracy" is revealed on March 28th, 1965. The attempted coup d'état aimed to overthrow Todor Zhivkov.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>8 May<br/>1971</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/8-TodorConstitution.jpg" alt="Zhivkov Constitution" /></div>
+            <div class="tl-text">
+              <h3>Zhivkov Constitution</h3>
+              <p>The "Zhivkov Constitution" is established and remains in force until the end of the People's Republic of Bulgaria.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>10 Apr.<br/>1979</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/9-Georgi-Ivanov.jpg" alt="Georgi Ivanov cosmonaut" /></div>
+            <div class="tl-text">
+              <h3>First Bulgarian Cosmonaut</h3>
+              <p>Bulgaria's first cosmonaut Georgi Ivanov is launched into space on the Soyuz 33 mission.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>6 May<br/>1981</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/10-MilleAns.jpg" alt="1300 years Bulgaria" /></div>
+            <div class="tl-text">
+              <h3>1300 Years of Bulgaria</h3>
+              <p>The Bulgarian nation celebrates 1300 years of existence. The largest military parade in Sofia's history takes place on this occasion.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>23 Aug.<br/>1981</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/11-Buzludzha.jpg" alt="Buzludzha monument" /></div>
+            <div class="tl-text">
+              <h3>Buzludzha Monument Inaugurated</h3>
+              <p>The monumental house of the Bulgarian Communist Party "Buzludzha" is inaugurated.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>10 Nov.<br/>1989</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="history/12-Protests.webp" alt="Fall of communism" /></div>
+            <div class="tl-text">
+              <h3>End of Zhivkov's Rule</h3>
+              <p>One day after the fall of the Berlin Wall, communist leader Todor Zhivkov is removed from his position as General Secretary of the Communist Party.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="tl-date"><span>15 Nov.<br/>1990</span></div>
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-content-inner">
+            <div class="tl-img"><img src="/history/13dCommunism.jpg" alt="End of People's Republic" /></div>
+            <div class="tl-text">
+              <h3>End of the People's Republic</h3>
+              <p>The Assembly votes to rename the country the Republic of Bulgaria and removes the communist emblem from the national flag.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end timeline -->
+  </div><!-- end page-wrap -->
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer"><img src="/png/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer"><img src="/png/instagram.webp" alt="Instagram" /></a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer"><img src="/png/Youtube_logo.png" alt="YouTube" /></a>
+    </div>
+    <div class="footer-nav">
+      <a href="contact">Contact</a>
+      <a href="about">About</a>
+      <a href="legal">Legal Notice</a>
+    </div>
+    <p>© 2024 People's Republic of Bulgaria — All rights reserved</p>
+  </footer>
+
+</body>
+</html>

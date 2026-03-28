@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>video | People's Republic of Bulgaria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.ico" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 62.5%; }
+    body { font-family: 'Roboto', sans-serif; font-size: 1.6rem; background: #1a1a1a; color: #f0ebe0; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    .topbar { background: #111; border-bottom: 1px solid #333; padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .topbar-social { display: flex; gap: 14px; align-items: center; }
+    .topbar-social img { height: 20px; width: auto; opacity: 0.75; }
+    .topbar-social a:hover img { opacity: 1; }
+    .topbar-lang { display: flex; gap: 8px; align-items: center; }
+    .topbar-lang a img { height: 18px; width: 26px; object-fit: cover; border-radius: 2px; border: 2px solid transparent; opacity: 0.6; }
+    .topbar-lang a:hover img, .topbar-lang a.active img { opacity: 1; border-color: #D62612; }
+
+    .site-header { background: #111; text-align: center; padding: 24px 20px 0;}
+    .site-header img.logo { height: 80px; margin: 0 auto 14px; }
+    .site-header h1 { font-family: 'Oswald', sans-serif; font-size: 3.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #f0ebe0; margin-bottom: 4px; }
+    .site-header .tagline { font-size: 1.3rem; color: #888; font-style: italic; margin-bottom: 20px; }
+
+    nav { background: #D62612; }
+    nav ul {display: flex;flex-wrap: wrap;justify-content: center;padding: 0;}
+    nav ul li a { display: block; padding: 12px 22px; font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #fff; }
+    nav ul li a:hover { background: rgba(0,0,0,0.2); }
+    nav ul li a.active { background: rgba(0,0,0,0.3); }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+
+    .page-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2.8rem; font-weight: 700;
+      text-transform: uppercase;
+      color: #f0ebe0;
+      border-bottom: 3px solid #D62612;
+      padding-bottom: 10px;
+      margin-bottom: 8px;
+    }
+    .page-subtitle { font-size: 1.45rem; color: #888; margin-bottom: 28px; line-height: 1.6; }
+
+    /* TABS */
+    .tabs { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 24px; }
+    .tab-btn {
+      padding: 9px 20px;
+      background: #242424;
+      border: 1px solid #333;
+      color: #aaa;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+    }
+    .tab-btn:hover { background: #2e2e2e; color: #f0ebe0; }
+    .tab-btn.active { background: #D62612; border-color: #D62612; color: #fff; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* PLAYER */
+    .player-box { background: #242424; border: 1px solid #333; padding: 16px; margin-bottom: 20px; }
+    .player-embed { position: relative; padding-bottom: 56.25%; background: #000; margin-bottom: 14px; }
+    .player-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .player-meta h3 { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: #f0ebe0; margin-bottom: 6px; }
+    .player-meta p { font-size: 1.4rem; color: #888; line-height: 1.7; margin-bottom: 14px; }
+    .player-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-red { display: inline-block; padding: 8px 18px; background: #D62612; color: #fff; font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .btn-red:hover { background: #9B1B0C; }
+    .btn-outline { display: inline-block; padding: 8px 18px; background: transparent; color: #aaa; border: 1px solid #555; font-family: 'Oswald', sans-serif; font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .btn-outline:hover { color: #f0ebe0; border-color: #888; }
+
+    /* THUMB GRID */
+    .section-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.6rem; font-weight: 600;
+      text-transform: uppercase;
+      color: #888;
+      border-bottom: 1px solid #333;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+    .thumb-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .thumb-card { background: #242424; border: 1px solid #333; cursor: pointer; }
+    .thumb-card:hover { border-color: #D62612; }
+    .thumb-img { position: relative; aspect-ratio: 16/9; background: #111; overflow: hidden; }
+    .thumb-img img { width: 100%; height: 100%; object-fit: cover; }
+    .thumb-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.2rem; }
+    .thumb-body { padding: 10px 12px; }
+    .thumb-body h4 { font-family: 'Oswald', sans-serif; font-size: 1.5rem; color: #f0ebe0; margin-bottom: 3px; }
+    .thumb-body p { font-size: 1.25rem; color: #666; }
+
+    /* SUBSCRIBE */
+    .subscribe-box { background: #D62612; padding: 24px; text-align: center; margin-top: 30px; }
+    .subscribe-box h3 { font-family: 'Oswald', sans-serif; font-size: 2.2rem; font-weight: 700; text-transform: uppercase; color: #fff; margin-bottom: 8px; }
+    .subscribe-box p { font-size: 1.4rem; color: rgba(255,255,255,0.8); margin-bottom: 16px; }
+    .btn-white { display: inline-block; padding: 10px 26px; background: #fff; color: #D62612; font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 700; text-transform: uppercase; }
+    .btn-white:hover { background: #f0ebe0; }
+
+    footer { background: #111; border-top: 3px solid #D62612; padding: 24px 20px; text-align: center; }
+    .footer-nav { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 14px; }
+    .footer-nav a { font-size: 1.4rem; color: #888; }
+    .footer-nav a:hover { color: #D62612; text-decoration: underline; }
+    .footer-social { display: flex; justify-content: center; gap: 16px; margin-bottom: 14px; }
+    .footer-social img { height: 22px; width: auto; opacity: 0.6; }
+    footer p { font-size: 1.25rem; color: #555; }
+
+    @media (max-width: 700px) {
+      .thumb-grid { grid-template-columns: repeat(2, 1fr); }
+      .site-header h1 { font-size: 2.4rem; }
+      nav ul li a { padding: 10px 14px; font-size: 1.3rem; }
+    }
+    @media (max-width: 480px) {
+      .thumb-grid { grid-template-columns: 1fr; }
+      .player-links { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/instagram.webp" alt="Instagram" /></a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer"><img src="png/Youtube_logo.png" alt="YouTube" /></a>
+    </div>
+    <div class="topbar-lang">
+      <a href="video.html" class="active"><img src="png/ukFlag.png" alt="EN" /></a>
+      <a href="video-fr.html"><img src="png/franceFlag.png" alt="FR" /></a>
+      <a href="video-es.html"><img src="png/spainFlag.png" alt="ES" /></a>
+      <a href="video-bg.html"><img src="png/bulgariaFlag.png" alt="BG" /></a>
+    </div>
+  </div>
+
+  <div class="site-header">
+    <img class="logo" src="png/logo.png" alt="People's Republic Of Bulgaria" onerror="this.style.display='none'" />
+    <h1>People's Republic Of Bulgaria</h1>
+    <p class="tagline">1944 — 1990 &nbsp;|&nbsp; Cultural &amp; Historical Archive</p>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="collection.html">Collection</a></li>
+      <li><a href="tourism.html">Tourism</a></li>
+      <li><a href="video.html" class="active">video</a></li>
+      
+    </ul>
+  </nav>
+
+  <div class="page-wrap">
+
+    <h1 class="page-title">video</h1>
+    <p class="page-subtitle">All video organised by category. Click a thumbnail to load it in the player.</p>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="urbex">🏚️ Urbex</button>
+      <button class="tab-btn" data-tab="vlog">🎥 Vlog</button>
+      <button class="tab-btn" data-tab="edit">🎬 Edit</button>
+      <button class="tab-btn" data-tab="unboxing">📦 Unboxing</button>
+      <button class="tab-btn" data-tab="presentation">🎖️ Presentation</button>
+      <button class="tab-btn" data-tab="tourism">🗺️ Tourism</button>
+    </div>
+
+    <!-- URBEX -->
+    <div class="tab-panel active" id="tab-urbex">
+      <div class="player-box">
+        <div class="player-embed">
+          <iframe id="iframe-urbex" src="https://www.youtube.com/embed/1_NIQaF0eNA?rel=0"
+            title="Urbex" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="player-meta">
+          <h3>Urbex — Abandoned Communist Bulgaria</h3>
+          <p>Exploring forgotten buildings, military bases and ghost sites from the communist era.</p>
+          <div class="player-links">
+            <a href="https://www.youtube.com/watch?v=1_NIQaF0eNA" target="_blank" rel="noopener noreferrer" class="btn-red">▶ Watch on YouTube</a>
+            <a href="https://www.youtube.com/playlist?list=PL8myqsdqvY4WxorKrf3O8rb-w2RDptXy" target="_blank" rel="noopener noreferrer" class="btn-outline">☰ Full Playlist</a>
+          </div>
+        </div>
+      </div>
+      <p class="section-label">More video from this category</p>
+      <div class="thumb-grid">
+        <div class="thumb-card" onclick="play('urbex','1_NIQaF0eNA')">
+          <div class="thumb-img"><img src="https://img.youtube.com/vi/1_NIQaF0eNA/mqdefault.jpg" alt="Urbex" onerror="this.parentElement.innerHTML='<div class=\'thumb-placeholder\'>🏚️</div>'" /></div>
+          <div class="thumb-body"><h4>Abandoned Communist Bulgaria</h4><p>Urbex</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4WxorKrf3O8rb-w2RDptXy','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">🏚️</div></div>
+          <div class="thumb-body"><h4>More Urbex video</h4><p>View full playlist →</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4WxorKrf3O8rb-w2RDptXy','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">▶</div></div>
+          <div class="thumb-body"><h4>Urbex Playlist</h4><p>All urbex content →</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VLOG -->
+    <div class="tab-panel" id="tab-vlog">
+      <div class="player-box">
+        <div class="player-embed">
+          <iframe id="iframe-vlog" src="https://www.youtube.com/embed/2vimA3g5Bz4?rel=0"
+            title="Vlog" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="player-meta">
+          <h3>Vlog — Life in Sofia & Bulgarian Adventures</h3>
+          <p>Day-to-day life, markets, discoveries and adventures in Bulgaria.</p>
+          <div class="player-links">
+            <a href="https://www.youtube.com/watch?v=2vimA3g5Bz4" target="_blank" rel="noopener noreferrer" class="btn-red">▶ Watch on YouTube</a>
+            <a href="https://www.youtube.com/playlist?list=PL8myqsdqvY4WgLONNTYI9F6a7oT1r_VZW" target="_blank" rel="noopener noreferrer" class="btn-outline">☰ Full Playlist</a>
+          </div>
+        </div>
+      </div>
+      <p class="section-label">More video from this category</p>
+      <div class="thumb-grid">
+        <div class="thumb-card" onclick="play('vlog','2vimA3g5Bz4')">
+          <div class="thumb-img"><img src="https://img.youtube.com/vi/2vimA3g5Bz4/mqdefault.jpg" alt="Vlog" onerror="this.parentElement.innerHTML='<div class=\'thumb-placeholder\'>🎥</div>'" /></div>
+          <div class="thumb-body"><h4>Vlog — Bulgarian Life</h4><p>Daily adventures</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4WgLONNTYI9F6a7oT1r_VZW','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">🎥</div></div>
+          <div class="thumb-body"><h4>More Vlogs</h4><p>View full playlist →</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4WgLONNTYI9F6a7oT1r_VZW','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">▶</div></div>
+          <div class="thumb-body"><h4>Vlog Playlist</h4><p>All vlog content →</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDIT -->
+    <div class="tab-panel" id="tab-edit">
+      <div class="player-box">
+        <div class="player-embed">
+          <iframe id="iframe-edit" src="https://www.youtube.com/embed/YVyUkLyBIU0?rel=0"
+            title="Edit" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="player-meta">
+          <h3>Edit — Cinematic Communist Bulgaria</h3>
+          <p>Atmospheric edits with archive footage, music and cold war atmosphere.</p>
+          <div class="player-links">
+            <a href="https://www.youtube.com/watch?v=YVyUkLyBIU0" target="_blank" rel="noopener noreferrer" class="btn-red">▶ Watch on YouTube</a>
+            <a href="https://www.youtube.com/playlist?list=PL8myqsdqvY4UZ1RGZ2DzEhKyR-BAmj1ve" target="_blank" rel="noopener noreferrer" class="btn-outline">☰ Full Playlist</a>
+          </div>
+        </div>
+      </div>
+      <p class="section-label">More video from this category</p>
+      <div class="thumb-grid">
+        <div class="thumb-card" onclick="play('edit','YVyUkLyBIU0')">
+          <div class="thumb-img"><img src="https://img.youtube.com/vi/YVyUkLyBIU0/mqdefault.jpg" alt="Edit" onerror="this.parentElement.innerHTML='<div class=\'thumb-placeholder\'>🎬</div>'" /></div>
+          <div class="thumb-body"><h4>Cinematic Edit</h4><p>Communist aesthetic</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4UZ1RGZ2DzEhKyR-BAmj1ve','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">🎬</div></div>
+          <div class="thumb-body"><h4>More Edits</h4><p>View full playlist →</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4UZ1RGZ2DzEhKyR-BAmj1ve','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">▶</div></div>
+          <div class="thumb-body"><h4>Edit Playlist</h4><p>All edit content →</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UNBOXING -->
+    <div class="tab-panel" id="tab-unboxing">
+      <div class="player-box">
+        <div class="player-embed">
+          <iframe id="iframe-unboxing" src="https://www.youtube.com/embed/lsd0rxMMKng?rel=0"
+            title="Unboxing" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="player-meta">
+          <h3>Unboxing — Communist Era Objects</h3>
+          <p>Flea market finds, rare military items, propaganda objects — detailed unboxings of historical artefacts.</p>
+          <div class="player-links">
+            <a href="https://www.youtube.com/watch?v=lsd0rxMMKng" target="_blank" rel="noopener noreferrer" class="btn-red">▶ Watch on YouTube</a>
+            <a href="https://www.youtube.com/playlist?list=PL8myqsdqvY4UW0pILiMihzG-8f-_EfIhA" target="_blank" rel="noopener noreferrer" class="btn-outline">☰ Full Playlist</a>
+          </div>
+        </div>
+      </div>
+      <p class="section-label">More video from this category</p>
+      <div class="thumb-grid">
+        <div class="thumb-card" onclick="play('unboxing','lsd0rxMMKng')">
+          <div class="thumb-img"><img src="https://img.youtube.com/vi/lsd0rxMMKng/mqdefault.jpg" alt="Unboxing" onerror="this.parentElement.innerHTML='<div class=\'thumb-placeholder\'>📦</div>'" /></div>
+          <div class="thumb-body"><h4>Object Unboxing</h4><p>Historical artefacts</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4UW0pILiMihzG-8f-_EfIhA','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">📦</div></div>
+          <div class="thumb-body"><h4>More Unboxings</h4><p>View full playlist →</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4UW0pILiMihzG-8f-_EfIhA','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">▶</div></div>
+          <div class="thumb-body"><h4>Unboxing Playlist</h4><p>All unboxing content →</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRESENTATION -->
+    <div class="tab-panel" id="tab-presentation">
+      <div class="player-box">
+        <div class="player-embed">
+          <iframe id="iframe-presentation" src="https://www.youtube.com/embed/dZ6oXWKSXC8?rel=0"
+            title="Presentation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="player-meta">
+          <h3>Presentation — Detailed Object Reviews</h3>
+          <p>In-depth presentations of medals, uniforms, badges, documents — with historical context.</p>
+          <div class="player-links">
+            <a href="https://www.youtube.com/watch?v=dZ6oXWKSXC8" target="_blank" rel="noopener noreferrer" class="btn-red">▶ Watch on YouTube</a>
+            <a href="https://www.youtube.com/playlist?list=PL8myqsdqvY4U30o50QqrKxa1RoMyH6iuH" target="_blank" rel="noopener noreferrer" class="btn-outline">☰ Full Playlist</a>
+          </div>
+        </div>
+      </div>
+      <p class="section-label">More video from this category</p>
+      <div class="thumb-grid">
+        <div class="thumb-card" onclick="play('presentation','dZ6oXWKSXC8')">
+          <div class="thumb-img"><img src="https://img.youtube.com/vi/dZ6oXWKSXC8/mqdefault.jpg" alt="Presentation" onerror="this.parentElement.innerHTML='<div class=\'thumb-placeholder\'>🎖️</div>'" /></div>
+          <div class="thumb-body"><h4>Object Presentation</h4><p>Historical details</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4U30o50QqrKxa1RoMyH6iuH','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">🎖️</div></div>
+          <div class="thumb-body"><h4>More Presentations</h4><p>View full playlist →</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4U30o50QqrKxa1RoMyH6iuH','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">▶</div></div>
+          <div class="thumb-body"><h4>Presentation Playlist</h4><p>All presentation content →</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOURISM -->
+    <div class="tab-panel" id="tab-tourism">
+      <div class="player-box">
+        <div class="player-embed">
+          <iframe id="iframe-tourism" src="https://www.youtube.com/embed/qbnBOUo_GWQ?rel=0"
+            title="Tourism" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="player-meta">
+          <h3>Tourism — Communist Heritage Sites</h3>
+          <p>Guided visits to monuments, museums and communist-era sites across Bulgaria.</p>
+          <div class="player-links">
+            <a href="https://www.youtube.com/watch?v=qbnBOUo_GWQ" target="_blank" rel="noopener noreferrer" class="btn-red">▶ Watch on YouTube</a>
+            <a href="https://www.youtube.com/playlist?list=PL8myqsdqvY4Xb8K0Y9WqlsN9qQA9OiX8D" target="_blank" rel="noopener noreferrer" class="btn-outline">☰ Full Playlist</a>
+          </div>
+        </div>
+      </div>
+      <p class="section-label">More video from this category</p>
+      <div class="thumb-grid">
+        <div class="thumb-card" onclick="play('tourism','qbnBOUo_GWQ')">
+          <div class="thumb-img"><img src="https://img.youtube.com/vi/qbnBOUo_GWQ/mqdefault.jpg" alt="Tourism" onerror="this.parentElement.innerHTML='<div class=\'thumb-placeholder\'>🗺️</div>'" /></div>
+          <div class="thumb-body"><h4>Communist Heritage Tour</h4><p>Bulgaria history sites</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4Xb8K0Y9WqlsN9qQA9OiX8D','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">🗺️</div></div>
+          <div class="thumb-body"><h4>More Tourism video</h4><p>View full playlist →</p></div>
+        </div>
+        <div class="thumb-card" onclick="window.open('https://www.youtube.com/playlist?list=PL8myqsdqvY4Xb8K0Y9WqlsN9qQA9OiX8D','_blank')">
+          <div class="thumb-img"><div class="thumb-placeholder">▶</div></div>
+          <div class="thumb-body"><h4>Tourism Playlist</h4><p>All tourism content →</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscribe -->
+    <div class="subscribe-box">
+      <h3>Subscribe to the Channel</h3>
+      <p>New video every week — don't miss anything about the People's Republic of Bulgaria.</p>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer" class="btn-white">▶ Subscribe on YouTube</a>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer"><img src="png/instagram.webp" alt="Instagram" /></a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer"><img src="png/Youtube_logo.png" alt="YouTube" /></a>
+    </div>
+    <div class="footer-nav">
+      <a href="contact.html">Contact</a>
+      <a href="about.html">About</a>
+      <a href="legal.html">Legal Notice</a>
+    </div>
+    <p>© 2024 People's Republic of Bulgaria — All rights reserved</p>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    function play(tab, videoId) {
+      const iframe = document.getElementById('iframe-' + tab);
+      if (iframe) {
+        iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1?autoplay=1&rel=0&modestbranding=1rel=0';
+        document.getElementById('tab-' + tab).scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  </script>
+</body>
+</html>

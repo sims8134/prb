@@ -1,0 +1,342 @@
+---
+import { siteContent } from "../data/site";
+
+const {
+  lang = "en",
+  title = "People's Republic of Bulgaria",
+  description = "Cultural and historical archive",
+  nav = [],
+  footer = { links: [], copyright: "" },
+  active = "",
+  heroImage = "",
+} = Astro.props;
+
+const t = siteContent[lang as keyof typeof siteContent] ?? siteContent["en"];
+
+const heroStyle = heroImage
+  ? `background-image: url('${heroImage}'); background-position: center 30%; background-size: cover; background-repeat: no-repeat;`
+  : "";
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="alternate" hreflang="en" href="https://peoplesrepublicofbulgaria.com/en/" />
+  <link rel="alternate" hreflang="fr" href="https://peoplesrepublicofbulgaria.com/fr/" />
+  <link rel="alternate" hreflang="es" href="https://peoplesrepublicofbulgaria.com/es/" />
+  <link rel="alternate" hreflang="bg" href="https://peoplesrepublicofbulgaria.com/bg/" />
+  <link rel="alternate" hreflang="x-default" href="https://peoplesrepublicofbulgaria.com/en/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;700&display=swap"
+    rel="stylesheet"/>
+  <link rel="icon" href="/favicon.ico" />
+
+ <style is:global>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 62.5%; }
+  body { font-family: 'Roboto', sans-serif; font-size: 1.6rem; background: #1a1a1a; color: #f0ebe0; }
+  a { text-decoration: none; color: inherit; }
+  ul { list-style: none; }
+  img { display: block; max-width: 100%; }
+
+  .header-top {
+    position: absolute;
+    top: 12px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 3;
+  }
+
+  .header-social {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .header-social a {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .header-social img {
+    height: 20px !important;
+    width: auto !important;
+    max-width: none !important;
+    object-fit: contain;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+  }
+
+  .header-social a:hover img {
+    opacity: 1;
+  }
+
+  .header-lang {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .header-lang a {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .header-lang a img {
+    height: 18px !important;
+    width: 26px !important;
+    max-width: none !important;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 2px solid transparent;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+  }
+
+  .header-lang a:hover img,
+  .header-lang a.active img {
+    opacity: 1;
+    border-color: #D62612;
+  }
+
+  .site-header {
+    position: relative;
+    text-align: center;
+    padding: 60px 20px 50px;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #111;
+    filter: contrast(1.05) saturate(1.1) sepia(0.1);
+  }
+
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.85) 100%);
+    z-index: 0;
+  }
+
+  .site-header img.logo {
+    position: relative;
+    height: 150px;
+    width: auto;
+    max-width: none;
+    margin: 0 auto 12px;
+    z-index: 1;
+  }
+
+  .site-header h1 {
+    position: relative;
+    z-index: 1;
+    font-family: 'Oswald', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #f0ebe0;
+    margin-bottom: 4px;
+  }
+
+  .site-header .tagline {
+    position: relative;
+    z-index: 1;
+    font-size: 1.3rem;
+    color: #ccc;
+    font-style: italic;
+    max-width: 1000px;
+    padding: 0 20px;
+  }
+
+  nav { background: #D62612; }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav ul li a {
+    display: block;
+    padding: 12px 22px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #fff;
+  }
+
+  nav ul li a:hover { background: rgba(0,0,0,0.2); }
+  nav ul li a.active { background: rgba(0,0,0,0.3); }
+
+  .page-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+  }
+
+  footer {
+    background: #111;
+    border-top: 3px solid #D62612;
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .site-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .footer-nav a { font-size: 1.4rem; color: #888; }
+  .footer-nav a:hover { color: #D62612; text-decoration: underline; }
+
+  .footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .footer-social img {
+    height: 22px;
+    width: auto;
+    max-width: none;
+    opacity: 0.6;
+  }
+
+  .footer-social a:hover img { opacity: 1; }
+
+  footer p { font-size: 1.25rem; color: #555; }
+
+  @media (max-width: 700px) {
+    .site-header h1 { font-size: 2.4rem; }
+    nav ul li a { padding: 10px 14px; font-size: 1.3rem; }
+  }
+</style>
+</head>
+
+<body>
+<div class="site-header" style={heroStyle}>
+  <div class="header-top">
+    <div class="header-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer">
+        <img src="/png/facebook.png" alt="Facebook" />
+      </a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer">
+        <img src="/png/instagram.webp" alt="Instagram" />
+      </a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer">
+        <img src="/png/Youtube_logo.png" alt="YouTube" />
+      </a>
+      <a href="https://www.tiktok.com/@peoplesrepublicof70" target="_blank" rel="noopener noreferrer">
+        <img src="/png/Tiktok_icon.png" alt="TikTok" />
+      </a>
+    </div>
+
+    <div class="header-lang">
+      <a href="/en" class={lang === "en" ? "active" : ""} data-lang-switch="en">
+        <img src="/png/128px-Flag_of_the_United_Kingdom.png" alt="EN" />
+      </a>
+      <a href="/fr" class={lang === "fr" ? "active" : ""} data-lang-switch="fr">
+        <img src="/png/128px-Flag_of_France.png" alt="FR" />
+      </a>
+      <a href="/es" class={lang === "es" ? "active" : ""} data-lang-switch="es">
+        <img src="/png/128px-Flag_of_Spain.png" alt="ES" />
+      </a>
+      <a href="/bg" class={lang === "bg" ? "active" : ""} data-lang-switch="bg">
+        <img src="/png/128px-Flag_of_Bulgaria.png" alt="BG" />
+      </a>
+    </div>
+  </div>
+
+  <img class="logo" src="/png/PRB_logo.png" alt="People's Republic Of Bulgaria" />
+  <h1>People's Republic Of Bulgaria</h1>
+  <p class="tagline">{t.home.tagline}</p>
+</div>
+
+  <nav>
+    <ul>
+      {nav.map((item) => (
+        <li>
+          <a href={item.href} class={active === item.key ? "active" : ""}>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <main class="page-wrap">
+    <slot />
+  </main>
+
+  <footer>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer">
+        <img src="/png/facebook.png" alt="Facebook" />
+      </a>
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer">
+        <img src="/png/instagram.webp" alt="Instagram" />
+      </a>
+      <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer">
+        <img src="/png/Youtube_logo.png" alt="YouTube" />
+      </a>
+      <a href="https://www.tiktok.com/@peoplesrepublicof70" target="_blank" rel="noopener noreferrer">
+        <img src="/png/Tiktok_icon.png" alt="TikTok" />
+      </a>
+    </div>
+
+    <div class="footer-nav">
+      {footer.links.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+    </div>
+
+    <p id="copyright-text">{footer.copyright}</p>
+  </footer>
+</body>
+<script>
+  document.querySelectorAll("[data-lang-switch]").forEach((link) => {
+    link.addEventListener("click", () => {
+      const lang = link.getAttribute("data-lang-switch");
+      if (lang) {
+        localStorage.setItem("site_lang", lang);
+      }
+    });
+  });
+
+  const copyrightEl = document.getElementById("copyright-text");
+  if (copyrightEl) {
+    copyrightEl.textContent = copyrightEl.textContent.replace("2024", new Date().getFullYear());
+  }
+</script>
+</html>

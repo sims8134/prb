@@ -1,0 +1,234 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import {
+  supportedLangs,
+  siteContent,
+  getLangFromParams,
+  buildNav,
+  buildFooter,
+} from "../../data/site";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromParams(Astro.params.lang);
+const t = siteContent[lang];
+---
+
+<MainLayout
+  lang={lang}
+  title={t.about.title}
+  description={t.about.description}
+  nav={buildNav(lang, t)}
+  footer={buildFooter(lang, t)}
+  active="about"
+  heroImage="/home/BackGroundHome.jpg"
+>
+
+<style>
+.page-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+.page-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0ebe0;
+  border-bottom: 3px solid #D62612;
+  padding-bottom: 10px;
+  margin-bottom: 28px;
+}
+
+.about-photo {
+  float: right;
+  width: 220px;
+  margin: 0 0 20px 28px;
+  border: 2px solid #333;
+}
+
+.about-photo img {
+  width: 100%;
+  display: block;
+}
+
+.about-section {
+  margin-bottom: 36px;
+}
+
+.about-section h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #D62612;
+  border-left: 4px solid #D62612;
+  padding-left: 12px;
+  margin-bottom: 14px;
+}
+
+.about-section p {
+  font-size: 1.5rem;
+  color: #aaa;
+  line-height: 1.85;
+  margin-bottom: 12px;
+}
+
+.about-section a {
+  color: #D62612;
+}
+
+.about-section a:hover {
+  text-decoration: underline;
+}
+
+.clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+@media (max-width: 560px) {
+  .about-photo {
+    float: none;
+    width: 100%;
+    margin: 0 0 20px 0;
+  }
+}
+</style>
+
+<div class="page-wrap clearfix">
+  <h1 class="page-title">
+    {
+      lang === "fr" ? "À propos"
+      : lang === "es" ? "Sobre mí"
+      : lang === "bg" ? "За мен"
+      : "About"
+    }
+  </h1>
+
+  <div class="about-photo">
+    <img src="/home/aboutPic.jpg" alt="Simon Beltran" onerror="this.style.display='none'" />
+  </div>
+
+  <div class="about-section">
+    <h2>
+      {
+        lang === "fr" ? "Qui suis-je ?"
+        : lang === "es" ? "¿Quién soy?"
+        : lang === "bg" ? "Кой съм аз?"
+        : "Who am I?"
+      }
+    </h2>
+
+    <p>
+      {
+        lang === "fr"
+          ? "Je vis à Sofia, en Bulgarie, depuis quelques années et je suis passionné d’histoire depuis l’enfance. Des champs de bataille de la Première Guerre mondiale en Alsace aux bunkers de la Seconde Guerre mondiale dans le sud de la France, et aujourd’hui aux bases abandonnées de la guerre froide en Bulgarie, l’histoire a toujours occupé mon temps libre."
+          : lang === "es"
+          ? "Vivo en Sofía, Bulgaria, desde hace algunos años y me apasiona la historia desde niño. Desde los campos de batalla de la Primera Guerra Mundial en Alsacia hasta los búnkeres de la Segunda Guerra Mundial en el sur de Francia, y ahora las bases abandonadas de la Guerra Fría en Bulgaria, la historia siempre ha ocupado mi tiempo libre."
+          : lang === "bg"
+          ? "Живея в София, България, от няколко години и се интересувам от история още от дете. От бойните полета на Първата световна война в Елзас до бункерите от Втората световна война в Южна Франция, а днес и до изоставените бази от Студената война в България — историята винаги е била част от свободното ми време."
+          : "I have been living in Sofia, Bulgaria for a few years now, and I have been passionate about history since I was a child. From the World War I battlefields in Alsace to the World War II bunkers in the south of France, and now to the abandoned Cold War bases here in Bulgaria — history has always been how I spend my free time."
+      }
+    </p>
+
+    <p>
+      {
+        lang === "fr"
+          ? "Grand amateur de brocantes, j’ai commencé à collectionner des objets historiques à l’âge de 12 ans. Depuis mon arrivée à Sofia, j’ai décidé de consacrer tout mon temps libre au sujet de la République populaire de Bulgarie."
+          : lang === "es"
+          ? "Gran aficionado a los mercadillos, empecé a coleccionar objetos históricos a los 12 años. Desde que me mudé a Sofía, decidí dedicar todo mi tiempo libre al tema de la República Popular de Bulgaria."
+          : lang === "bg"
+          ? "Като голям почитател на битпазарите започнах да събирам исторически предмети още на 12 години. След преместването ми в София реших да посветя цялото си свободно време на темата за Народна република България."
+          : "A big fan of flea markets, I started collecting historical objects at the age of 12. Since moving to Sofia, I decided to dedicate all my free time to the subject of the People's Republic of Bulgaria."
+      }
+    </p>
+  </div>
+
+  <div class="about-section">
+    <h2>
+      {
+        lang === "fr" ? "Pourquoi ce site ?"
+        : lang === "es" ? "¿Por qué este sitio web?"
+        : lang === "bg" ? "Защо този уебсайт?"
+        : "Why this website?"
+      }
+    </h2>
+
+    <p>
+      {
+        lang === "fr"
+          ? "Après avoir constaté un manque d’informations et une forme de « tabou » autour de la République populaire de Bulgarie en Bulgarie même, j’ai décidé en 2023 de créer une page Instagram dédiée à ma collection : "
+          : lang === "es"
+          ? "Tras notar la falta de información y una especie de “tabú” en torno a la República Popular de Bulgaria en la propia Bulgaria, decidí en 2023 crear una página de Instagram dedicada a mi colección: "
+          : lang === "bg"
+          ? "След като забелязах липсата на информация и известна „табу“ тема около Народна република България дори в самата България, през 2023 г. реших да създам Instagram страница, посветена на моята колекция: "
+          : "After noticing a lack of information and a kind of “taboo” around the People's Republic of Bulgaria here in Bulgaria, I decided in 2023 to create an Instagram page dedicated to my collection: "
+      }
+      <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer">Instagram Page</a>.
+      {
+        lang === "fr"
+          ? " Ainsi, des personnes du monde entier pouvaient en apprendre davantage sur cette courte période historique (1944–1990)."
+          : lang === "es"
+          ? " De esta manera, personas de todo el mundo podían aprender más sobre este breve período histórico (1944–1990)."
+          : lang === "bg"
+          ? " Така хора от целия свят можеха да научат повече за този кратък исторически период (1944–1990)."
+          : " This way, people from all over the world could learn more about this short historical period (1944–1990)."
+      }
+    </p>
+
+    <p>
+      {
+        lang === "fr"
+          ? "Puis, en 2024, en tant que passionné à plein temps, j’ai créé ce site pour rassembler en un seul endroit l’histoire de la République populaire de Bulgarie, ma collection, les lieux touristiques à visiter et les souvenirs à acheter."
+          : lang === "es"
+          ? "Luego, en 2024, como apasionado a tiempo completo, construí este sitio web para reunir en un solo lugar la historia de la República Popular de Bulgaria, mi colección, los lugares turísticos para visitar y los recuerdos para comprar."
+          : lang === "bg"
+          ? "След това през 2024 г., като отдаден ентусиаст, създадох този уебсайт, за да събера на едно място историята на Народна република България, моята колекция, туристическите обекти за посещение и сувенирите за покупка."
+          : "Then in 2024, as a full-time enthusiast, I built this website to bring together the history of the People's Republic of Bulgaria, my collection, tourist sites to visit, and souvenirs to buy — all in one place."
+      }
+    </p>
+
+    <p>
+      {
+        lang === "fr"
+          ? "L’histoire peut bien sûr être controversée. En créant ce site, j’ai essayé d’être aussi neutre que possible. Comme indiqué, ce site a été créé uniquement à des fins culturelles et historiques — il n’est en aucun cas l’outil d’une idéologie politique."
+          : lang === "es"
+          ? "La historia puede ser controvertida. Al crear este sitio, traté de ser lo más neutral posible. Como se indica, este sitio ha sido creado únicamente con fines culturales e históricos; de ninguna manera es una herramienta de ninguna ideología política."
+          : lang === "bg"
+          ? "Историята, разбира се, може да бъде противоречива. При създаването на този сайт се опитах да бъда възможно най-неутрален. Както е посочено, този сайт е създаден само с културна и историческа цел — той по никакъв начин не е инструмент на политическа идеология."
+          : "History can of course be controversial. In creating this site, I tried to be as neutral as possible. As stated, this website has been created for cultural and historical purposes only — it is in no way the tool of any political ideology."
+      }
+    </p>
+  </div>
+
+  <div class="about-section">
+    <h2>
+      {
+        lang === "fr" ? "À qui s’adresse ce site ?"
+        : lang === "es" ? "¿Para quién es este sitio web?"
+        : lang === "bg" ? "За кого е този сайт?"
+        : "Who is this website for?"
+      }
+    </h2>
+
+    <p>
+      {
+        lang === "fr"
+          ? "Ce site s’adresse à tous ceux qui s’intéressent profondément à l’histoire — en particulier à l’époque de la guerre froide dans les pays du bloc communiste. Il est également utile aux visiteurs curieux qui ont entendu parler de la Bulgarie et souhaitent la visiter, ou acheter un souvenir de l’ancienne République populaire de Bulgarie."
+          : lang === "es"
+          ? "Este sitio es para cualquiera que esté profundamente interesado en la historia, especialmente en la Guerra Fría en los países del bloque comunista. También es útil para visitantes curiosos que han oído hablar de Bulgaria y desean visitarla, o comprar un recuerdo de la antigua República Popular de Bulgaria."
+          : lang === "bg"
+          ? "Този сайт е за всеки, който се интересува дълбоко от историята — особено от епохата на Студената война в страните от комунистическия блок. Той е полезен и за любопитни посетители, които са чували за България и биха искали да я посетят или да закупят сувенир от бившата Народна република България."
+          : "This website is for anyone who is deeply interested in history — particularly the Cold War era in the countries of the communist bloc. It is also a useful place for curious visitors who have heard of Bulgaria and would like to visit, or who want to buy a souvenir from the former People's Republic of Bulgaria."
+      }
+    </p>
+  </div>
+</div>
+
+</MainLayout>
