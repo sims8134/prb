@@ -31,9 +31,9 @@ const copy = {
   fr: {
     title: "Vidéos",
     subtitle: "Toutes les vidéos classées par catégorie. Cliquez sur une miniature pour la charger dans le lecteur.",
-    subscribeTitle: "S’abonner à la chaîne",
+    subscribeTitle: "S'abonner à la chaîne",
     subscribeText: "De nouvelles vidéos régulièrement — ne manquez rien sur la République populaire de Bulgarie.",
-    subscribeBtn: "S’abonner sur YouTube",
+    subscribeBtn: "S'abonner sur YouTube",
     more: "Plus de vidéos de cette catégorie",
     watch: "Voir sur YouTube",
     playlist: "Playlist complète",
@@ -77,7 +77,7 @@ const playlistMap = [
     },
     text: {
       en: "Exploring forgotten buildings, military bases and ghost sites from the communist era.",
-      fr: "Exploration de bâtiments oubliés, bases militaires et lieux fantômes de l’époque communiste.",
+      fr: "Exploration de bâtiments oubliés, bases militaires et lieux fantômes de l'époque communiste.",
       es: "Exploración de edificios olvidados, bases militares y lugares fantasma de la era comunista.",
       bg: "Изследване на забравени сгради, военни бази и призрачни места от комунистическата епоха.",
     },
@@ -113,7 +113,7 @@ const playlistMap = [
     },
     text: {
       en: "Atmospheric edits with archive footage, music and cold war atmosphere.",
-      fr: "Montages d’ambiance avec archives, musique et atmosphère guerre froide.",
+      fr: "Montages d'ambiance avec archives, musique et atmosphère guerre froide.",
       es: "Edits atmosféricos con archivos, música y ambiente de Guerra Fría.",
       bg: "Атмосферни монтажи с архивни кадри, музика и дух на Студената война.",
     },
@@ -125,13 +125,13 @@ const playlistMap = [
     playlistLabel: "Unboxing",
     title: {
       en: "Unboxing — Communist Era Objects",
-      fr: "Unboxing — Objets de l’époque communiste",
+      fr: "Unboxing — Objets de l'époque communiste",
       es: "Unboxing — Objetos de la era comunista",
       bg: "Unboxing — Предмети от комунистическата епоха",
     },
     text: {
       en: "Flea market finds, rare military items, propaganda objects — detailed unboxings of historical artefacts.",
-      fr: "Trouvailles de brocante, objets militaires rares, propagande — déballages détaillés d’artefacts historiques.",
+      fr: "Trouvailles de brocante, objets militaires rares, propagande — déballages détaillés d'artefacts historiques.",
       es: "Hallazgos de mercadillo, objetos militares raros, propaganda — unboxings detallados de artefactos históricos.",
       bg: "Находки от битпазари, редки военни предмети, пропаганда — детайлни представяния на исторически артефакти.",
     },
@@ -167,7 +167,7 @@ const playlistMap = [
     },
     text: {
       en: "Guided visits to monuments, museums and communist-era sites across Bulgaria.",
-      fr: "Visites guidées de monuments, musées et sites de l’époque communiste à travers la Bulgarie.",
+      fr: "Visites guidées de monuments, musées et sites de l'époque communiste à travers la Bulgarie.",
       es: "Visitas guiadas a monumentos, museos y lugares de la época comunista en Bulgaria.",
       bg: "Обиколки на паметници, музеи и обекти от комунистическата епоха в България.",
     },
@@ -353,12 +353,6 @@ const categories = await Promise.all(
   margin-bottom: 14px;
 }
 
-.thumb-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
 .thumb-card {
   background: #242424;
   border: 1px solid #333;
@@ -380,15 +374,6 @@ const categories = await Promise.all(
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.thumb-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3.2rem;
 }
 
 .thumb-body {
@@ -413,6 +398,60 @@ const categories = await Promise.all(
   padding: 24px;
   color: #888;
   font-size: 1.5rem;
+}
+
+.carousel-wrap {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 4px 0;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-track .thumb-card {
+  min-width: 280px;
+  max-width: 280px;
+  flex-shrink: 0;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: rgba(214, 38, 18, 0.9);
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 2.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.carousel-btn:hover {
+  background: #9B1B0C;
+}
+
+.carousel-btn.prev {
+  left: -6px;
+}
+
+.carousel-btn.next {
+  right: -6px;
 }
 
 .subscribe-box {
@@ -453,16 +492,13 @@ const categories = await Promise.all(
 }
 
 @media (max-width: 700px) {
-  .thumb-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .carousel-track .thumb-card {
+    min-width: 220px;
+    max-width: 220px;
   }
 }
 
 @media (max-width: 480px) {
-  .thumb-grid {
-    grid-template-columns: 1fr;
-  }
-
   .player-links {
     flex-direction: column;
   }
@@ -518,57 +554,42 @@ const categories = await Promise.all(
             </div>
           </div>
 
-          <p class="section-label">{copy.more}</p>
+          {cat.videos.length > 1 && (
+            <>
+              <p class="section-label">{copy.more}</p>
 
-<div class="thumb-grid">
-  {cat.videos.slice(1, 4).map((video) => (
-    <div
-      class="thumb-card"
-      data-type="video"
-      data-tab={cat.key}
-      data-videoid={video.videoId}
-    >
-      <div class="thumb-img">
-        <img src={video.thumbnail} alt={video.title} loading="lazy" />
-      </div>
-      <div class="thumb-body">
-        <h4>{video.title}</h4>
-        <p>
-  {lang === "fr"
-    ? "Voir cette vidéo →"
-    : lang === "es"
-    ? "Ver este vídeo →"
-    : lang === "bg"
-    ? "Гледай това видео →"
-    : "Watch this video →"}
-</p>
-      </div>
-    </div>
-  ))}
-</div>
-
-            <div
-              class="thumb-card"
-              data-type="playlist"
-              data-playlist={cat.playlistId}
-            >
-              <div class="thumb-img">
-                <div class="thumb-placeholder">▶</div>
+              <div class="carousel-wrap">
+                <button class="carousel-btn prev" data-carousel={cat.key}>‹</button>
+                <div class="carousel-track" id={`carousel-${cat.key}`}>
+                  {cat.videos.slice(1).map((video) => (
+                    <div
+                      class="thumb-card"
+                      data-type="video"
+                      data-tab={cat.key}
+                      data-videoid={video.videoId}
+                    >
+                      <div class="thumb-img">
+                        <img src={video.thumbnail} alt={video.title} loading="lazy" />
+                      </div>
+                      <div class="thumb-body">
+                        <h4>{video.title}</h4>
+                        <p>
+                          {lang === "fr"
+                            ? "Voir cette vidéo →"
+                            : lang === "es"
+                            ? "Ver este vídeo →"
+                            : lang === "bg"
+                            ? "Гледай това видео →"
+                            : "Watch this video →"}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <button class="carousel-btn next" data-carousel={cat.key}>›</button>
               </div>
-              <div class="thumb-body">
-                <h4>{cat.playlistLabel} Playlist</h4>
-                <p>
-                  {lang === "fr"
-                    ? "Tout le contenu →"
-                    : lang === "es"
-                    ? "Todo el contenido →"
-                    : lang === "bg"
-                    ? "Цялото съдържание →"
-                    : "All content →"}
-                </p>
-              </div>
-            </div>
-          </div>
+            </>
+          )}
         </>
       ) : (
         <div class="empty-box">{copy.empty}</div>
@@ -611,12 +632,22 @@ const categories = await Promise.all(
       const type = card.dataset.type;
       const tab = card.dataset.tab;
       const videoId = card.dataset.videoid;
-      const playlist = card.dataset.playlist;
 
       if (type === 'video' && videoId) {
         play(tab, videoId);
-      } else if (playlist) {
-        window.open('https://www.youtube.com/playlist?list=' + playlist, '_blank');
+      }
+    });
+  });
+
+  document.querySelectorAll('.carousel-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const track = document.getElementById('carousel-' + btn.dataset.carousel);
+      if (!track) return;
+      const scrollAmount = 300;
+      if (btn.classList.contains('prev')) {
+        track.scrollLeft -= scrollAmount;
+      } else {
+        track.scrollLeft += scrollAmount;
       }
     });
   });
