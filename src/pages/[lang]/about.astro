@@ -145,6 +145,26 @@ const t = siteContent[lang];
 .btn-coffee:hover {
   background: #e6c700;
 }
+
+.museum-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.museum-gallery img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border: 1px solid #333;
+}
+
+@media (max-width: 560px) {
+  .museum-gallery {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 
 <div class="page-wrap clearfix">
@@ -274,6 +294,53 @@ const t = siteContent[lang];
           : "This website is for anyone who is deeply interested in history — particularly the Cold War era in the countries of the communist bloc. It is also a useful place for curious visitors who have heard of Bulgaria and would like to visit, or who want to buy a souvenir from the former People's Republic of Bulgaria."
       }
     </p>
+  </div>
+  <div class="about-section">
+    <h2>
+      {
+        lang === "fr" ? "Cold War Bulgaria — Mon deuxième projet"
+        : lang === "es" ? "Cold War Bulgaria — Mi segundo proyecto"
+        : lang === "bg" ? "Cold War Bulgaria — Моят втори проект"
+        : "Cold War Bulgaria — My second project"
+      }
+    </h2>
+
+    <p>
+      {
+        lang === "fr"
+          ? "En parallèle de ce site, j'ai lancé Cold War Bulgaria — un projet qui a commencé comme un véritable musée physique au centre de Sofia, dédié à l'histoire de la Guerre froide en Bulgarie. Malheureusement, le musée a dû fermer par manque de visibilité et de visiteurs."
+          : lang === "es"
+          ? "Paralelamente a este sitio, lancé Cold War Bulgaria — un proyecto que comenzó como un museo físico real en el centro de Sofía, dedicado a la historia de la Guerra Fría en Bulgaria. Desafortunadamente, el museo tuvo que cerrar por falta de visibilidad y visitantes."
+          : lang === "bg"
+          ? "Успоредно с този сайт, стартирах Cold War Bulgaria — проект, който започна като истински физически музей в центъра на София, посветен на историята на Студената война в България. За съжаление, музеят трябваше да затвори поради липса на видимост и посетители."
+          : "Alongside this website, I launched Cold War Bulgaria — a project that started as a real physical museum in the centre of Sofia, dedicated to the history of the Cold War in Bulgaria. Unfortunately, the museum had to close due to a lack of visibility and visitors."
+      }
+    </p>
+
+    <p>
+      {
+        lang === "fr"
+          ? "Aujourd'hui, Cold War Bulgaria se réinvente en tant que plateforme numérique : digitalisation de ma collection, e-books, contenu exclusif, musique et bien plus encore. L'objectif reste le même — préserver et partager cette histoire avec le monde entier."
+          : lang === "es"
+          ? "Hoy, Cold War Bulgaria se reinventa como plataforma digital: digitalización de mi colección, e-books, contenido exclusivo, música y mucho más. El objetivo sigue siendo el mismo — preservar y compartir esta historia con el mundo entero."
+          : lang === "bg"
+          ? "Днес Cold War Bulgaria се преоткрива като дигитална платформа: дигитализация на моята колекция, електронни книги, ексклузивно съдържание, музика и много други. Целта остава същата — да запазим и споделим тази история с целия свят."
+          : "Today, Cold War Bulgaria is being reinvented as a digital platform: digitisation of my collection, e-books, exclusive content, music and more. The goal remains the same — to preserve and share this history with the entire world."
+      }
+    </p>
+    <div class="museum-gallery">
+      <img src="/about/musee1.jpg" alt="Cold War Bulgaria Museum" />
+      <img src="/about/musee2.jpg" alt="Cold War Bulgaria Museum" />
+      <img src="/about/musee3.jpg" alt="Cold War Bulgaria Museum" />
+    </div>
+    <a href="https://coldwarbulgaria.com" target="_blank" rel="noopener noreferrer" class="btn-project">
+      {
+        lang === "fr" ? "Découvrir Cold War Bulgaria →"
+        : lang === "es" ? "Descubrir Cold War Bulgaria →"
+        : lang === "bg" ? "Открийте Cold War Bulgaria →"
+        : "Discover Cold War Bulgaria →"
+      }
+    </a>
   </div>
   <div class="support-box">
     <div class="support-icon">☕</div>
