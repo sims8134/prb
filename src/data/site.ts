@@ -49,6 +49,10 @@ export const siteContent = {
         error: "Something went wrong.",
         errorNetwork: "⚠ Unable to subscribe right now.",
       },
+      socials: {
+  title: "Follow Us",
+  text: "Stay connected and follow our latest content on social media.",
+},
     },
     about: {
       title: "About — People's Republic of Bulgaria",
@@ -127,6 +131,10 @@ export const siteContent = {
         error: "Une erreur est survenue.",
         errorNetwork: "⚠ Impossible de s'inscrire pour le moment.",
       },
+      socials: {
+  title: "Suivez-nous",
+  text: "Restez connectés et suivez nos derniers contenus sur les réseaux sociaux.",
+},
     },
     about: {
       title: "À propos — République Populaire de Bulgarie",
@@ -205,6 +213,10 @@ export const siteContent = {
         error: "Algo salió mal.",
         errorNetwork: "⚠ No se puede suscribir en este momento.",
       },
+      socials: {
+  title: "Síguenos",
+  text: "Mantente conectado y sigue nuestro contenido más reciente en las redes sociales.",
+},
     },
     about: {
       title: "Sobre mí — República Popular de Bulgaria",
@@ -283,6 +295,10 @@ export const siteContent = {
         error: "Нещо се обърка.",
         errorNetwork: "⚠ Не може да се абонирате в момента.",
       },
+      socials: {
+  title: "Последвайте ни",
+  text: "Останете свързани и следете последното ни съдържание в социалните мрежи.",
+},
     },
     about: {
       title: "За мен — Народна република България",

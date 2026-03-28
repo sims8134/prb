@@ -354,7 +354,77 @@ const copy = {
   display: block;
   font-size: 1.5rem;
 }
+.newsletter-box {
+  background: #242424;
+  border: 1px solid #333;
+  padding: 28px;
+  margin-bottom: 20px;
+}
 
+.newsletter-box h3 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #D62612;
+  border-bottom: 2px solid #333;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.newsletter-text {
+  font-size: 1.45rem;
+  color: #aaa;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.newsletter-form input[type="email"] {
+  width: 100%;
+  max-width: 400px;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  color: #f0ebe0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem;
+  padding: 10px 14px;
+  outline: none;
+}
+
+.newsletter-form input[type="email"]:focus {
+  border-color: #D62612;
+}
+
+.newsletter-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 1.35rem;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+.btn-red {
+  display: inline-block;
+  padding: 10px 18px;
+  background: #D62612;
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.btn-red:hover { background: #9B1B0C; }
 @media (max-width: 560px) {
   .social-item {
     align-items: flex-start;
@@ -440,7 +510,35 @@ const copy = {
           <span>{copy.fbText}</span>
         </div>
       </a>
+      <a href="https://www.tiktok.com/@peoplesrepublicof70" target="_blank" rel="noopener noreferrer" class="social-item">
+        <img src="/png/Tiktok_icon.png" alt="TikTok" />
+        <div>
+          <strong>@peoplesrepublicof70</strong>
+          <span>TikTok</span>
+        </div>
+      </a>
     </div>
+  </div>
+  <div class="newsletter-box">
+    <h3>{t.home.newsletter.title}</h3>
+    <p class="newsletter-text">{t.home.newsletter.text}</p>
+
+    <form id="newsletter-form" action="/api/newsletter" method="POST" class="newsletter-form"
+      data-subscribing={t.home.newsletter.subscribing}
+      data-success={t.home.newsletter.success}
+      data-success-hint={t.home.newsletter.successHint}
+      data-error={t.home.newsletter.error}
+      data-error-network={t.home.newsletter.errorNetwork}
+    >
+      <input type="text" name="website" style="display:none !important" tabindex="-1" autocomplete="off" />
+      <input type="email" name="email" placeholder={t.home.newsletter.placeholder} required />
+      <label class="newsletter-consent">
+        <input type="checkbox" name="consent" required />
+        {t.home.newsletter.consent}
+      </label>
+      <button type="submit" class="btn-red">{t.home.newsletter.button}</button>
+    </form>
+    <div id="newsletter-feedback" class="form-feedback"></div>
   </div>
 </div>
 
@@ -478,5 +576,49 @@ const copy = {
     }
   });
 </script>
+<script>
+  const newsletterForm = document.getElementById("newsletter-form");
+  const newsletterFeedback = document.getElementById("newsletter-feedback");
 
+  newsletterForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const msgs = {
+      subscribing: newsletterForm.dataset.subscribing,
+      success: newsletterForm.dataset.success,
+      successHint: newsletterForm.dataset.successHint,
+      error: newsletterForm.dataset.error,
+      errorNetwork: newsletterForm.dataset.errorNetwork,
+    };
+
+    newsletterFeedback.textContent = msgs.subscribing;
+    newsletterFeedback.className = "form-feedback";
+
+    const formData = new FormData(newsletterForm);
+
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        newsletterFeedback.innerHTML = `
+          ${msgs.success}<br>
+          <span style="font-size:1.3rem;color:#888;">${msgs.successHint}</span>
+        `;
+        newsletterFeedback.className = "form-feedback success";
+        newsletterForm.reset();
+      } else {
+        newsletterFeedback.textContent = data.error || msgs.error;
+        newsletterFeedback.className = "form-feedback error";
+      }
+    } catch {
+      newsletterFeedback.textContent = msgs.errorNetwork;
+      newsletterFeedback.className = "form-feedback error";
+    }
+  });
+</script>
 </MainLayout>

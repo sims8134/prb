@@ -160,12 +160,60 @@ const latestVideo = latestVideos[0] ?? null;
 
 .video-link:hover { text-decoration: underline; }
 
-.insta-box {
+.socials-box {
   background: #242424;
   border: 1px solid #333;
-  padding: 18px;
+  padding: 24px;
   margin-bottom: 30px;
   text-align: center;
+}
+
+.socials-text {
+  font-size: 1.45rem;
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.socials-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.social-card {
+  background: #1a1a1a;
+  border: 1px solid #2e2e2e;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: border-color 0.2s ease;
+}
+
+.social-card:hover {
+  border-color: #D62612;
+}
+
+.social-card img {
+  height: 32px;
+  width: auto;
+}
+
+.social-card strong {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem;
+  color: #f0ebe0;
+  text-transform: uppercase;
+}
+
+.social-card span {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+@media (max-width: 700px) {
+  .socials-grid { grid-template-columns: repeat(2, 1fr); }
 }
 .newsletter-box {
   background: #242424;
@@ -319,7 +367,7 @@ const latestVideo = latestVideos[0] ?? null;
     <p style="color:#888;">{t.home.noVideo}</p>
   )}
 </div>
-<div class="newsletter-box">
+<div class="newsletter-box" id="newsletter">
   <h2 class="section-title">{t.home.newsletter.title}</h2>
   <p class="newsletter-text">{t.home.newsletter.text}</p>
 
@@ -340,19 +388,39 @@ const latestVideo = latestVideos[0] ?? null;
   </form>
   <div id="newsletter-feedback" class="form-feedback"></div>
 </div>
-<div class="insta-box">
-  <h2 class="section-title" style="text-align:center;border-bottom:none;margin-bottom:12px;">
-    {t.home.instagramTitle}
+<div class="socials-box">
+  <h2 class="section-title" style="text-align:center;border-bottom:none;margin-bottom:8px;">
+    {t.home.socials.title}
   </h2>
+  <p class="socials-text">{t.home.socials.text}</p>
 
-  <span class="handle">@peoplesrepublicofbulgaria</span>
+  <div class="socials-grid">
+    <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer" class="social-card">
+      <img src="/png/instagram.webp" alt="Instagram" />
+      <strong>Instagram</strong>
+      <span>@peoplesrepublicofbulgaria</span>
+    </a>
 
-  <p>{t.home.instagramText}</p>
+    <a href="https://www.youtube.com/@PeoplesRepublicOfBulgaria1505" target="_blank" rel="noopener noreferrer" class="social-card">
+      <img src="/png/Youtube_logo.png" alt="YouTube" />
+      <strong>YouTube</strong>
+      <span>@PeoplesRepublicOfBulgaria</span>
+    </a>
 
-  <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer" class="btn-red">
-    {t.home.followOnInstagram}
-  </a>
-</div><script>
+    <a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/" target="_blank" rel="noopener noreferrer" class="social-card">
+      <img src="/png/facebook.png" alt="Facebook" />
+      <strong>Facebook</strong>
+      <span>People's Republic Of Bulgaria</span>
+    </a>
+
+    <a href="https://www.tiktok.com/@peoplesrepublicof70" target="_blank" rel="noopener noreferrer" class="social-card">
+      <img src="/png/Tiktok_icon.png" alt="TikTok" />
+      <strong>TikTok</strong>
+      <span>@peoplesrepublicof70</span>
+    </a>
+  </div>
+</div>
+<script>
   const newsletterForm = document.getElementById("newsletter-form");
   const newsletterFeedback = document.getElementById("newsletter-feedback");
 
