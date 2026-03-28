@@ -14,7 +14,9 @@ export async function getPlaylistVideos(playlistId: string) {
   return (data.items || []).map((item: any) => ({
     title: item.snippet.title,
     videoId: item.snippet.resourceId.videoId,
-    thumbnail:
+      thumbnail:
+      item.snippet.thumbnails?.maxres?.url ||
+      item.snippet.thumbnails?.standard?.url ||
       item.snippet.thumbnails?.high?.url ||
       item.snippet.thumbnails?.medium?.url ||
       item.snippet.thumbnails?.default?.url,

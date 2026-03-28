@@ -304,13 +304,14 @@ const heroStyle = heroImage
       </a>
     </div>
 
-    <div class="footer-nav">
+   <div class="footer-nav">
       {footer.links.map((item) => (
         <a href={item.href}>{item.label}</a>
       ))}
       <a href={`/${lang}#newsletter`}>Newsletter</a>
+      <a href="https://buymeacoffee.com/peoplesrepublicofbulgaria" target="_blank" rel="noopener noreferrer">☕ Support us</a>
     </div>
-
+    
     <p id="copyright-text">{footer.copyright}</p>
   </footer>
 </body>

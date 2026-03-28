@@ -99,6 +99,52 @@ const t = siteContent[lang];
     margin: 0 0 20px 0;
   }
 }
+.support-box {
+  background: #242424;
+  border: 1px solid #333;
+  padding: 32px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.support-icon {
+  font-size: 4rem;
+  margin-bottom: 12px;
+}
+
+.support-box h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #D62612;
+  margin-bottom: 14px;
+}
+
+.support-box p {
+  font-size: 1.45rem;
+  color: #aaa;
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto 20px;
+}
+
+.btn-coffee {
+  display: inline-block;
+  padding: 12px 28px;
+  background: #FFDD00;
+  color: #1a1a1a;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: none;
+}
+
+.btn-coffee:hover {
+  background: #e6c700;
+}
 </style>
 
 <div class="page-wrap clearfix">
@@ -228,6 +274,31 @@ const t = siteContent[lang];
           : "This website is for anyone who is deeply interested in history — particularly the Cold War era in the countries of the communist bloc. It is also a useful place for curious visitors who have heard of Bulgaria and would like to visit, or who want to buy a souvenir from the former People's Republic of Bulgaria."
       }
     </p>
+  </div>
+  <div class="support-box">
+    <div class="support-icon">☕</div>
+    <h2>
+      {
+        lang === "fr" ? "Soutenir le projet"
+        : lang === "es" ? "Apoyar el proyecto"
+        : lang === "bg" ? "Подкрепете проекта"
+        : "Support the project"
+      }
+    </h2>
+    <p>
+      {
+        lang === "fr"
+          ? "Ce site est un projet indépendant, créé et maintenu par une seule personne, par passion. Si vous appréciez le contenu — l'histoire, la collection, les vidéos ou les visites guidées — vous pouvez m'offrir un café pour m'aider à continuer."
+          : lang === "es"
+          ? "Este sitio es un proyecto independiente, creado y mantenido por una sola persona, por pasión. Si aprecias el contenido — la historia, la colección, los vídeos o las visitas guiadas — puedes invitarme a un café para ayudarme a seguir adelante."
+          : lang === "bg"
+          ? "Този сайт е независим проект, създаден и поддържан от един човек, воден от страст. Ако цените съдържанието — историята, колекцията, видеата или екскурзиите — можете да ми купите кафе, за да ми помогнете да продължа."
+          : "This site is an independent project, created and maintained by one person, driven by passion. If you enjoy the content — the history, the collection, the videos or the guided tours — you can buy me a coffee to help keep it going."
+      }
+    </p>
+    <a href="https://buymeacoffee.com/peoplesrepublicofbulgaria" target="_blank" rel="noopener noreferrer" class="btn-coffee">
+      ☕ Buy me a coffee
+    </a>
   </div>
 </div>
 
