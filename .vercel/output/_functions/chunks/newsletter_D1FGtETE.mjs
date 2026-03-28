@@ -1,6 +1,5 @@
 import { Resend } from 'resend';
 import crypto from 'node:crypto';
-export { renderers } from '../../renderers.mjs';
 
 const prerender = false;
 const resend = new Resend("re_JcmFjZby_EzUKLUUPUmb7oy519ounrvSV");
