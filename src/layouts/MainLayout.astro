@@ -25,20 +25,66 @@ const heroStyle = heroImage
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <link rel="alternate" hreflang="en" href="https://peoplesrepublicofbulgaria.com/en/" />
-  <link rel="alternate" hreflang="fr" href="https://peoplesrepublicofbulgaria.com/fr/" />
-  <link rel="alternate" hreflang="es" href="https://peoplesrepublicofbulgaria.com/es/" />
-  <link rel="alternate" hreflang="bg" href="https://peoplesrepublicofbulgaria.com/bg/" />
-  <link rel="alternate" hreflang="x-default" href="https://peoplesrepublicofbulgaria.com/en/" />
+  <meta name="author" content="People's Republic of Bulgaria" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#D62612" />
 
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="https://www.peoplesrepublicofbulgaria.com/home/og.png" />
+  <meta property="og:url" content={`https://www.peoplesrepublicofbulgaria.com/${lang}/`} />
+  <meta property="og:site_name" content="People's Republic of Bulgaria" />
+  <meta property="og:locale" content={lang === "fr" ? "fr_FR" : lang === "es" ? "es_ES" : lang === "bg" ? "bg_BG" : "en_US"} />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content="https://www.peoplesrepublicofbulgaria.com/home/og.png" />
+
+  <!-- Hreflang -->
+  <link rel="alternate" hreflang="en" href="https://www.peoplesrepublicofbulgaria.com/en/" />
+  <link rel="alternate" hreflang="fr" href="https://www.peoplesrepublicofbulgaria.com/fr/" />
+  <link rel="alternate" hreflang="es" href="https://www.peoplesrepublicofbulgaria.com/es/" />
+  <link rel="alternate" hreflang="bg" href="https://www.peoplesrepublicofbulgaria.com/bg/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.peoplesrepublicofbulgaria.com/en/" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href={`https://www.peoplesrepublicofbulgaria.com/${lang}/`} />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;700&display=swap"
     rel="stylesheet"/>
+
+  <!-- Favicon -->
   <link rel="icon" href="/favicon.ico" />
 
- <style is:global>
+  <!-- Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "People's Republic of Bulgaria",
+    "url": "https://www.peoplesrepublicofbulgaria.com",
+    "description": "The first multilingual website dedicated to the history of the People's Republic of Bulgaria (1944–1990).",
+    "inLanguage": ["en", "fr", "es", "bg"],
+    "author": {
+      "@type": "Organization",
+      "name": "People's Republic of Bulgaria"
+    },
+    "sameAs": [
+      "https://www.instagram.com/peoplesrepublicofbulgaria/",
+      "https://www.youtube.com/@PeoplesRepublicOfBulgaria1505",
+      "https://www.facebook.com/PeoplesRepublicOfBulgaria/",
+      "https://www.tiktok.com/@peoplesrepublicof70"
+    ]
+  })} />
+
+  <style is:global>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 62.5%; }
   body { font-family: 'Roboto', sans-serif; font-size: 1.6rem; background: #1a1a1a; color: #f0ebe0; }
@@ -230,7 +276,7 @@ const heroStyle = heroImage
     .site-header h1 { font-size: 2.4rem; }
     nav ul li a { padding: 10px 14px; font-size: 1.3rem; }
   }
-</style>
+  </style>
 </head>
 
 <body>
@@ -304,14 +350,14 @@ const heroStyle = heroImage
       </a>
     </div>
 
-   <div class="footer-nav">
+    <div class="footer-nav">
       {footer.links.map((item) => (
         <a href={item.href}>{item.label}</a>
       ))}
       <a href={`/${lang}#newsletter`}>Newsletter</a>
       <a href="https://buymeacoffee.com/peoplesrepublicofbulgaria" target="_blank" rel="noopener noreferrer">☕ Support us</a>
     </div>
-    
+
     <p id="copyright-text">{footer.copyright}</p>
   </footer>
 </body>
