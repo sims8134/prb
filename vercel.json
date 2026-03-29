@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "www.peoplesrepublicofbulgaria.com" }],
+      "destination": "https://peoplesrepublicofbulgaria.com/:path",
+      "permanent": true
+    }
+  ]
+}
