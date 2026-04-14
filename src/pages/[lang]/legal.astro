@@ -18,97 +18,109 @@ const t = siteContent[lang];
 const copy = {
   en: {
     title: "Legal Notice",
-    notice:
-      "In accordance with the provisions of Law No. 2004-575 of June 21, 2004 for confidence in the digital economy, users of the site peoplesrepublicofbulgaria.com are informed of the identity of the various participants in its creation and monitoring.",
+    updated: `Last updated: ${new Date().getFullYear()}`,
+    notice: "In accordance with applicable European Union regulations and the laws of the country of establishment, users of the site peoplesrepublicofbulgaria.com are informed of the identity of the various participants in its creation and monitoring.",
     publisher: "Website Publisher",
-    publisherText1:
-      "This site, accessible at https://peoplesrepublicofbulgaria.com, is published by:",
-    publisherText2:
-      "Simon Beltran, resident of Sofia, Bulgaria, French nationality, born on 06/17/1993.",
-    publisherText3: "Contact:",
+    publisherText1: "This site, accessible at https://peoplesrepublicofbulgaria.com, is published by:",
+    publisherText2: "Simon Beltran, resident of Sofia, Bulgaria, French nationality.",
+    publisherText3: "Operating through:",
+    publisherCompany: "SOC TRADE BULGARIA EOOD — ЕИК 208209146 — 64A ul. Maragidik, 1505 Sofia, Bulgaria",
+    publisherContact: "Contact:",
     hosting: "Hosting",
-    hostingText:
-      "This website is hosted by LWS, 10 Rue Penthièvre, 75008 Paris, France. Tel: +33 1 77 62 30 03.",
+    hostingText: "This website is hosted by LWS, 10 Rue Penthièvre, 75008 Paris, France. Tel: +33 1 77 62 30 03.",
     director: "Publication Director",
     directorText: "The Publication Director of this site is Simon Beltran.",
     intellectual: "Intellectual Property",
-    intellectualText:
-      "All content on this site (texts, images, videos) is the exclusive property of Simon Beltran — People's Republic of Bulgaria, unless otherwise stated. Any reproduction without prior written consent is strictly prohibited.",
+    intellectualText: "All content on this site (texts, images, videos) is the exclusive property of Simon Beltran — People's Republic of Bulgaria, unless otherwise stated. Any reproduction without prior written consent is strictly prohibited.",
+    cookies: "Cookies & Third-Party Content",
+    cookiesText1: "This website embeds YouTube videos via iframe. When these videos are loaded, YouTube may place cookies on your device to measure audience and improve its services. These cookies are subject to Google's privacy policy.",
+    cookiesText2: "The newsletter subscription form collects your email address with your explicit consent. No other tracking or advertising cookies are used on this site.",
     purpose: "Purpose of the Site",
-    purposeText:
-      "This website has been created and published online for cultural and historical purposes only. It is in no way the tool of any political ideology.",
+    purposeText: "This website has been created and published online for cultural and historical purposes only. It is in no way the tool of any political ideology.",
+    privacy: "Privacy Policy",
+    privacyText: "For information on how we collect and use your personal data, please consult our",
+    privacyLink: "Privacy Policy",
     contact: "Contact",
     contactText: "For any question regarding this legal notice:",
   },
   fr: {
     title: "Mentions légales",
-    notice:
-      "Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique, les utilisateurs du site peoplesrepublicofbulgaria.com sont informés de l’identité des différents intervenants dans le cadre de sa réalisation et de son suivi.",
+    updated: `Dernière mise à jour : ${new Date().getFullYear()}`,
+    notice: "Conformément aux réglementations applicables de l'Union européenne et au droit du pays d'établissement, les utilisateurs du site peoplesrepublicofbulgaria.com sont informés de l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi.",
     publisher: "Éditeur du site",
-    publisherText1:
-      "Le présent site, accessible à l’adresse https://peoplesrepublicofbulgaria.com, est publié par :",
-    publisherText2:
-      "Simon Beltran, résidant à Sofia, Bulgarie, de nationalité française, né le 17/06/1993.",
-    publisherText3: "Contact :",
+    publisherText1: "Le présent site, accessible à l'adresse https://peoplesrepublicofbulgaria.com, est publié par :",
+    publisherText2: "Simon Beltran, résidant à Sofia, Bulgarie, de nationalité française.",
+    publisherText3: "Opérant via :",
+    publisherCompany: "SOC TRADE BULGARIA EOOD — ЕИК 208209146 — 64A ul. Maragidik, 1505 Sofia, Bulgarie",
+    publisherContact: "Contact :",
     hosting: "Hébergement",
-    hostingText:
-      "Ce site est hébergé par LWS, 10 Rue Penthièvre, 75008 Paris, France. Tél. : +33 1 77 62 30 03.",
+    hostingText: "Ce site est hébergé par LWS, 10 Rue Penthièvre, 75008 Paris, France. Tél. : +33 1 77 62 30 03.",
     director: "Directeur de publication",
     directorText: "Le directeur de la publication du présent site est Simon Beltran.",
     intellectual: "Propriété intellectuelle",
-    intellectualText:
-      "L’ensemble des contenus présents sur ce site (textes, images, vidéos) est la propriété exclusive de Simon Beltran — People's Republic of Bulgaria, sauf mention contraire. Toute reproduction sans autorisation écrite préalable est strictement interdite.",
+    intellectualText: "L'ensemble des contenus présents sur ce site (textes, images, vidéos) est la propriété exclusive de Simon Beltran — People's Republic of Bulgaria, sauf mention contraire. Toute reproduction sans autorisation écrite préalable est strictement interdite.",
+    cookies: "Cookies & Contenus tiers",
+    cookiesText1: "Ce site intègre des vidéos YouTube via iframe. Lors du chargement de ces vidéos, YouTube peut déposer des cookies sur votre appareil afin de mesurer l'audience et améliorer ses services. Ces cookies sont soumis à la politique de confidentialité de Google.",
+    cookiesText2: "Le formulaire d'inscription à la newsletter collecte votre adresse e-mail avec votre consentement explicite. Aucun autre cookie publicitaire ou de traçage n'est utilisé sur ce site.",
     purpose: "Finalité du site",
-    purposeText:
-      "Ce site a été créé et mis en ligne uniquement à des fins culturelles et historiques. Il n’est en aucun cas l’outil d’une idéologie politique.",
+    purposeText: "Ce site a été créé et mis en ligne uniquement à des fins culturelles et historiques. Il n'est en aucun cas l'outil d'une idéologie politique.",
+    privacy: "Politique de confidentialité",
+    privacyText: "Pour les informations sur la collecte et l'utilisation de vos données personnelles, consultez notre",
+    privacyLink: "Politique de confidentialité",
     contact: "Contact",
     contactText: "Pour toute question concernant ces mentions légales :",
   },
   es: {
     title: "Aviso legal",
-    notice:
-      "De conformidad con las disposiciones de la Ley n.º 2004-575 de 21 de junio de 2004 para la confianza en la economía digital, se informa a los usuarios del sitio peoplesrepublicofbulgaria.com sobre la identidad de los distintos participantes en su creación y seguimiento.",
+    updated: `Última actualización: ${new Date().getFullYear()}`,
+    notice: "De conformidad con la normativa aplicable de la Unión Europea y la legislación del país de establecimiento, se informa a los usuarios del sitio peoplesrepublicofbulgaria.com sobre la identidad de los distintos participantes en su creación y seguimiento.",
     publisher: "Editor del sitio web",
-    publisherText1:
-      "Este sitio, accesible en https://peoplesrepublicofbulgaria.com, es publicado por:",
-    publisherText2:
-      "Simon Beltran, residente en Sofía, Bulgaria, de nacionalidad francesa, nacido el 17/06/1993.",
-    publisherText3: "Contacto:",
+    publisherText1: "Este sitio, accesible en https://peoplesrepublicofbulgaria.com, es publicado por:",
+    publisherText2: "Simon Beltran, residente en Sofía, Bulgaria, de nacionalidad francesa.",
+    publisherText3: "Operando a través de:",
+    publisherCompany: "SOC TRADE BULGARIA EOOD — ЕИК 208209146 — 64A ul. Maragidik, 1505 Sofia, Bulgaria",
+    publisherContact: "Contacto:",
     hosting: "Alojamiento",
-    hostingText:
-      "Este sitio web está alojado por LWS, 10 Rue Penthièvre, 75008 París, Francia. Tel.: +33 1 77 62 30 03.",
+    hostingText: "Este sitio web está alojado por LWS, 10 Rue Penthièvre, 75008 París, Francia. Tel.: +33 1 77 62 30 03.",
     director: "Director de publicación",
     directorText: "El director de publicación de este sitio es Simon Beltran.",
     intellectual: "Propiedad intelectual",
-    intellectualText:
-      "Todo el contenido de este sitio (textos, imágenes, vídeos) es propiedad exclusiva de Simon Beltran — People's Republic of Bulgaria, salvo indicación contraria. Cualquier reproducción sin autorización previa por escrito está estrictamente prohibida.",
+    intellectualText: "Todo el contenido de este sitio (textos, imágenes, vídeos) es propiedad exclusiva de Simon Beltran — People's Republic of Bulgaria, salvo indicación contraria. Cualquier reproducción sin autorización previa por escrito está estrictamente prohibida.",
+    cookies: "Cookies y contenido de terceros",
+    cookiesText1: "Este sitio incrusta vídeos de YouTube mediante iframe. Al cargar estos vídeos, YouTube puede colocar cookies en su dispositivo para medir la audiencia y mejorar sus servicios. Estas cookies están sujetas a la política de privacidad de Google.",
+    cookiesText2: "El formulario de suscripción al boletín recopila su dirección de correo electrónico con su consentimiento explícito. No se utilizan otras cookies publicitarias o de seguimiento en este sitio.",
     purpose: "Finalidad del sitio",
-    purposeText:
-      "Este sitio web ha sido creado y publicado únicamente con fines culturales e históricos. No es en modo alguno una herramienta de ninguna ideología política.",
+    purposeText: "Este sitio web ha sido creado y publicado únicamente con fines culturales e históricos. No es en modo alguno una herramienta de ninguna ideología política.",
+    privacy: "Política de privacidad",
+    privacyText: "Para obtener información sobre cómo recopilamos y utilizamos sus datos personales, consulte nuestra",
+    privacyLink: "Política de privacidad",
     contact: "Contacto",
     contactText: "Para cualquier pregunta sobre este aviso legal:",
   },
   bg: {
     title: "Правна информация",
-    notice:
-      "Съгласно разпоредбите на Закон № 2004-575 от 21 юни 2004 г. относно доверието в цифровата икономика, потребителите на сайта peoplesrepublicofbulgaria.com се информират за самоличността на различните участници в неговото създаване и поддръжка.",
+    updated: `Последна актуализация: ${new Date().getFullYear()}`,
+    notice: "Съгласно приложимото законодателство на Европейския съюз и законодателството на страната на установяване, потребителите на сайта peoplesrepublicofbulgaria.com се информират за самоличността на различните участници в неговото създаване и поддръжка.",
     publisher: "Издател на сайта",
-    publisherText1:
-      "Този сайт, достъпен на адрес https://peoplesrepublicofbulgaria.com, се публикува от:",
-    publisherText2:
-      "Симон Белтран, живеещ в София, България, с френско гражданство, роден на 17.06.1993 г.",
-    publisherText3: "Контакт:",
+    publisherText1: "Този сайт, достъпен на адрес https://peoplesrepublicofbulgaria.com, се публикува от:",
+    publisherText2: "Симон Белтран, живеещ в София, България, с френско гражданство.",
+    publisherText3: "Опериращ чрез:",
+    publisherCompany: "СОЦ ТРЕЙД БЪЛГАРИЯ ЕООД — ЕИК 208209146 — ул. Марагидик 64А, 1505 София, България",
+    publisherContact: "Контакт:",
     hosting: "Хостинг",
-    hostingText:
-      "Този уебсайт е хостван от LWS, 10 Rue Penthièvre, 75008 Paris, France. Тел.: +33 1 77 62 30 03.",
+    hostingText: "Този уебсайт е хостван от LWS, 10 Rue Penthièvre, 75008 Paris, France. Тел.: +33 1 77 62 30 03.",
     director: "Отговорен редактор",
     directorText: "Отговорен редактор на този сайт е Симон Белтран.",
     intellectual: "Интелектуална собственост",
-    intellectualText:
-      "Цялото съдържание на този сайт (текстове, изображения, видеа) е изключителна собственост на Simon Beltran — People's Republic of Bulgaria, освен ако не е посочено друго. Всяко възпроизвеждане без предварително писмено съгласие е строго забранено.",
+    intellectualText: "Цялото съдържание на този сайт (текстове, изображения, видеа) е изключителна собственост на Simon Beltran — People's Republic of Bulgaria, освен ако не е посочено друго. Всяко възпроизвеждане без предварително писмено съгласие е строго забранено.",
+    cookies: "Бисквитки и съдържание от трети страни",
+    cookiesText1: "Този сайт вгражда видеа от YouTube чрез iframe. При зареждането на тези видеа YouTube може да постави бисквитки на вашето устройство с цел измерване на аудиторията и подобряване на услугите си. Тези бисквитки са предмет на политиката за поверителност на Google.",
+    cookiesText2: "Формулярът за абониране за бюлетин събира вашия имейл адрес с вашето изрично съгласие. Никакви други рекламни или проследяващи бисквитки не се използват на този сайт.",
     purpose: "Цел на сайта",
-    purposeText:
-      "Този уебсайт е създаден и публикуван само с културна и историческа цел. По никакъв начин не е инструмент на политическа идеология.",
+    purposeText: "Този уебсайт е създаден и публикуван само с културна и историческа цел. По никакъв начин не е инструмент на политическа идеология.",
+    privacy: "Политика за поверителност",
+    privacyText: "За информация относно начина, по който събираме и използваме вашите лични данни, вижте нашата",
+    privacyLink: "Политика за поверителност",
     contact: "Контакт",
     contactText: "За въпроси относно тази правна информация:",
   },
@@ -140,7 +152,14 @@ const copy = {
   color: #f0ebe0;
   border-bottom: 3px solid #D62612;
   padding-bottom: 10px;
-  margin-bottom: 28px;
+  margin-bottom: 8px;
+}
+
+.page-updated {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 24px;
+  font-style: italic;
 }
 
 .legal-block {
@@ -183,10 +202,21 @@ const copy = {
   font-style: italic;
   line-height: 1.7;
 }
+
+.company-box {
+  background: #242424;
+  border: 1px solid #333;
+  padding: 14px 18px;
+  margin: 8px 0;
+  font-size: 1.4rem;
+  color: #ccc;
+  line-height: 1.7;
+}
 </style>
 
 <div class="page-wrap">
   <h1 class="page-title">{copy.title}</h1>
+  <p class="page-updated">{copy.updated}</p>
 
   <div class="notice-box">{copy.notice}</div>
 
@@ -194,8 +224,10 @@ const copy = {
     <h2>{copy.publisher}</h2>
     <p>{copy.publisherText1}</p>
     <p>{copy.publisherText2}</p>
+    <p>{copy.publisherText3}</p>
+    <div class="company-box">{copy.publisherCompany}</div>
     <p>
-      {copy.publisherText3}
+      {copy.publisherContact}
       {" "}
       <a href="mailto:contact@peoplesrepublicofbulgaria.com">
         contact@peoplesrepublicofbulgaria.com
@@ -219,8 +251,22 @@ const copy = {
   </div>
 
   <div class="legal-block">
+    <h2>{copy.cookies}</h2>
+    <p>{copy.cookiesText1}</p>
+    <p>{copy.cookiesText2}</p>
+  </div>
+
+  <div class="legal-block">
     <h2>{copy.purpose}</h2>
     <p>{copy.purposeText}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.privacy}</h2>
+    <p>
+      {copy.privacyText}{" "}
+      <a href={`/${lang}/privacy`}>{copy.privacyLink}</a>.
+    </p>
   </div>
 
   <div class="legal-block">

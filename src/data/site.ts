@@ -12,9 +12,10 @@ export const siteContent = {
       videos: "Videos",
       contact: "Contact",
       legal: "Legal Notice",
+      privacy: "Privacy Policy",
     },
     footer: {
-      copyright: "© 2024 People's Republic of Bulgaria — All rights reserved",
+      copyright: "© People's Republic of Bulgaria — All rights reserved",
     },
     home: {
       title: "People's Republic of Bulgaria — History, Collection & Cold War Bulgaria",
@@ -50,9 +51,9 @@ export const siteContent = {
         errorNetwork: "⚠ Unable to subscribe right now.",
       },
       socials: {
-  title: "Follow Us",
-  text: "Stay connected and follow our latest content on social media.",
-},
+        title: "Follow Us",
+        text: "Stay connected and follow our latest content on social media.",
+      },
     },
     about: {
       title: "About — People's Republic of Bulgaria",
@@ -82,6 +83,10 @@ export const siteContent = {
       title: "Legal Notice — People's Republic of Bulgaria",
       description: "Legal notice and terms of use for the People's Republic of Bulgaria website.",
     },
+    privacy: {
+      title: "Privacy Policy — People's Republic of Bulgaria",
+      description: "Privacy policy for the People's Republic of Bulgaria website.",
+    },
   },
 
   fr: {
@@ -94,9 +99,10 @@ export const siteContent = {
       videos: "Vidéos",
       contact: "Contact",
       legal: "Mentions légales",
+      privacy: "Politique de confidentialité",
     },
     footer: {
-      copyright: "© 2024 People's Republic of Bulgaria — Tous droits réservés",
+      copyright: "© People's Republic of Bulgaria — Tous droits réservés",
     },
     home: {
       title: "République Populaire de Bulgarie — Histoire, Collection & Guerre Froide",
@@ -132,9 +138,9 @@ export const siteContent = {
         errorNetwork: "⚠ Impossible de s'inscrire pour le moment.",
       },
       socials: {
-  title: "Suivez-nous",
-  text: "Restez connectés et suivez nos derniers contenus sur les réseaux sociaux.",
-},
+        title: "Suivez-nous",
+        text: "Restez connectés et suivez nos derniers contenus sur les réseaux sociaux.",
+      },
     },
     about: {
       title: "À propos — République Populaire de Bulgarie",
@@ -164,6 +170,10 @@ export const siteContent = {
       title: "Mentions légales — République Populaire de Bulgarie",
       description: "Mentions légales et conditions d'utilisation du site People's Republic of Bulgaria.",
     },
+    privacy: {
+      title: "Politique de confidentialité — République Populaire de Bulgarie",
+      description: "Politique de confidentialité du site People's Republic of Bulgaria.",
+    },
   },
 
   es: {
@@ -176,9 +186,10 @@ export const siteContent = {
       videos: "Vídeos",
       contact: "Contacto",
       legal: "Aviso legal",
+      privacy: "Política de privacidad",
     },
     footer: {
-      copyright: "© 2024 People's Republic of Bulgaria — Todos los derechos reservados",
+      copyright: "© People's Republic of Bulgaria — Todos los derechos reservados",
     },
     home: {
       title: "República Popular de Bulgaria — Historia, Colección y Guerra Fría",
@@ -214,9 +225,9 @@ export const siteContent = {
         errorNetwork: "⚠ No se puede suscribir en este momento.",
       },
       socials: {
-  title: "Síguenos",
-  text: "Mantente conectado y sigue nuestro contenido más reciente en las redes sociales.",
-},
+        title: "Síguenos",
+        text: "Mantente conectado y sigue nuestro contenido más reciente en las redes sociales.",
+      },
     },
     about: {
       title: "Sobre mí — República Popular de Bulgaria",
@@ -246,6 +257,10 @@ export const siteContent = {
       title: "Aviso legal — República Popular de Bulgaria",
       description: "Aviso legal y condiciones de uso del sitio web People's Republic of Bulgaria.",
     },
+    privacy: {
+      title: "Política de privacidad — República Popular de Bulgaria",
+      description: "Política de privacidad del sitio web People's Republic of Bulgaria.",
+    },
   },
 
   bg: {
@@ -258,9 +273,10 @@ export const siteContent = {
       videos: "Видеа",
       contact: "Контакт",
       legal: "Правна информация",
+      privacy: "Политика за поверителност",
     },
     footer: {
-      copyright: "© 2024 People's Republic of Bulgaria — Всички права запазени",
+      copyright: "© People's Republic of Bulgaria — Всички права запазени",
     },
     home: {
       title: "Народна република България — История, Колекция и Студена война",
@@ -296,9 +312,9 @@ export const siteContent = {
         errorNetwork: "⚠ Не може да се абонирате в момента.",
       },
       socials: {
-  title: "Последвайте ни",
-  text: "Останете свързани и следете последното ни съдържание в социалните мрежи.",
-},
+        title: "Последвайте ни",
+        text: "Останете свързани и следете последното ни съдържание в социалните мрежи.",
+      },
     },
     about: {
       title: "За мен — Народна република България",
@@ -328,6 +344,10 @@ export const siteContent = {
       title: "Правна информация — Народна република България",
       description: "Правна информация и условия за ползване на уебсайта People's Republic of Bulgaria.",
     },
+    privacy: {
+      title: "Политика за поверителност — Народна република България",
+      description: "Политика за поверителност на уебсайта People's Republic of Bulgaria.",
+    },
   },
 } as const;
 
@@ -353,6 +373,7 @@ export function buildFooter(lang: Lang, t: typeof siteContent[Lang]) {
       { href: `/${lang}/contact`, label: t.nav.contact },
       { href: `/${lang}/about`, label: t.nav.about },
       { href: `/${lang}/legal`, label: t.nav.legal },
+      { href: `/${lang}/privacy`, label: t.nav.privacy },
     ],
   };
 }

@@ -1,0 +1,271 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import {
+  supportedLangs,
+  siteContent,
+  getLangFromParams,
+  buildNav,
+  buildFooter,
+} from "../../data/site";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromParams(Astro.params.lang);
+const t = siteContent[lang];
+
+const copy = {
+  en: {
+    title: "Privacy Policy",
+    updated: `Last updated: ${new Date().getFullYear()}`,
+    intro: "This privacy policy explains how People's Republic of Bulgaria collects, uses and protects your personal data.",
+    s1_title: "1. Data Controller",
+    s1_text: "The data controller is Simon Beltran, operating through SOC TRADE BULGARIA EOOD (ЕИК 208209146), 64A ul. Maragidik, 1505 Sofia, Bulgaria. Contact: contact@peoplesrepublicofbulgaria.com",
+    s2_title: "2. Data Collected",
+    s2_text: "We collect only the email address you voluntarily provide when subscribing to our newsletter. No other personal data is collected automatically.",
+    s3_title: "3. Purpose of Processing",
+    s3_text: "Your email address is used exclusively to send you the People's Republic of Bulgaria newsletter — new videos, historical updates, archive discoveries and project news. It is never sold or shared with third parties.",
+    s4_title: "4. Legal Basis",
+    s4_text: "Processing is based on your explicit consent (Art. 6.1.a GDPR), given when you tick the consent checkbox and click Subscribe. You may withdraw your consent at any time by clicking the unsubscribe link in any email or by contacting us at contact@peoplesrepublicofbulgaria.com.",
+    s5_title: "5. Retention Period",
+    s5_text: "Your email address is kept until you unsubscribe. Upon unsubscription, your data is permanently deleted.",
+    s6_title: "6. YouTube Embedded Videos",
+    s6_text: "This website embeds YouTube videos via iframe. When these videos are loaded on a page, YouTube (Google) may place cookies on your device to measure audience engagement and improve its services. This is subject to Google's Privacy Policy: https://policies.google.com/privacy. We have no control over these cookies.",
+    s7_title: "7. Your Rights (GDPR)",
+    s7_text: "You have the right to access, rectify, delete, object to, and port your personal data. To exercise these rights, contact us at: contact@peoplesrepublicofbulgaria.com",
+    s8_title: "8. Supervisory Authorities",
+    s8_text1: "🇫🇷 CNIL (France) — www.cnil.fr",
+    s8_text2: "🇧🇬 CPDP (Bulgaria) — www.cpdp.bg",
+  },
+  fr: {
+    title: "Politique de confidentialité",
+    updated: `Dernière mise à jour : ${new Date().getFullYear()}`,
+    intro: "Cette politique de confidentialité explique comment People's Republic of Bulgaria collecte, utilise et protège vos données personnelles.",
+    s1_title: "1. Responsable du traitement",
+    s1_text: "Le responsable du traitement est Simon Beltran, opérant via SOC TRADE BULGARIA EOOD (ЕИК 208209146), 64A ul. Maragidik, 1505 Sofia, Bulgarie. Contact : contact@peoplesrepublicofbulgaria.com",
+    s2_title: "2. Données collectées",
+    s2_text: "Nous collectons uniquement l'adresse e-mail que vous fournissez volontairement lors de l'inscription à notre newsletter. Aucune autre donnée personnelle n'est collectée automatiquement.",
+    s3_title: "3. Finalité du traitement",
+    s3_text: "Votre adresse e-mail est utilisée exclusivement pour vous envoyer la newsletter de People's Republic of Bulgaria — nouvelles vidéos, mises à jour historiques, découvertes d'archives et actualités du projet. Elle n'est jamais vendue ni partagée avec des tiers.",
+    s4_title: "4. Base légale",
+    s4_text: "Le traitement repose sur votre consentement explicite (Art. 6.1.a RGPD), donné lors de l'activation de la case à cocher et du clic sur S'abonner. Vous pouvez retirer votre consentement à tout moment via le lien de désinscription dans chaque e-mail ou en nous contactant à contact@peoplesrepublicofbulgaria.com.",
+    s5_title: "5. Durée de conservation",
+    s5_text: "Votre adresse e-mail est conservée jusqu'à votre désinscription. Après désinscription, vos données sont supprimées définitivement.",
+    s6_title: "6. Vidéos YouTube intégrées",
+    s6_text: "Ce site intègre des vidéos YouTube via iframe. Lors du chargement de ces vidéos, YouTube (Google) peut déposer des cookies sur votre appareil pour mesurer l'engagement et améliorer ses services. Cela est soumis à la politique de confidentialité de Google : https://policies.google.com/privacy. Nous n'avons aucun contrôle sur ces cookies.",
+    s7_title: "7. Vos droits (RGPD)",
+    s7_text: "Vous disposez du droit d'accès, de rectification, d'effacement, d'opposition et de portabilité de vos données. Pour exercer ces droits : contact@peoplesrepublicofbulgaria.com",
+    s8_title: "8. Autorités de contrôle",
+    s8_text1: "🇫🇷 CNIL (France) — www.cnil.fr",
+    s8_text2: "🇧🇬 CPDP (Bulgarie) — www.cpdp.bg",
+  },
+  es: {
+    title: "Política de privacidad",
+    updated: `Última actualización: ${new Date().getFullYear()}`,
+    intro: "Esta política de privacidad explica cómo People's Republic of Bulgaria recopila, utiliza y protege sus datos personales.",
+    s1_title: "1. Responsable del tratamiento",
+    s1_text: "El responsable del tratamiento es Simon Beltran, operando a través de SOC TRADE BULGARIA EOOD (ЕИК 208209146), 64A ul. Maragidik, 1505 Sofía, Bulgaria. Contacto: contact@peoplesrepublicofbulgaria.com",
+    s2_title: "2. Datos recopilados",
+    s2_text: "Solo recopilamos la dirección de correo electrónico que usted proporciona voluntariamente al suscribirse a nuestro boletín. No se recopilan otros datos personales de forma automática.",
+    s3_title: "3. Finalidad del tratamiento",
+    s3_text: "Su dirección de correo electrónico se utiliza exclusivamente para enviarle el boletín de People's Republic of Bulgaria — nuevos vídeos, actualizaciones históricas, descubrimientos de archivo y noticias del proyecto. Nunca se vende ni se comparte con terceros.",
+    s4_title: "4. Base legal",
+    s4_text: "El tratamiento se basa en su consentimiento explícito (Art. 6.1.a RGPD), dado al marcar la casilla de consentimiento y hacer clic en Suscribirse. Puede retirar su consentimiento en cualquier momento haciendo clic en el enlace de baja en cualquier correo o contactándonos en contact@peoplesrepublicofbulgaria.com.",
+    s5_title: "5. Período de conservación",
+    s5_text: "Su dirección de correo electrónico se conserva hasta que se dé de baja. Tras la baja, sus datos se eliminan de forma permanente.",
+    s6_title: "6. Vídeos de YouTube incrustados",
+    s6_text: "Este sitio incrusta vídeos de YouTube mediante iframe. Al cargar estos vídeos, YouTube (Google) puede colocar cookies en su dispositivo para medir la participación y mejorar sus servicios. Esto está sujeto a la política de privacidad de Google: https://policies.google.com/privacy. No tenemos control sobre estas cookies.",
+    s7_title: "7. Sus derechos (RGPD)",
+    s7_text: "Tiene derecho a acceder, rectificar, suprimir, oponerse y portar sus datos personales. Para ejercer estos derechos: contact@peoplesrepublicofbulgaria.com",
+    s8_title: "8. Autoridades de control",
+    s8_text1: "🇫🇷 CNIL (Francia) — www.cnil.fr",
+    s8_text2: "🇧🇬 CPDP (Bulgaria) — www.cpdp.bg",
+  },
+  bg: {
+    title: "Политика за поверителност",
+    updated: `Последна актуализация: ${new Date().getFullYear()}`,
+    intro: "Тази политика за поверителност обяснява как People's Republic of Bulgaria събира, използва и защитава вашите лични данни.",
+    s1_title: "1. Администратор на данните",
+    s1_text: "Администраторът на данните е Симон Белтран, опериращ чрез СОЦ ТРЕЙД БЪЛГАРИЯ ЕООД (ЕИК 208209146), ул. Марагидик 64А, 1505 София, България. Контакт: contact@peoplesrepublicofbulgaria.com",
+    s2_title: "2. Събирани данни",
+    s2_text: "Събираме само имейл адреса, който предоставяте доброволно при абониране за нашия бюлетин. Никакви други лични данни не се събират автоматично.",
+    s3_title: "3. Цел на обработването",
+    s3_text: "Вашият имейл адрес се използва изключително за изпращане на бюлетина на People's Republic of Bulgaria — нови видеа, исторически актуализации, архивни открития и новини от проекта. Той никога не се продава или споделя с трети страни.",
+    s4_title: "4. Правно основание",
+    s4_text: "Обработването се основава на вашето изрично съгласие (чл. 6.1.a GDPR), дадено при поставяне на отметката и натискане на Абониране. Можете да оттеглите съгласието си по всяко време чрез връзката за отписване в имейла или като се свържете с нас на contact@peoplesrepublicofbulgaria.com.",
+    s5_title: "5. Срок на съхранение",
+    s5_text: "Вашият имейл адрес се съхранява до отписването ви. След отписване данните ви се изтриват окончателно.",
+    s6_title: "6. Вградени видеа от YouTube",
+    s6_text: "Този сайт вгражда видеа от YouTube чрез iframe. При зареждането на тези видеа YouTube (Google) може да постави бисквитки на вашето устройство с цел измерване на ангажираността и подобряване на услугите си. Това е предмет на политиката за поверителност на Google: https://policies.google.com/privacy. Нямаме контрол върху тези бисквитки.",
+    s7_title: "7. Вашите права (GDPR)",
+    s7_text: "Имате право на достъп, коригиране, изтриване, възражение и преносимост на личните си данни. За да упражните тези права: contact@peoplesrepublicofbulgaria.com",
+    s8_title: "8. Надзорни органи",
+    s8_text1: "🇫🇷 CNIL (Франция) — www.cnil.fr",
+    s8_text2: "🇧🇬 КЗЛД (България) — www.cpdp.bg",
+  },
+}[lang];
+
+const privacyMeta = {
+  en: { title: "Privacy Policy — People's Republic of Bulgaria", description: "Privacy policy for the People's Republic of Bulgaria website." },
+  fr: { title: "Politique de confidentialité — République Populaire de Bulgarie", description: "Politique de confidentialité du site People's Republic of Bulgaria." },
+  es: { title: "Política de privacidad — República Popular de Bulgaria", description: "Política de privacidad del sitio web People's Republic of Bulgaria." },
+  bg: { title: "Политика за поверителност — Народна република България", description: "Политика за поверителност на уебсайта People's Republic of Bulgaria." },
+}[lang];
+---
+
+<MainLayout
+  lang={lang}
+  title={privacyMeta.title}
+  description={privacyMeta.description}
+  nav={buildNav(lang, t)}
+  footer={buildFooter(lang, t)}
+  active="legal"
+  heroImage="/home/BackGroundHome.jpg"
+>
+
+<style>
+.page-wrap {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+.page-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0ebe0;
+  border-bottom: 3px solid #D62612;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+}
+
+.page-updated {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 24px;
+  font-style: italic;
+}
+
+.intro-box {
+  background: #242424;
+  border-left: 4px solid #D62612;
+  padding: 14px 18px;
+  margin-bottom: 28px;
+  font-size: 1.35rem;
+  color: #888;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.legal-block {
+  margin-bottom: 30px;
+}
+
+.legal-block h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #D62612;
+  border-left: 4px solid #D62612;
+  padding-left: 12px;
+  margin-bottom: 12px;
+}
+
+.legal-block p {
+  font-size: 1.45rem;
+  color: #aaa;
+  line-height: 1.85;
+  margin-bottom: 8px;
+}
+
+.legal-block a {
+  color: #D62612;
+}
+
+.legal-block a:hover {
+  text-decoration: underline;
+}
+
+.authorities {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.authority-item {
+  background: #242424;
+  border: 1px solid #333;
+  padding: 12px 18px;
+  font-size: 1.35rem;
+  color: #aaa;
+  flex: 1;
+  min-width: 200px;
+}
+
+.authority-item a {
+  color: #D62612;
+}
+</style>
+
+<div class="page-wrap">
+  <h1 class="page-title">{copy.title}</h1>
+  <p class="page-updated">{copy.updated}</p>
+
+  <div class="intro-box">{copy.intro}</div>
+
+  <div class="legal-block">
+    <h2>{copy.s1_title}</h2>
+    <p>{copy.s1_text}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.s2_title}</h2>
+    <p>{copy.s2_text}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.s3_title}</h2>
+    <p>{copy.s3_text}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.s4_title}</h2>
+    <p>{copy.s4_text}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.s5_title}</h2>
+    <p>{copy.s5_text}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.s6_title}</h2>
+    <p>{copy.s6_text}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.s7_title}</h2>
+    <p>{copy.s7_text}</p>
+  </div>
+
+  <div class="legal-block">
+    <h2>{copy.s8_title}</h2>
+    <div class="authorities">
+      <div class="authority-item">
+        {copy.s8_text1}<br />
+        <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>
+      </div>
+      <div class="authority-item">
+        {copy.s8_text2}<br />
+        <a href="https://www.cpdp.bg" target="_blank" rel="noopener">www.cpdp.bg</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</MainLayout>
