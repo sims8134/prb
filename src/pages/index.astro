@@ -1,13 +1,4 @@
 ---
 export const prerender = false;
-
-const supported = ['en', 'fr', 'es', 'bg'];
-const acceptLang = Astro.request.headers.get('accept-language') ?? '';
-
-const preferred = acceptLang
-  .split(',')
-  .map((p) => p.split(';')[0].trim().split('-')[0].toLowerCase())
-  .find((l) => supported.includes(l));
-
-return Astro.redirect(`/${preferred ?? 'en'}`);
+return Astro.redirect('/en');
 ---
