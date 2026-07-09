@@ -1,5 +1,5 @@
 ---
-import { siteContent } from "../data/site";
+import { siteContent, supportedLangs } from "../data/site";
 
 const {
   lang = "en",
@@ -12,6 +12,13 @@ const {
 } = Astro.props;
 
 const t = siteContent[lang as keyof typeof siteContent] ?? siteContent["en"];
+
+// Chemin de la page SANS le préfixe de langue (ex: "/history", ou "" pour l'accueil)
+const SITE = "https://peoplesrepublicofbulgaria.com";
+const pathParts = Astro.url.pathname.replace(/\/$/, "").split("/").filter(Boolean);
+// pathParts[0] est la langue (en/fr/es/bg) ; le reste est le chemin
+const pagePath = pathParts.slice(1).join("/");
+const subPath = pagePath ? `/${pagePath}` : "";
 
 const heroStyle = heroImage
   ? `background-image: url('${heroImage}'); background-position: center 30%; background-size: cover; background-repeat: no-repeat;`
@@ -34,7 +41,7 @@ const heroStyle = heroImage
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content="https://peoplesrepublicofbulgaria.com/home/og.png" />
-  <meta property="og:url" content={`https://peoplesrepublicofbulgaria.com/${lang}/`} />
+  <meta property="og:url" content={`${SITE}/${lang}${subPath}`} />
   <meta property="og:site_name" content="People's Republic of Bulgaria" />
   <meta property="og:locale" content={lang === "fr" ? "fr_FR" : lang === "es" ? "es_ES" : lang === "bg" ? "bg_BG" : "en_US"} />
 
@@ -44,15 +51,14 @@ const heroStyle = heroImage
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content="https://peoplesrepublicofbulgaria.com/home/og.png" />
 
-  <!-- Hreflang -->
-  <link rel="alternate" hreflang="en" href="https://peoplesrepublicofbulgaria.com/en/" />
-  <link rel="alternate" hreflang="fr" href="https://peoplesrepublicofbulgaria.com/fr/" />
-  <link rel="alternate" hreflang="es" href="https://peoplesrepublicofbulgaria.com/es/" />
-  <link rel="alternate" hreflang="bg" href="https://peoplesrepublicofbulgaria.com/bg/" />
-  <link rel="alternate" hreflang="x-default" href="https://peoplesrepublicofbulgaria.com/en/" />
+ <!-- Hreflang -->
+  {supportedLangs.map((l) => (
+    <link rel="alternate" hreflang={l} href={`${SITE}/${l}${subPath}`} />
+  ))}
+  <link rel="alternate" hreflang="x-default" href={`${SITE}/en${subPath}`} />
 
-  <!-- Canonical -->
-  <link rel="canonical" href={`https://peoplesrepublicofbulgaria.com/${lang}/`} />
+<!-- Canonical -->
+  <link rel="canonical" href={`${SITE}/${lang}${subPath}`} />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
