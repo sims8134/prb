@@ -36,7 +36,7 @@ export const siteContent = {
         history: { title: "History", desc: "Timeline of key events from 1944 to 1990.", btn: "Discover" },
         collection: { title: "Collection", desc: "Objects, medals, uniforms and artefacts.", btn: "Discover" },
         tourism: { title: "Tourism", desc: "Sites to visit in Bulgaria — guided tours available.", btn: "Discover" },
-        videos: { title: "Videos", desc: "Urbex, vlogs, edits and presentations.", btn: "Discover" },
+        videos: { title: "Videos", desc: "Urbex, edits and presentations.", btn: "Discover" },
       },
       newsletter: {
         title: "Newsletter",
@@ -72,8 +72,8 @@ export const siteContent = {
       description: "Discover the communist heritage sites of Bulgaria. Abandoned monuments, Cold War bunkers, and historic locations — guided tours available in Sofia and beyond.",
     },
     videos: {
-      title: "Videos — Urbex, Vlogs & Communist Bulgaria",
-      description: "Watch urbex explorations, vlogs and documentary edits about communist Bulgaria, abandoned Cold War sites, and the history of the People's Republic of Bulgaria.",
+      title: "Videos — Urbex & Communist Bulgaria",
+      description: "Watch urbex explorations and documentary edits about communist Bulgaria, abandoned Cold War sites, and the history of the People's Republic of Bulgaria.",
     },
     contact: {
       title: "Contact — People's Republic of Bulgaria",
@@ -123,7 +123,7 @@ export const siteContent = {
         history: { title: "Histoire", desc: "Chronologie des événements clés de 1944 à 1990.", btn: "Découvrir" },
         collection: { title: "Collection", desc: "Objets, médailles, uniformes et artefacts.", btn: "Découvrir" },
         tourism: { title: "Tourisme", desc: "Sites à visiter en Bulgarie — visites guidées disponibles.", btn: "Découvrir" },
-        videos: { title: "Vidéos", desc: "Urbex, vlogs, montages et présentations.", btn: "Découvrir" },
+        videos: { title: "Vidéos", desc: "Urbex, montages et présentations.", btn: "Découvrir" },
       },
       newsletter: {
         title: "Newsletter",
@@ -159,8 +159,8 @@ export const siteContent = {
       description: "Découvrez les sites du patrimoine communiste en Bulgarie. Monuments abandonnés, bunkers de la Guerre froide et lieux historiques — visites guidées disponibles.",
     },
     videos: {
-      title: "Vidéos — Urbex, Vlogs & Bulgarie communiste",
-      description: "Explorations urbex, vlogs et montages documentaires sur la Bulgarie communiste, les sites abandonnés de la Guerre froide et l'histoire de la République populaire de Bulgarie.",
+      title: "Vidéos — Urbex & Bulgarie communiste",
+      description: "Explorations, urbex et montages documentaires sur la Bulgarie communiste, les sites abandonnés de la Guerre froide et l'histoire de la République populaire de Bulgarie.",
     },
     contact: {
       title: "Contact — République Populaire de Bulgarie",
@@ -210,7 +210,7 @@ export const siteContent = {
         history: { title: "Historia", desc: "Cronología de eventos clave de 1944 a 1990.", btn: "Descubrir" },
         collection: { title: "Colección", desc: "Objetos, medallas, uniformes y artefactos.", btn: "Descubrir" },
         tourism: { title: "Turismo", desc: "Lugares para visitar en Bulgaria — visitas guiadas disponibles.", btn: "Descubrir" },
-        videos: { title: "Vídeos", desc: "Urbex, vlogs, ediciones y presentaciones.", btn: "Descubrir" },
+        videos: { title: "Vídeos", desc: "Urbex, ediciones y presentaciones.", btn: "Descubrir" },
       },
       newsletter: {
         title: "Newsletter",
@@ -246,8 +246,8 @@ export const siteContent = {
       description: "Descubre los sitios del patrimonio comunista en Bulgaria. Monumentos abandonados, búnkeres de la Guerra Fría y lugares históricos — visitas guiadas disponibles.",
     },
     videos: {
-      title: "Vídeos — Urbex, Vlogs y Bulgaria comunista",
-      description: "Exploraciones urbex, vlogs y montajes documentales sobre la Bulgaria comunista, los sitios abandonados de la Guerra Fría y la historia de la República Popular de Bulgaria.",
+      title: "Vídeos — Urbex y Bulgaria comunista",
+      description: "Exploraciones urbex y montajes documentales sobre la Bulgaria comunista, los sitios abandonados de la Guerra Fría y la historia de la República Popular de Bulgaria.",
     },
     contact: {
       title: "Contacto — República Popular de Bulgaria",
@@ -297,7 +297,7 @@ export const siteContent = {
         history: { title: "История", desc: "Хронология на ключови събития от 1944 до 1990 г.", btn: "Открийте" },
         collection: { title: "Колекция", desc: "Предмети, медали, униформи и артефакти.", btn: "Открийте" },
         tourism: { title: "Туризъм", desc: "Места за посещение в България — налични екскурзии с водач.", btn: "Открийте" },
-        videos: { title: "Видеа", desc: "Урбекс, влогове, монтажи и презентации.", btn: "Открийте" },
+        videos: { title: "Видеа", desc: "Урбекс, монтажи и презентации.", btn: "Открийте" },
       },
       newsletter: {
         title: "Бюлетин",
@@ -333,8 +333,8 @@ export const siteContent = {
       description: "Открийте комунистическото наследство на България. Изоставени паметници, бункери от Студената война и исторически места — налични екскурзии с водач.",
     },
     videos: {
-      title: "Видеа — Урбекс, Влогове и комунистическа България",
-      description: "Урбекс изследвания, влогове и документални монтажи за комунистическа България, изоставени обекти от Студената война и историята на Народна република България.",
+      title: "Видеа — Урбекс и комунистическа България",
+      description: "Урбекс изследвания и документални монтажи за комунистическа България, изоставени обекти от Студената война и историята на Народна република България.",
     },
     contact: {
       title: "Контакт — Народна република България",
