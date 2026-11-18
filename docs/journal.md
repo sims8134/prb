@@ -1,5 +1,31 @@
 # Journal du site PRB
 
+## 18.11.2026 : mise en production de la retouche
+
+La branche `retouche/site-existant` (`7a99306`) a été fusionnée dans `main` avec un commit de fusion, sans fast-forward : `373eb4f`. Le déploiement Vercel de production est terminé. La branche `refonte/page-unique` reste intacte et non fusionnée.
+
+**Retour arrière :**
+
+```
+git switch main
+git revert -m 1 373eb4f
+git push origin main
+```
+
+Ou, dans Vercel : Deployments, puis « Instant Rollback » sur le déploiement précédent.
+
+**Vérifications faites sur peoplesrepublicofbulgaria.com :**
+1. Le déploiement de production du commit `373eb4f` est terminé, et la production sert bien le nouveau code : nouveau logo présent, formulaire de contact absent.
+2. Les 36 pages répondent 200 dans les 4 langues, et la racine redirige (302) vers `/en`.
+3. Aucune page en ligne ne contient « SOC TRADE », « EOOD », « ЕООД » ni « ЕИК ».
+4. Sur l'accueil, dans les 4 langues, aucun appel à YouTube ni à Google avant le clic. Seul le domaine du site est contacté. La vidéo affichée (`vTan7o8oKE0`) est la plus récente du flux, hors Shorts. Après le clic, seul `youtube-nocookie.com` se charge.
+5. `/brand/email-logo-180.png` répond 200.
+6. `/api/contact` répond 404, en GET comme en POST.
+7. Le champ piège renvoie un faux succès (HTTP 200). L'absence d'appel à Resend ne s'observe pas depuis l'extérieur : elle est garantie par le code et a été vérifiée en local avec interception des appels.
+8. Le logo de l'en-tête, le favicon, l'icône iPhone et l'image de partage servis en ligne sont identiques, octet par octet, aux nouveaux fichiers. L'ancien logo renvoie 404.
+
+**Incident pendant la fusion :** le disque C: était plein. Git n'a pas pu écrire trois fichiers et a annulé la première tentative. Après suppression du dossier temporaire de test et réparation des trois fichiers, les contrôles étaient sans erreur : `git status`, `git fsck` et les branches alignées avec GitHub. La fusion a ensuite été faite normalement.
+
 ## 18.11.2026 : retouche du site existant
 
 Branche `retouche/site-existant`, créée depuis `main` au commit `c2ca76d`. Le site garde ses pages, sa navigation, ses quatre langues, sa mise en page et ses styles. Aucune redirection vers un autre site.
