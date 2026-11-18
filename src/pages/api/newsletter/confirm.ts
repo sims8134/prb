@@ -127,6 +127,7 @@ function statusPage(title: string, message: string, status: number, actions: str
   <style>
     @font-face { font-family: "Oswald"; font-weight: 600; font-display: swap; src: url("/fonts/oswald-600-latin.woff2") format("woff2"); }
     @font-face { font-family: "Source Serif 4"; font-weight: 400; font-display: swap; src: url("/fonts/source-serif-4-400-latin.woff2") format("woff2"); }
+    *, *::before, *::after { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: #140405; color: #f3deb4;
       font: 1.125rem/1.6 "Source Serif 4", Georgia, serif; }
     .rule { height: 6px; background: linear-gradient(#4a6236 0 3px, #8b1f10 3px 6px); }
