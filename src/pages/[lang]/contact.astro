@@ -43,6 +43,8 @@ const copy = {
     errFields: "⚠ Please fill in all fields.",
     errEmail: "⚠ Please enter a valid email address.",
     ok: "✓ Message sent successfully!",
+    errSend: "⚠ Your message could not be sent. Please try again later or email us directly.",
+    errRateLimit: "⚠ Too many attempts. Please try again in an hour.",
   },
   fr: {
     title: "Contact",
@@ -71,6 +73,8 @@ const copy = {
     errFields: "⚠ Veuillez remplir tous les champs.",
     errEmail: "⚠ Veuillez entrer une adresse email valide.",
     ok: "✓ Message envoyé avec succès !",
+    errSend: "⚠ Votre message n'a pas pu être envoyé. Réessayez plus tard ou écrivez-nous directement par e-mail.",
+    errRateLimit: "⚠ Trop de tentatives. Réessayez dans une heure.",
   },
   es: {
     title: "Contacto",
@@ -99,6 +103,8 @@ const copy = {
     errFields: "⚠ Por favor, completa todos los campos.",
     errEmail: "⚠ Por favor, introduce un email válido.",
     ok: "✓ ¡Mensaje enviado con éxito!",
+    errSend: "⚠ No se pudo enviar tu mensaje. Inténtalo más tarde o escríbenos directamente por correo.",
+    errRateLimit: "⚠ Demasiados intentos. Inténtalo de nuevo dentro de una hora.",
   },
   bg: {
     title: "Контакт",
@@ -127,6 +133,8 @@ const copy = {
     errFields: "⚠ Моля, попълнете всички полета.",
     errEmail: "⚠ Моля, въведете валиден имейл адрес.",
     ok: "✓ Съобщението беше изпратено успешно!",
+    errSend: "⚠ Съобщението ви не можа да бъде изпратено. Опитайте по-късно или ни пишете директно по имейл.",
+    errRateLimit: "⚠ Твърде много опити. Опитайте отново след час.",
   },
 }[lang];
 ---
@@ -440,7 +448,9 @@ const copy = {
   <h3>{copy.sendMessage}</h3>
 
   <form action="/api/contact" method="POST" id="prb-contact-form">
-    <input type="text" name="website" style="display:none !important" tabindex="-1" autocomplete="off" />
+    <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
+      <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    </div>
 
     <div class="form-group">
       <label for="name">{copy.name}</label>
@@ -529,8 +539,11 @@ const copy = {
       data-success-hint={t.home.newsletter.successHint}
       data-error={t.home.newsletter.error}
       data-error-network={t.home.newsletter.errorNetwork}
+      data-error-rate-limit={t.home.newsletter.errorRateLimit}
     >
-      <input type="text" name="website" style="display:none !important" tabindex="-1" autocomplete="off" />
+      <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
+        <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+      </div>
       <input type="email" name="email" placeholder={t.home.newsletter.placeholder} required />
       <label class="newsletter-consent">
         <input type="checkbox" name="consent" required />
@@ -545,6 +558,7 @@ const copy = {
 <script define:vars={{ copy }}>
   const form = document.getElementById("prb-contact-form");
   const feedback = document.getElementById("form-feedback");
+  const contactLoadedAt = performance.now();
 
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -553,6 +567,7 @@ const copy = {
     feedback.className = "form-feedback";
 
     const formData = new FormData(form);
+    formData.set("elapsed_ms", String(Math.round(performance.now() - contactLoadedAt)));
 
     try {
       const res = await fetch("/api/contact", {
@@ -560,12 +575,18 @@ const copy = {
         body: formData
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
         feedback.textContent = copy.ok;
         feedback.className = "form-feedback success";
         form.reset();
+      } else if (res.status === 429) {
+        feedback.textContent = copy.errRateLimit;
+        feedback.className = "form-feedback error";
+      } else if (res.status >= 500) {
+        feedback.textContent = copy.errSend;
+        feedback.className = "form-feedback error";
       } else {
         feedback.textContent = data.error || "Something went wrong.";
         feedback.className = "form-feedback error";
@@ -579,6 +600,7 @@ const copy = {
 <script>
   const newsletterForm = document.getElementById("newsletter-form");
   const newsletterFeedback = document.getElementById("newsletter-feedback");
+  const newsletterLoadedAt = performance.now();
 
   newsletterForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -589,12 +611,14 @@ const copy = {
       successHint: newsletterForm.dataset.successHint,
       error: newsletterForm.dataset.error,
       errorNetwork: newsletterForm.dataset.errorNetwork,
+      errorRateLimit: newsletterForm.dataset.errorRateLimit,
     };
 
     newsletterFeedback.textContent = msgs.subscribing;
     newsletterFeedback.className = "form-feedback";
 
     const formData = new FormData(newsletterForm);
+    formData.set("elapsed_ms", String(Math.round(performance.now() - newsletterLoadedAt)));
 
     try {
       const res = await fetch("/api/newsletter", {
@@ -602,7 +626,7 @@ const copy = {
         body: formData,
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
         newsletterFeedback.innerHTML = `
@@ -611,6 +635,12 @@ const copy = {
         `;
         newsletterFeedback.className = "form-feedback success";
         newsletterForm.reset();
+      } else if (res.status === 429) {
+        newsletterFeedback.textContent = msgs.errorRateLimit;
+        newsletterFeedback.className = "form-feedback error";
+      } else if (res.status >= 500) {
+        newsletterFeedback.textContent = msgs.error;
+        newsletterFeedback.className = "form-feedback error";
       } else {
         newsletterFeedback.textContent = data.error || msgs.error;
         newsletterFeedback.className = "form-feedback error";

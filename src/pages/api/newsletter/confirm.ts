@@ -49,7 +49,21 @@ export const GET: APIRoute = async ({ url, redirect }) => {
       unsubscribed: false,
     });
 
-    console.log("Newsletter contact confirmed:", result);
+    if (result.error) {
+      // Clicking the link twice must not show an error if the contact already exists.
+      const alreadyExists =
+        result.error.statusCode === 409 || /already exist/i.test(result.error.message);
+
+      if (!alreadyExists) {
+        console.error("Newsletter contact creation failed:", result.error);
+        return failurePage(
+          "Your subscription could not be recorded. Please try again later or contact us at contact@peoplesrepublicofbulgaria.com.",
+          502
+        );
+      }
+    }
+
+    console.log("Newsletter contact confirmed:", result.data?.id ?? "already exists");
 
     return new Response(
       `
@@ -117,6 +131,11 @@ export const GET: APIRoute = async ({ url, redirect }) => {
   } catch (error) {
     console.error("Newsletter confirm error:", error);
 
+    return failurePage("The confirmation link is invalid or expired.", 400);
+  }
+};
+
+function failurePage(message: string, status: number) {
     return new Response(
       `
       <!DOCTYPE html>
@@ -160,15 +179,14 @@ export const GET: APIRoute = async ({ url, redirect }) => {
       <body>
         <div class="box">
           <h1>Confirmation failed</h1>
-          <p>The confirmation link is invalid or expired.</p>
+          <p>${message}</p>
         </div>
       </body>
       </html>
       `,
       {
-        status: 400,
+        status,
         headers: { "Content-Type": "text/html; charset=utf-8" },
       }
     );
-  }
-};
+}
