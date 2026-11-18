@@ -1,5 +1,73 @@
 # Journal du site PRB
 
+## 18.11.2026 (soir) : direction artistique « émission de nuit »
+
+La première version de la page unique a été rejetée : correcte mais sans vie, une colonne de texte sur fond crème. Trois prototypes ont été construits puis jugés :
+- A, émission de nuit ;
+- B, planche contact ;
+- C, affiche.
+
+La direction retenue assemble les trois. A sert de base pour toute la page, la pellicule vient de B et les lettres remplies par une photo viennent de C. Les prototypes ont ensuite été supprimés.
+
+### Ce qui a changé
+
+- **Thème sombre partout :** fond bordeaux presque noir, texte crème, or pour les numéros et les étiquettes. Le liseré vert et rouge reste fin (6 px). Le thème s'applique à la page d'accueil, à Legal notice & privacy, à la 404, à la page de confirmation et à l'email de confirmation.
+- **Premier écran :**
+  - le logo posé comme un sceau, immobile ;
+  - le nom en très grand et la phrase d'accroche ;
+  - la dernière vidéo, jouable sur place avec un grand bouton « Play », son titre et sa date en chiffres romains ;
+  - le bouton « Subscribe on YouTube ».
+
+  Sur un téléphone de 664 px de haut, le bouton finit à 658 px. Comme il n'y a pas encore d'images extraites des vidéos (voir plus bas), c'est la miniature de la dernière vidéo qui porte l'image du premier écran, sur un fond sombre uni.
+- **№ 02, « More from the channel » :** une pellicule de tirages numérotés à partir de 02, avec leur date en chiffres romains. Elle montre les 6 à 8 vidéos précédentes, lues dans le même flux public, sans les Shorts. Chaque tirage ouvre la vidéo sur YouTube dans un nouvel onglet. Elle défile au doigt sur téléphone et s'affiche en grille sur ordinateur.
+- **№ 03 « The story behind » :** le lien vers Cold War Bulgaria. Il est suivi de la ligne de soutien, non numérotée.
+- **№ 04, la newsletter :** le titre « Newsletter » est un vrai texte, rempli par une bande de cinq objets de la collection (radio, téléphone noir, téléphone vert à cadran, lampes torches, boîte de bobine) qui défile lentement.
+  - Les cadrages évitent tout symbole politique (buste, étoiles, emblème).
+  - La photo est légèrement éclaircie pour rester lisible sur le fond sombre : le pixel le plus sombre atteint 3,16:1 (seuil de 3:1 pour un gros titre), et la médiane 9,3:1.
+  - Elle ne se charge qu'à l'approche de la section.
+- **Nouvelle route `/api/thumb/[id]` :** elle sert les miniatures des vidéos depuis le domaine du site. Le navigateur du visiteur n'appelle donc jamais YouTube avant un clic.
+  - Elle ne sert que les vidéos présentes dans le flux de la chaîne : ce n'est pas un relais ouvert.
+  - Elle sert le WebP quand YouTube en fournit un, sinon le JPEG.
+  - Elle refuse tout fichier de plus de 350 Ko.
+  - Le cache est d'un jour dans le navigateur et d'une semaine sur le CDN.
+- **Titres YouTube :** les tirets longs y sont remplacés à l'affichage, par exemple « Peoples Republic of Bulgaria: 9 IX 1944 ».
+- **Supprimé :** les routes `/proto/a`, `/proto/b` et `/proto/c`, et leurs photos. Il ne reste dans `public/photos` que la bande de la collection (4 fichiers, 12 à 48 Ko).
+
+### Poids et vérifications (build final, servi en local)
+
+- **Premier chargement :** 439 Ko sur téléphone (12 requêtes) et 446 Ko sur ordinateur (14 requêtes). La miniature principale en fait 256 Ko à elle seule.
+- **Avant le clic :** aucun appel à YouTube ni à Google. Après le clic, seul `youtube-nocookie.com` est chargé.
+- **Contrastes AA :** 51 textes vérifiés, aucun échec, minimum 6,96:1.
+- **Clavier :** 19 éléments dans l'ordre logique, avec un contour visible partout.
+- **Redirections :** 88 sur 88. Le champ piège ne déclenche aucun envoi.
+
+### Revue adverse : ce qui a été corrigé ou écarté
+
+**Corrigé :**
+- Sur ordinateur, la légende de la vidéo est alignée en haut, et le sceau est revenu à côté du nom.
+- Le bouton de lecture est agrandi, avec la date « On air » en chiffres romains.
+- La pellicule s'affiche en 3 + 3 sur ordinateur, sans case vide.
+- Les titres de la pellicule tiennent sur trois lignes.
+- Une photo de la radio illustre « The story behind ».
+- La bande des lettres a des couleurs plus vraies.
+- La case à cocher est crème.
+- Les réseaux sociaux tiennent en une ligne discrète, et le pied de page est signé d'un petit sceau.
+
+**Écarté :**
+- **Bouton de lecture centré :** il masquerait le titre de la miniature, qui est ce qui donne envie de cliquer.
+- **« Sign me up » en bouton plein :** l'abonnement YouTube doit rester la seule action principale de la page.
+- **Titres « S 75 » et « Part (2/2) » :** ils viennent de YouTube et se corrigent dans YouTube Studio. Le site ne retouche que les tirets longs.
+
+### Coût de maintenance
+
+**À chaque nouvelle vidéo : toujours rien.** La dernière vidéo et la pellicule se mettent à jour seules depuis le flux, au plus 30 minutes après la publication. Si un jour il y a beaucoup plus de Shorts que de vidéos, la pellicule raccourcit d'elle-même, puisque le flux ne contient que les 15 dernières publications.
+
+**Images d'urbex pour le premier écran :** le dossier `src/assets/urbex/` n'existe pas encore. Le jour où vous y déposez des images extraites de vos vidéos, il faudra brancher l'une d'elles en fond du premier écran : environ 15 lignes dans `index.astro`, et une image de 150 à 250 Ko en AVIF.
+
+**Migration vers Cloudflare :** en plus des points déjà listés plus bas, la route `/api/thumb` n'y sera pas mise en cache automatiquement. Chaque affichage d'une miniature interrogera alors YouTube côté serveur, ce qui ralentit un peu la page sans rien casser. Pour l'éviter, on peut ajouter l'API Cache de Cloudflare, environ 10 lignes.
+
+**Aucune dépendance ajoutée.** Les photos ont été préparées avec `sharp`, déjà installé avec Astro.
+
 ## 18.11.2026 : refonte en page unique
 
 Branche `refonte/page-unique`, créée depuis `main` au commit `c2ca76d`.

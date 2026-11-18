@@ -1,21 +1,23 @@
 ---
 import Base from "../layouts/Base.astro";
+import VideoFacade from "../components/VideoFacade.astro";
+import FilmStrip from "../components/FilmStrip.astro";
 import NewsletterForm from "../components/NewsletterForm.astro";
-import { CHANNEL_URL, getLatestVideo, romanDate, spokenDate } from "../lib/latest-video";
+import { CHANNEL_URL, getChannelVideos, romanDate, spokenDate, thumbUrl } from "../lib/latest-video";
 
-// Rendered on the server so the latest video updates by itself.
+// Rendered on the server so the latest video and the film strip update by themselves.
 export const prerender = false;
 
-const video = await getLatestVideo();
+const videos = await getChannelVideos();
+const video = videos[0] ?? null;
+const more = videos.slice(1, 9); // 6 to 8 previous videos, Shorts excluded
 
 // CDN keeps the page 30 min, then serves the old copy while refreshing it.
-Astro.response.headers.set(
-  "Cache-Control",
-  "public, max-age=0, s-maxage=1800, stale-while-revalidate=86400"
-);
+Astro.response.headers.set("Cache-Control", "public, max-age=0, s-maxage=1800, stale-while-revalidate=86400");
 
 const SUBSCRIBE_URL = `${CHANNEL_URL}?sub_confirmation=1`;
 const CONTACT = "contact@peoplesrepublicofbulgaria.com";
+const HERO_SIZES = "(min-width: 900px) 62vw, 100vw";
 ---
 
 <Base
@@ -23,88 +25,116 @@ const CONTACT = "contact@peoplesrepublicofbulgaria.com";
   description="Archive mixes and urbex from Bulgaria's Cold War years, on YouTube. Watch the latest video, subscribe, and go deeper with Cold War Bulgaria."
   path="/"
 >
-  <main class="page">
-    <header class="intro">
-      <img
-        class="intro__logo"
-        src="/brand/logo-160.webp"
-        srcset="/brand/logo-160.webp 160w, /brand/logo-320.webp 320w"
-        sizes="96px"
-        width="96"
-        height="96"
-        alt="PRB logo"
+  {
+    video && (
+      <link
+        slot="head"
+        rel="preload"
+        as="image"
+        imagesrcset={`${thumbUrl(video.id, "sd")} 640w, ${thumbUrl(video.id, "max")} 1280w`}
+        imagesizes={HERO_SIZES}
         fetchpriority="high"
       />
-      <h1 class="intro__name">People's Republic of Bulgaria</h1>
-      <p class="intro__line">Archive mixes and urbex from Bulgaria's Cold War years, on YouTube.</p>
-    </header>
+    )
+  }
 
-    <section class="block" aria-labelledby="latest-title">
-      <h2 class="block__title" id="latest-title">
-        <span class="label" aria-hidden="true">№ 01</span>
-        Latest video
-      </h2>
+  <main>
+    <!-- 1. First screen: seal, name, line, playable latest video, Subscribe -->
+    <section class="hero" aria-labelledby="site-name">
+      <header class="hero__id">
+        <h1 class="hero__name" id="site-name">
+          <span>People's</span> <span>Republic of</span> <span>Bulgaria</span>
+        </h1>
+        <p class="hero__line">Archive mixes and urbex from Bulgaria's Cold War years, on YouTube.</p>
+      </header>
 
-      {
-        video ? (
-          <>
-            <div class="player">
-              <a
-                class="player__facade"
-                href={`https://www.youtube.com/watch?v=${video.id}`}
-                data-video-id={video.id}
-                data-video-title={video.title}
-              >
-                {video.thumbnail && <img src={video.thumbnail} width="480" height="360" alt="" />}
-                <span class="player__button" aria-hidden="true">Play</span>
-                <span class="sr-only">Play the video: {video.title}</span>
-              </a>
-            </div>
-            <p class="video__title">{video.title}</p>
-            <p class="video__meta">
+      <div class="hero__video">
+        <img class="seal" src="/brand/logo-160.webp" srcset="/brand/logo-160.webp 160w, /brand/logo-320.webp 320w" sizes="(min-width: 900px) 120px, 76px" width="120" height="120" alt="PRB logo" />
+        <p class="hero__label"><span class="label">№ 01</span> <span class="label label--plain">Latest video</span></p>
+        <VideoFacade video={video} sizes={HERO_SIZES} />
+      </div>
+
+      <div class="hero__side">
+        {video && <p class="hero__title">{video.title}</p>}
+        {
+          video && (
+            <p class="hero__meta">
               <time datetime={video.published.toISOString()}>
                 <span aria-hidden="true">{romanDate(video.published)}</span>
                 <span class="sr-only">{spokenDate(video.published)}</span>
               </time>
-              <span aria-hidden="true"> · </span>
-              Grab a coffee, press play.
+              <span aria-hidden="true"> · </span>Grab a coffee, press play.
             </p>
-          </>
-        ) : (
-          <p class="player__fallback">
-            The latest video is waiting on <a href={`${CHANNEL_URL}/videos`}>the YouTube channel</a>.
-          </p>
-        )
-      }
-
-      <a class="cta" href={SUBSCRIBE_URL}>Subscribe on YouTube</a>
+          )
+        }
+        <a class="cta hero__cta" href={SUBSCRIBE_URL}>Subscribe on YouTube</a>
+      </div>
     </section>
 
+    <!-- 2. Film strip of previous videos -->
+    {
+      more.length > 0 && (
+        <section class="block block--film" aria-labelledby="more-title">
+          <h2 class="block__title" id="more-title">
+            <span class="label" aria-hidden="true">№ 02</span> More from the channel
+          </h2>
+          <FilmStrip videos={more} start={2} />
+        </section>
+      )
+    }
+
+    <!-- 3. Cold War Bulgaria -->
     <section class="block" aria-labelledby="deeper-title">
       <h2 class="block__title" id="deeper-title">
-        <span class="label" aria-hidden="true">№ 02</span>
-        The story behind
+        <span class="label" aria-hidden="true">№ 03</span> The story behind
       </h2>
-      <p>
-        Curious about the places and the archives in the videos? Cold War Bulgaria is the online museum
-        behind the channel: the collection, the map, the stories.
-      </p>
-      <a class="link-strong" href="https://coldwarbulgaria.com">Go deeper: Cold War Bulgaria</a>
+      <div class="block__body story">
+        <picture class="story__photo">
+          <source type="image/avif" srcset="/photos/collection-radio-600.avif 600w, /photos/collection-radio-900.avif 900w" sizes="(min-width: 900px) 36vw, 100vw" />
+          <img
+            src="/photos/collection-radio-600.webp"
+            srcset="/photos/collection-radio-600.webp 600w, /photos/collection-radio-900.webp 900w"
+            sizes="(min-width: 900px) 36vw, 100vw"
+            width="600"
+            height="368"
+            alt="A Bulgarian valve radio with a cream grille, from the collection"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+        <div class="story__text">
+          <p class="block__text">
+            Curious about the places and the archives in the videos? Cold War Bulgaria is the online museum
+            behind the channel: the collection, the map, the stories.
+          </p>
+          <a class="big-link" href="https://coldwarbulgaria.com">Go deeper: Cold War Bulgaria</a>
+        </div>
+      </div>
     </section>
 
+    <!-- 4. Support line, not numbered -->
     <aside class="support" aria-label="Support the channel">
       <p>If a video made your day, a coffee keeps the next one coming.</p>
-      <a class="link-strong" href="https://buymeacoffee.com/peoplesrepublicofbulgaria">Support the channel</a>
+      <a class="support__link" href="https://buymeacoffee.com/peoplesrepublicofbulgaria">Support the channel</a>
     </aside>
 
-    <section class="block" id="newsletter" aria-labelledby="newsletter-title">
-      <h2 class="block__title" id="newsletter-title">
-        <span class="label" aria-hidden="true">№ 03</span>
-        Newsletter
+    <!-- 5. Newsletter, title filled with photos from the collection -->
+    <section class="block block--news" id="newsletter" aria-labelledby="newsletter-title">
+      <h2 class="news__head" id="newsletter-title">
+        <span class="label" aria-hidden="true">№ 04</span>
+        <span class="letters" data-letters data-contrast="image">Newsletter</span>
       </h2>
-      <NewsletterForm />
+      <span class="sr-only">The letters are filled with photos from the collection: a radio, telephones, torches and a film can.</span>
+      <div class="news__body">
+        <p class="block__text">
+          New videos, Cold War Bulgaria news, and photos from the collection you won't see anywhere else. Now and
+          then, never spam. You can leave with one email.
+        </p>
+        <NewsletterForm />
+      </div>
     </section>
 
+    <!-- 6. Socials -->
     <nav class="socials" aria-label="PRB on social media">
       <span class="label">Also on</span>
       <ul>
@@ -115,258 +145,364 @@ const CONTACT = "contact@peoplesrepublicofbulgaria.com";
     </nav>
   </main>
 
+  <!-- 7. Footer -->
   <footer class="footer">
+    <img class="footer__seal" src="/brand/logo-160.webp" width="48" height="48" alt="" loading="lazy" decoding="async" />
     <a href={`mailto:${CONTACT}`}>{CONTACT}</a>
     <a href="/privacy">Legal notice &amp; privacy</a>
   </footer>
 </Base>
 
 <style>
-  .page {
-    width: 100%;
-    max-width: 34rem;
-    margin: 0 auto;
-    padding: 1.25rem 1.25rem 1rem;
+  /* ---------- 1. First screen ---------- */
+  .hero {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    padding: 1.1rem var(--gutter) 2.25rem;
   }
-
-  .intro {
-    text-align: center;
-    padding-bottom: 1.25rem;
+  .hero__name {
+    margin: 0;
+    padding-right: 88px; /* room for the seal on phones */
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.6rem, 12.4vw, 5rem);
+    line-height: 0.92;
+    letter-spacing: -0.005em;
+    text-transform: uppercase;
+    color: var(--cream);
   }
-  .intro__logo {
+  .hero__name span {
     display: block;
-    width: 96px;
-    height: 96px;
-    margin: 0 auto 0.625rem;
+    animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
-  .intro__name {
+  .hero__name span:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .hero__name span:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  .hero__line {
+    margin: 0.6rem 0 0;
+    max-width: 32rem;
+    font-size: clamp(1.1rem, 4.4vw, 1.5rem);
+    line-height: 1.35;
+    color: var(--muted);
+  }
+  .hero__video {
+    position: static; /* on phones the seal sits at the top of the hero, next to the name */
+    margin-inline: calc(var(--gutter) * -1); /* edge to edge on phones */
+  }
+  .hero__label {
+    margin: 0 var(--gutter) 0.5rem;
+  }
+  .label--plain {
+    color: var(--muted);
+    margin-left: 0.35rem;
+  }
+  /* The logo, set down like a seal. Still. */
+  .seal {
+    position: absolute;
+    z-index: 2;
+    width: 76px;
+    height: 76px;
+    right: var(--gutter);
+    top: 1rem;
+    rotate: -8deg;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
+  }
+  .hero__title {
     margin: 0;
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: clamp(1.3rem, 5.6vw, 2.25rem);
-    line-height: 1.15;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    color: var(--bordeaux);
+    font-size: clamp(1.25rem, 4.8vw, 1.75rem);
+    line-height: 1.2;
   }
-  .intro__line {
-    margin: 0.375rem auto 0;
-    max-width: 22rem;
-    font-size: 1.0625rem;
-    line-height: 1.45;
+  .hero__meta {
+    margin: 0.3rem 0 0;
+    color: var(--muted);
   }
-
-  .block {
-    padding: 1.25rem 0 1.75rem;
-    border-top: 1px solid var(--gold);
-  }
-  .block p {
-    margin: 0 0 0.75rem;
-  }
-  .block__title {
-    margin: 0 0 0.75rem;
+  .hero__meta time {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 1.375rem;
-    line-height: 1.2;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--bordeaux);
+    letter-spacing: 0.1em;
+    color: var(--gold);
   }
-  /* Programme style: number and title on one line. */
+  .hero__cta {
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  /* ---------- Shared blocks ---------- */
+  .block {
+    padding: 2.75rem 0 0;
+  }
   .block__title {
     display: flex;
     align-items: baseline;
-    gap: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.9rem;
+    margin: 0 var(--gutter) 0.4rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2rem, 9vw, 4.5rem);
+    line-height: 1;
+    text-transform: uppercase;
   }
-  .block__title .label {
-    display: inline;
-    font-size: 0.875rem;
+  .block__body,
+  .news__body {
+    padding: 0.75rem var(--gutter) 0;
   }
-
-  /* Video: a plain link until the visitor clicks, then a youtube-nocookie player. */
-  .player {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    margin-bottom: 0.875rem;
-    background: var(--bordeaux);
-    border: 2px solid var(--bordeaux);
-    border-radius: 4px;
-    overflow: hidden;
+  .block__text {
+    margin: 0 0 1rem;
+    max-width: 38rem;
+    color: var(--muted);
   }
-  .player__facade,
-  .player :global(iframe) {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-  .player__facade {
+  .story__photo img {
     display: block;
-  }
-  .player__facade:focus-visible {
-    outline-offset: -6px;
-    outline-color: var(--paper);
-  }
-  .player__facade img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+    height: auto;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.9);
   }
-  /* Bottom-left "Play" tag: says what happens, and keeps the thumbnail's own title readable. */
-  .player__button {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
+  .big-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    min-height: 44px;
-    padding: 0 1rem 0 0.875rem;
-    border-radius: 4px;
-    background: var(--bordeaux);
-    box-shadow: 0 0 0 2px var(--paper);
-    color: var(--paper);
+    min-height: 48px;
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 1rem;
-    letter-spacing: 0.1em;
+    font-size: clamp(1.25rem, 5vw, 2rem);
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    transition: transform 0.15s ease;
-  }
-  .player__button::before {
-    content: "";
-    border-style: solid;
-    border-width: 8px 0 8px 13px;
-    border-color: transparent transparent transparent var(--paper);
-  }
-  .player__facade:hover .player__button,
-  .player__facade:focus-visible .player__button {
-    transform: scale(1.08);
-  }
-  .player__fallback {
-    padding: 1rem;
-    border: 2px solid var(--bordeaux);
-    border-radius: 4px;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.25em;
   }
 
-  .video__title {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.125rem;
-    line-height: 1.3;
-    color: var(--ink);
-  }
-  .video__meta {
-    font-size: 1rem;
-    color: var(--gold-text);
-  }
-  .video__meta time {
-    font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-  }
-
-  /* The one primary action of the page. */
-  .cta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 52px;
-    margin-top: 0.875rem;
-    padding: 0.75rem 1.5rem;
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.125rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--paper);
-    background: var(--bordeaux);
-    border-radius: 4px;
-    transition: background-color 0.15s ease;
-  }
-  .cta:hover {
-    background: #3f0907;
-  }
-  .cta:focus-visible {
-    outline-color: var(--ink);
-  }
-
+  /* ---------- 4. Support ---------- */
   .support {
-    padding: 1.25rem 0 1.5rem;
-    border-top: 1px solid var(--gold);
+    margin: 2.75rem var(--gutter) 0;
+    padding: 1.25rem 0;
+    border-block: 1px solid rgba(201, 154, 76, 0.45);
   }
   .support p {
     margin: 0 0 0.25rem;
+    color: var(--muted);
   }
-  .link-strong {
+  .support__link {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 1.0625rem;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
+  /* ---------- 5. Newsletter: letters filled with the collection ---------- */
+  .news__head {
+    margin: 0 var(--gutter);
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .news__head .label {
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+  .letters {
+    display: block;
+    font-size: clamp(3.4rem, 17.5vw, 15rem);
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    color: var(--cream); /* until the photo arrives, or without background-clip support */
+  }
+  @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .letters.is-near {
+      color: transparent;
+      background-color: var(--cream);
+      background-image: url("/photos/collection-strip-320.webp");
+      background-image: image-set(url("/photos/collection-strip-320.avif") type("image/avif"), url("/photos/collection-strip-320.webp") type("image/webp"));
+      background-repeat: repeat-x;
+      background-size: auto 1em;
+      background-position: 0 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: reel 48s linear infinite;
+    }
+    @media (min-width: 900px) {
+      .letters.is-near {
+        background-image: url("/photos/collection-strip-480.webp");
+        background-image: image-set(url("/photos/collection-strip-480.avif") type("image/avif"), url("/photos/collection-strip-480.webp") type("image/webp"));
+      }
+    }
+  }
+
+  /* ---------- 6. Socials, 7. footer ---------- */
   .socials {
-    padding: 1.5rem 0 0.5rem;
-    border-top: 1px solid var(--gold);
-    text-align: center;
+    margin: 3rem var(--gutter) 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(201, 154, 76, 0.45);
   }
   .socials ul {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.25rem 1.5rem;
-    margin: 0.5rem 0 0;
+    gap: 0.25rem 1.75rem;
+    margin: 0.4rem 0 0;
     padding: 0;
     list-style: none;
+  }
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 1.5rem;
+  }
+  .socials ul {
+    margin: 0;
   }
   .socials a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
   }
-
   .footer {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.25rem 1.5rem;
-    padding: 1rem 1.25rem 1.5rem;
+    align-items: center;
+    gap: 0.25rem 2rem;
+    padding: 1.5rem var(--gutter) 2rem;
     font-size: 1rem;
+    color: var(--muted);
+  }
+  .footer__seal {
+    width: 48px;
+    height: 48px;
+    rotate: -8deg;
   }
   .footer a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
   }
+
+  /* ---------- Computer: full width ---------- */
+  @media (min-width: 900px) {
+    .hero {
+      grid-template-columns: minmax(0, 66fr) minmax(0, 30fr);
+      grid-template-areas: "id id" "video side";
+      column-gap: clamp(2rem, 3.5vw, 4rem);
+      row-gap: clamp(1rem, 2vw, 2rem);
+      align-items: start;
+      padding-top: clamp(1.5rem, 2.6vw, 2.75rem);
+      padding-bottom: 4rem;
+    }
+    .hero__id {
+      grid-area: id;
+      padding-right: 150px; /* room for the seal, in the masthead as on phones */
+    }
+    .hero__name {
+      padding-right: 0;
+      font-size: 5.4vw;
+      line-height: 0.95;
+      white-space: nowrap;
+    }
+    .hero__name span {
+      display: inline;
+    }
+    .hero__line {
+      margin-top: 0.8rem;
+    }
+    .hero__video {
+      grid-area: video;
+      margin-inline: 0;
+    }
+    .hero__label {
+      margin-inline: 0;
+    }
+    .seal {
+      width: 120px;
+      height: 120px;
+      top: clamp(1.25rem, 2.2vw, 2.25rem);
+      right: var(--gutter);
+    }
+    /* Caption column starts level with the video: no empty quadrant. */
+    .hero__side {
+      grid-area: side;
+      padding-top: 2.1rem; /* the height of the "No 01 Latest video" label */
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .hero__title {
+      font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+    }
+    .hero__meta {
+      font-size: 1.15rem;
+    }
+    .block {
+      padding-top: 4.5rem;
+    }
+    .story {
+      display: grid;
+      grid-template-columns: minmax(0, 36fr) minmax(0, 50fr);
+      align-items: center;
+      gap: clamp(2rem, 5vw, 5rem);
+    }
+    .story__photo img {
+      margin-bottom: 0;
+    }
+    .news__body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: start;
+    }
+    .support {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.3em);
+    }
+  }
+  /* One strip width per loop: the strip is about 6 times as wide as it is tall. */
+  @keyframes reel {
+    to {
+      background-position: -5.97em 50%;
+    }
+  }
 </style>
 
 <script>
-  // Load the player only after the visitor clicks: nothing from YouTube before that.
-  document.querySelectorAll<HTMLAnchorElement>("[data-video-id]").forEach((link) => {
-    link.addEventListener("click", (event) => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
-      event.preventDefault();
-
-      const id = link.dataset.videoId || "";
-      if (!/^[\w-]{11}$/.test(id)) return;
-
-      const iframe = document.createElement("iframe");
-      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&hl=en`;
-      iframe.title = link.dataset.videoTitle || "YouTube video";
-      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-      iframe.allowFullscreen = true;
-      iframe.referrerPolicy = "strict-origin-when-cross-origin";
-
-      link.replaceWith(iframe);
-      iframe.focus();
-    });
-  });
+  // Load the collection photo only when the newsletter comes close to the screen.
+  const letters = document.querySelectorAll<HTMLElement>("[data-letters]");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-near");
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: "400px 0px" }
+    );
+    letters.forEach((el) => io.observe(el));
+  } else {
+    letters.forEach((el) => el.classList.add("is-near"));
+  }
 </script>

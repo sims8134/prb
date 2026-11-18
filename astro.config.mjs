@@ -71,9 +71,7 @@ export default defineConfig({
     sitemap({
       // The home page is rendered on the server, so it must be listed by hand.
       customPages: [`${SITE}/`],
-      filter: (page) =>
-        !page.includes('/proto/') &&
-        !Object.keys(redirects).some((from) => page === `${SITE}${from}` || page === `${SITE}${from}/`),
+      filter: (page) => !Object.keys(redirects).some((from) => page === `${SITE}${from}` || page === `${SITE}${from}/`),
     }),
     trailingSlashRedirects,
   ],

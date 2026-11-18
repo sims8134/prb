@@ -59,9 +59,31 @@ const CONTACT = "contact@peoplesrepublicofbulgaria.com";
 <style>
   .legal {
     width: 100%;
-    max-width: 34rem;
-    margin: 0 auto;
-    padding: 1rem 1.25rem 1.5rem;
+    padding: 1rem var(--gutter) 2rem;
+  }
+  dd {
+    color: var(--muted);
+  }
+  @media (min-width: 900px) {
+    .legal {
+      padding-top: 2rem;
+    }
+    .legal h1 {
+      font-size: clamp(2.6rem, 5vw, 5rem) !important;
+      line-height: 0.95 !important;
+      margin-bottom: 2.25rem !important;
+    }
+    .legal dl {
+      display: grid;
+      grid-template-columns: minmax(12rem, 22rem) minmax(0, 46rem);
+      column-gap: 3rem;
+      row-gap: 0.25rem;
+      border-top: 1px solid rgba(201, 154, 76, 0.45);
+      padding-top: 1.25rem;
+    }
+    .legal dt {
+      padding-top: 0.2rem;
+    }
   }
   .legal__back {
     display: inline-flex;
@@ -81,7 +103,7 @@ const CONTACT = "contact@peoplesrepublicofbulgaria.com";
     line-height: 1.15;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    color: var(--bordeaux);
+    color: var(--cream);
   }
   dl {
     margin: 0;
@@ -92,7 +114,7 @@ const CONTACT = "contact@peoplesrepublicofbulgaria.com";
     font-size: 0.875rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--gold-text);
+    color: var(--gold);
   }
   dd {
     margin: 0.125rem 0 0.75rem;

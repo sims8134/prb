@@ -10,10 +10,6 @@
 ---
 
 <form class="newsletter" id="newsletter-form" action="/api/newsletter" method="POST" novalidate>
-  <p class="newsletter__intro">
-    New videos and Cold War Bulgaria news, now and then. No spam, and you can leave with one email.
-  </p>
-
   <div aria-hidden="true" class="newsletter__trap">
     <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
   </div>
@@ -44,9 +40,7 @@
   .newsletter {
     display: grid;
     gap: 0.75rem;
-  }
-  .newsletter__intro {
-    margin: 0 0 0.25rem;
+    max-width: 34rem;
   }
   .newsletter__trap {
     position: absolute;
@@ -60,22 +54,22 @@
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 0.9375rem;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--bordeaux);
+    color: var(--gold);
   }
   .newsletter__input {
     width: 100%;
-    min-height: 48px;
+    min-height: 52px;
     padding: 0.625rem 0.875rem;
     font: inherit;
-    color: var(--ink);
-    background: #fbf1dc;
-    border: 2px solid var(--bordeaux);
-    border-radius: 4px;
+    color: var(--cream);
+    background: var(--night-2);
+    border: 2px solid var(--muted);
+    border-radius: 0;
   }
   .newsletter__input::placeholder {
-    color: #6b5544; /* 5.6:1 on the input background */
+    color: #b9a27c; /* 7.6:1 on the input background */
   }
   .newsletter__consent {
     display: grid;
@@ -86,30 +80,30 @@
     line-height: 1.5;
   }
   .newsletter__consent input {
-    width: 22px;
-    height: 22px;
-    margin: 0.15rem 0 0;
-    accent-color: var(--bordeaux);
+    width: 24px;
+    height: 24px;
+    margin: 0.1rem 0 0;
+    accent-color: var(--cream);
   }
   .newsletter__button {
     justify-self: start;
-    min-height: 48px;
-    padding: 0.625rem 1.25rem;
+    min-height: 52px;
+    padding: 0.625rem 1.4rem;
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 1rem;
-    letter-spacing: 0.08em;
+    font-size: 1.05rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--bordeaux);
+    color: var(--cream);
     background: transparent;
-    border: 2px solid var(--bordeaux);
-    border-radius: 4px;
+    border: 2px solid var(--cream);
+    border-radius: 0;
     cursor: pointer;
     transition: background-color 0.15s ease, color 0.15s ease;
   }
   .newsletter__button:hover {
-    background: var(--bordeaux);
-    color: var(--paper);
+    background: var(--cream);
+    color: var(--bordeaux);
   }
   .newsletter__button[disabled] {
     cursor: progress;
@@ -121,7 +115,7 @@
     font-size: 1rem;
   }
   .newsletter__feedback[data-state="error"] {
-    color: var(--red);
+    color: #f0a28f; /* 8.9:1 on the page background */
   }
 </style>
 

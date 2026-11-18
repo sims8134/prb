@@ -89,41 +89,41 @@ ${confirmUrl}
 You will only be subscribed after this confirmation. The link is valid for 24 hours.
 If you did not ask for this, just ignore this email.`,
       html: `
-        <div style="background:#F3DEB4;padding:32px 16px;color:#2B1A12;font-family:Georgia,'Times New Roman',serif;">
-          <div style="max-width:560px;margin:0 auto;background:#FBF1DC;border:2px solid #5A0E0C;">
-            <div style="height:4px;background:#4A6236;"></div>
-            <div style="height:4px;background:#8B1F10;"></div>
-            <div style="padding:28px 24px 8px 24px;text-align:center;">
-              <img src="https://peoplesrepublicofbulgaria.com/brand/email-logo-180.png" alt="PRB logo" width="90" height="90" style="display:block;margin:0 auto 14px auto;border:0;">
-              <h1 style="margin:0;font-family:'Arial Narrow',Arial,Helvetica,sans-serif;font-size:24px;line-height:1.2;letter-spacing:1px;color:#5A0E0C;text-transform:uppercase;">
+        <div style="background:#140405;padding:32px 16px;color:#F3DEB4;font-family:Georgia,'Times New Roman',serif;">
+          <div style="max-width:560px;margin:0 auto;background:#1E0809;">
+            <div style="height:3px;background:#4A6236;"></div>
+            <div style="height:3px;background:#8B1F10;"></div>
+            <div style="padding:28px 24px 8px 24px;">
+              <img src="https://peoplesrepublicofbulgaria.com/brand/email-logo-180.png" alt="PRB logo" width="90" height="90" style="display:block;margin:0 0 16px 0;border:0;">
+              <h1 style="margin:0;font-family:'Arial Narrow',Arial,Helvetica,sans-serif;font-size:30px;line-height:1.05;letter-spacing:0.5px;color:#F3DEB4;text-transform:uppercase;">
                 People's Republic of Bulgaria
               </h1>
             </div>
 
             <div style="padding:20px 24px 28px 24px;">
-              <p style="margin:0 0 14px 0;font-family:'Arial Narrow',Arial,Helvetica,sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#7A5A1E;font-weight:bold;">
+              <p style="margin:0 0 14px 0;font-family:'Arial Narrow',Arial,Helvetica,sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#C99A4C;font-weight:bold;">
                 Newsletter confirmation
               </p>
 
-              <p style="margin:0 0 16px 0;font-size:17px;line-height:1.6;">
+              <p style="margin:0 0 16px 0;font-size:17px;line-height:1.6;color:#F3DEB4;">
                 Thanks for signing up to the PRB newsletter. One tap to confirm, then you're on the list.
               </p>
 
               <p style="margin:0 0 24px 0;">
-                <a href="${confirmUrl}" style="display:inline-block;padding:14px 22px;background:#5A0E0C;color:#F3DEB4;text-decoration:none;font-family:'Arial Narrow',Arial,Helvetica,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">
+                <a href="${confirmUrl}" style="display:inline-block;padding:14px 22px;background:#F3DEB4;color:#5A0E0C;text-decoration:none;font-family:'Arial Narrow',Arial,Helvetica,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">
                   Confirm subscription
                 </a>
               </p>
 
-              <p style="margin:0 0 8px 0;font-size:15px;line-height:1.6;">
+              <p style="margin:0 0 8px 0;font-size:15px;line-height:1.6;color:#D9C39A;">
                 You will only be subscribed after this confirmation. The link is valid for 24 hours.
               </p>
-              <p style="margin:0;font-size:15px;line-height:1.6;color:#5C4636;">
+              <p style="margin:0;font-size:15px;line-height:1.6;color:#D9C39A;">
                 If you did not ask for this, just ignore this email.
               </p>
             </div>
-            <div style="height:4px;background:#8B1F10;"></div>
-            <div style="height:4px;background:#4A6236;"></div>
+            <div style="height:3px;background:#8B1F10;"></div>
+            <div style="height:3px;background:#4A6236;"></div>
           </div>
         </div>
       `,

@@ -1,0 +1,121 @@
+---
+// "More from the channel": previous videos of the feed as numbered prints.
+// Each print opens the video on YouTube in a new tab. No player, and thumbnails
+// come from our own domain, lazy loaded: no request to YouTube before a click.
+import { romanDate, spokenDate, thumbUrl, watchUrl, type ChannelVideo } from "../lib/latest-video";
+
+interface Props {
+  videos: ChannelVideo[];
+  /** Number of the first print. The latest video above is No 01. */
+  start?: number;
+}
+const { videos, start = 2 } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<ol class="film" style={`--cols: ${videos.length > 6 ? 4 : 3}`}>
+  {
+    videos.map((v, i) => (
+      <li class="print">
+        <a class="print__link" href={watchUrl(v.id)} target="_blank" rel="noopener noreferrer">
+          <span class="print__frame">
+            <img src={thumbUrl(v.id, "card")} width="320" height="180" alt="" loading="lazy" decoding="async" />
+          </span>
+          <span class="print__edge" aria-hidden="true">
+            <b>{pad(start + i)}</b> {romanDate(v.published)}
+          </span>
+          <span class="print__title">{v.title}</span>
+          <span class="sr-only">, published {spokenDate(v.published)}, opens YouTube in a new tab</span>
+        </a>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .film {
+    position: relative;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(74%, 300px);
+    gap: 1rem;
+    margin: 0;
+    padding: 1.1rem var(--gutter) 1.4rem;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) transparent;
+    background: #0d0606;
+  }
+  .print {
+    scroll-snap-align: start;
+  }
+  .print__link {
+    position: relative; /* contains the screen-reader text, which must not widen the page */
+    display: block;
+    text-decoration: none;
+  }
+  .print__link:focus-visible {
+    outline-offset: 4px;
+  }
+  .print__frame {
+    display: block;
+    overflow: hidden;
+    background: var(--night-2);
+    box-shadow: 0 0 0 1px rgba(243, 222, 180, 0.14);
+  }
+  .print__frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    filter: saturate(0.9);
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.5s ease;
+  }
+  .print__link:hover img,
+  .print__link:focus-visible img {
+    transform: scale(1.04);
+    filter: saturate(1.05);
+  }
+  .print__edge {
+    display: block;
+    margin-top: 0.55rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .print__edge b {
+    color: var(--cream);
+    margin-right: 0.4rem;
+  }
+  .print__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 0.2rem;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--cream);
+  }
+  .print__link:hover .print__title {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (min-width: 900px) {
+    .film {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); /* 3 + 3 or 4 + 4: no empty slot */
+      overflow: visible;
+      gap: 2rem 1.5rem;
+      padding: 2rem var(--gutter) 2.25rem;
+    }
+  }
+</style>

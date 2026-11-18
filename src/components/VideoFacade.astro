@@ -1,23 +1,35 @@
 ---
-// Latest video as a plain link until the visitor clicks, then a youtube-nocookie player.
-// Nothing is requested from YouTube before the click. Colours come from CSS variables
-// set by the page: --vf-frame (border/background) and --vf-ink (play tag text).
-import type { LatestVideo } from "../lib/latest-video";
-import { CHANNEL_URL } from "../lib/latest-video";
+// Latest video as a plain link until the visitor clicks, then a youtube-nocookie
+// player in place. Nothing is requested from YouTube by the browser before the
+// click: the thumbnail comes from our own domain (/api/thumb).
+import { CHANNEL_URL, romanDate, thumbUrl, watchUrl, type LatestVideo } from "../lib/latest-video";
 
 interface Props {
   video: LatestVideo | null;
+  /** CSS sizes hint for the thumbnail. */
+  sizes?: string;
 }
-const { video } = Astro.props;
+const { video, sizes = "100vw" } = Astro.props;
 ---
 
 {
   video ? (
     <div class="vf">
-      <a class="vf__link" href={`https://www.youtube.com/watch?v=${video.id}`} data-video-id={video.id} data-video-title={video.title}>
-        {video.thumbnail && <img src={video.thumbnail} width="480" height="360" alt="" />}
-        <span class="vf__play" aria-hidden="true">Play</span>
-        <span class="sr-only">Play the video: {video.title}</span>
+      <a class="vf__link" href={watchUrl(video.id)} data-video-id={video.id} data-video-title={video.title}>
+        <img
+          src={thumbUrl(video.id, "max")}
+          srcset={`${thumbUrl(video.id, "sd")} 640w, ${thumbUrl(video.id, "max")} 1280w`}
+          sizes={sizes}
+          width="1280"
+          height="720"
+          alt=""
+          fetchpriority="high"
+        />
+        <span class="vf__play" aria-hidden="true">
+          <span class="vf__icon"></span>
+          <span class="vf__words"><span class="vf__verb">Play</span><span class="vf__air">On air {romanDate(video.published)}</span></span>
+        </span>
+        <span class="sr-only">Play the video here: {video.title}</span>
       </a>
     </div>
   ) : (
@@ -31,9 +43,9 @@ const { video } = Astro.props;
   .vf {
     position: relative;
     aspect-ratio: 16 / 9;
-    background: var(--vf-frame, #5a0e0c);
-    border: 2px solid var(--vf-frame, #5a0e0c);
+    background: var(--night-2);
     overflow: hidden;
+    box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.9);
   }
   .vf__link,
   .vf :global(iframe) {
@@ -47,47 +59,86 @@ const { video } = Astro.props;
     display: block;
   }
   .vf__link:focus-visible {
-    outline: 3px solid var(--vf-ink, #f3deb4);
-    outline-offset: -7px;
+    outline: 3px solid var(--cream);
+    outline-offset: -8px;
   }
   .vf__link img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    animation: settle 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
     transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   .vf__link:hover img,
   .vf__link:focus-visible img {
-    transform: scale(1.03);
+    transform: scale(1.025);
   }
+  /* Large play control, bottom left, so the thumbnail's own title stays readable. */
+  /* Large play control with its air date. */
   .vf__play {
     position: absolute;
-    left: 12px;
-    bottom: 12px;
+    left: clamp(10px, 2.2vw, 28px);
+    bottom: clamp(10px, 2.2vw, 28px);
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
-    min-height: 46px;
-    padding: 0 1.1rem 0 0.95rem;
-    background: var(--vf-frame, #5a0e0c);
-    color: var(--vf-ink, #f3deb4);
-    box-shadow: 0 0 0 2px var(--vf-ink, #f3deb4);
+    gap: clamp(0.75rem, 1.4vw, 1.25rem);
+    min-height: clamp(72px, 8vw, 116px);
+    padding: 0 clamp(1.2rem, 2.2vw, 2.2rem) 0 clamp(1rem, 1.8vw, 1.8rem);
+    background: var(--cream);
+    color: var(--bordeaux);
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 1.05rem;
-    letter-spacing: 0.12em;
     text-transform: uppercase;
+    box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.7);
+    transition: transform 0.2s ease;
   }
-  .vf__play::before {
+  .vf__icon {
+    width: clamp(34px, 3.6vw, 54px);
+    height: clamp(34px, 3.6vw, 54px);
+    border-radius: 50%;
+    background: var(--bordeaux);
+    position: relative;
+    flex: none;
+  }
+  .vf__icon::after {
     content: "";
+    position: absolute;
+    top: 50%;
+    left: 54%;
+    translate: -50% -50%;
     border-style: solid;
-    border-width: 8px 0 8px 13px;
-    border-color: transparent transparent transparent currentColor;
+    border-width: 0.42em 0 0.42em 0.7em;
+    border-color: transparent transparent transparent var(--cream);
+    font-size: clamp(1.1rem, 1.8vw, 1.7rem);
+  }
+  .vf__words {
+    display: grid;
+    line-height: 1;
+  }
+  .vf__verb {
+    font-size: clamp(1.6rem, 2.8vw, 2.6rem);
+    letter-spacing: 0.1em;
+  }
+  .vf__air {
+    margin-top: 0.3em;
+    font-size: clamp(0.75rem, 1vw, 0.95rem);
+    letter-spacing: 0.18em;
+    color: #6e3a1e; /* 6.4:1 on cream */
+  }
+  .vf__link:hover .vf__play,
+  .vf__link:focus-visible .vf__play {
+    transform: translateY(-2px);
   }
   .vf__fallback {
-    padding: 1rem;
-    border: 2px solid currentColor;
+    padding: 1.25rem;
+    border: 2px solid var(--gold);
+  }
+  @keyframes settle {
+    from {
+      transform: scale(1.06);
+      opacity: 0.4;
+    }
   }
 </style>
 

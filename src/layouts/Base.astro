@@ -3,13 +3,11 @@ interface Props {
   title: string;
   description: string;
   path: string;
-  /** Prototypes and other pages that must stay out of search engines. */
+  /** Pages that must stay out of search engines. */
   noindex?: boolean;
-  /** Thin green + red rule at the top and bottom of the page. */
-  rules?: boolean;
 }
 
-const { title, description, path, noindex = false, rules = true } = Astro.props;
+const { title, description, path, noindex = false } = Astro.props;
 const SITE = "https://peoplesrepublicofbulgaria.com";
 const url = `${SITE}${path}`;
 const ogImage = `${SITE}/brand/og-1200x630.jpg`;
@@ -23,7 +21,7 @@ const ogImage = `${SITE}/brand/og-1200x630.jpg`;
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href={url} />}
-    <meta name="theme-color" content="#F3DEB4" />
+    <meta name="theme-color" content="#140405" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="People's Republic of Bulgaria" />
@@ -33,7 +31,7 @@ const ogImage = `${SITE}/brand/og-1200x630.jpg`;
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="PRB logo on cream paper" />
+    <meta property="og:image:alt" content="PRB logo" />
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -42,11 +40,12 @@ const ogImage = `${SITE}/brand/og-1200x630.jpg`;
 
     <link rel="preload" href="/fonts/oswald-600-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/source-serif-4-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
   </head>
   <body>
-    {rules && <div class="rule" aria-hidden="true"></div>}
+    <div class="rule" aria-hidden="true"></div>
     <slot />
-    {rules && <div class="rule rule--bottom" aria-hidden="true"></div>}
+    <div class="rule rule--bottom" aria-hidden="true"></div>
   </body>
 </html>
 
@@ -80,19 +79,22 @@ const ogImage = `${SITE}/brand/og-1200x630.jpg`;
   }
 
   :root {
-    /* Palette taken from the logo. Contrast ratios are against --paper. */
-    --paper: #f3deb4; /* cream */
-    --ink: #2b1a12; /* body text, 12.6:1 */
-    --bordeaux: #5a0e0c; /* titles, primary button, 10.6:1 */
-    --gold: #c99a4c; /* decoration only, never text (1.9:1) */
-    --gold-text: #7a5a1e; /* gold for small text, 4.8:1 */
-    --green: #4a6236; /* rule only */
-    --red: #8b1f10; /* rule only */
+    /* "Night broadcast": palette taken from the logo, on a near-black bordeaux.
+       Contrast ratios are against --night. */
+    --night: #140405; /* page background */
+    --night-2: #1e0809; /* raised surfaces (film band, inputs) */
+    --cream: #f3deb4; /* main text, 15.4:1 */
+    --muted: #d9c39a; /* secondary text, 12:1 */
+    --gold: #c99a4c; /* numbers and labels, 7:1 */
+    --bordeaux: #5a0e0c; /* frames, play button */
+    --green: #4a6236; /* thin rule only */
+    --red: #8b1f10; /* thin rule only */
 
     --font-display: "Oswald", "Arial Narrow", "Roboto Condensed", sans-serif;
     --font-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --gutter: clamp(1.1rem, 4.5vw, 5rem);
 
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   *,
@@ -110,40 +112,40 @@ const ogImage = `${SITE}/brand/og-1200x630.jpg`;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--paper);
-    color: var(--ink);
+    background: var(--night);
+    color: var(--cream);
     font-family: var(--font-text);
     font-size: 1.125rem;
     line-height: 1.6;
   }
 
   ::selection {
-    background: var(--bordeaux);
-    color: var(--paper);
+    background: var(--cream);
+    color: var(--bordeaux);
   }
 
-  /* Thin green + red rule, taken from the rings of the logo. */
+  /* Thin green + red rule, taken from the rings of the logo. Stays thin on purpose. */
   .rule {
-    height: 8px;
+    height: 6px;
     flex: none;
-    background: linear-gradient(var(--green) 0 4px, var(--red) 4px 8px);
+    background: linear-gradient(var(--green) 0 3px, var(--red) 3px 6px);
   }
   .rule--bottom {
     margin-top: auto;
-    background: linear-gradient(var(--red) 0 4px, var(--green) 4px 8px);
+    background: linear-gradient(var(--red) 0 3px, var(--green) 3px 6px);
   }
 
   a {
-    color: var(--bordeaux);
+    color: var(--cream);
     text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
+    text-underline-offset: 0.2em;
   }
   a:hover {
     text-decoration-thickness: 2px;
   }
 
   :focus-visible {
-    outline: 3px solid var(--bordeaux);
+    outline: 3px solid var(--cream);
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -161,13 +163,34 @@ const ogImage = `${SITE}/brand/og-1200x630.jpg`;
   }
 
   .label {
-    display: block;
+    display: inline-block;
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 0.8125rem;
-    letter-spacing: 0.14em;
+    font-size: 0.875rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--gold-text);
+    color: var(--gold);
+  }
+
+  /* The one primary action style: cream plate, bordeaux letters (10.6:1). */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    padding: 0 1.75rem;
+    background: var(--cream);
+    color: var(--bordeaux);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+  .cta:hover {
+    background: #ffffff;
   }
 
   @media (prefers-reduced-motion: reduce) {

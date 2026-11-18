@@ -127,30 +127,31 @@ function statusPage(title: string, message: string, status: number, actions: str
   <style>
     @font-face { font-family: "Oswald"; font-weight: 600; font-display: swap; src: url("/fonts/oswald-600-latin.woff2") format("woff2"); }
     @font-face { font-family: "Source Serif 4"; font-weight: 400; font-display: swap; src: url("/fonts/source-serif-4-400-latin.woff2") format("woff2"); }
-    body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: #f3deb4; color: #2b1a12;
+    body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: #140405; color: #f3deb4;
       font: 1.125rem/1.6 "Source Serif 4", Georgia, serif; }
-    .rule { height: 8px; background: linear-gradient(#4a6236 0 4px, #8b1f10 4px 8px); }
-    .rule:last-child { margin-top: auto; background: linear-gradient(#8b1f10 0 4px, #4a6236 4px 8px); }
-    main { max-width: 34rem; margin: 0 auto; padding: 2.5rem 1.25rem; text-align: center; }
-    img { display: block; margin: 0 auto 1rem; }
-    h1 { margin: 0 0 0.75rem; font: 600 clamp(1.6rem, 7vw, 2.2rem)/1.15 "Oswald", "Arial Narrow", sans-serif;
-      letter-spacing: 0.02em; text-transform: uppercase; color: #5a0e0c; }
-    p { margin: 0 0 1.5rem; }
-    .actions { display: grid; gap: 0.75rem; justify-items: center; }
+    .rule { height: 6px; background: linear-gradient(#4a6236 0 3px, #8b1f10 3px 6px); }
+    .rule:last-child { margin-top: auto; background: linear-gradient(#8b1f10 0 3px, #4a6236 3px 6px); }
+    main { width: 100%; padding: 3rem clamp(1.1rem, 4.5vw, 5rem) 4rem; }
+    img { display: block; margin: 0 0 1.5rem; rotate: -8deg; filter: drop-shadow(0 8px 20px rgba(0,0,0,.6)); }
+    h1 { margin: 0 0 1rem; max-width: 16ch; font: 600 clamp(2.4rem, 10vw, 6.5rem)/0.92 "Oswald", "Arial Narrow", sans-serif;
+      text-transform: uppercase; color: #f3deb4; }
+    p { margin: 0 0 1.75rem; max-width: 34rem; color: #d9c39a; }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; align-items: center; }
     form { margin: 0; }
-    .primary, .secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 52px;
-      padding: 0 1.5rem; border-radius: 4px; border: 2px solid #5a0e0c; text-decoration: none; cursor: pointer;
-      font: 600 1.0625rem "Oswald", "Arial Narrow", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
-    .primary { background: #5a0e0c; color: #f3deb4; }
-    .secondary { background: transparent; color: #5a0e0c; min-height: 44px; border-color: transparent;
-      text-decoration: underline; text-underline-offset: 0.18em; }
-    .primary:focus-visible, .secondary:focus-visible { outline: 3px solid #2b1a12; outline-offset: 3px; }
+    .primary, .secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 56px;
+      padding: 0 1.75rem; border: 0; text-decoration: none; cursor: pointer;
+      font: 600 1.125rem "Oswald", "Arial Narrow", sans-serif; letter-spacing: 0.1em; text-transform: uppercase; }
+    .primary { background: #f3deb4; color: #5a0e0c; }
+    .primary:hover { background: #fff; }
+    .secondary { background: transparent; color: #f3deb4; min-height: 44px; padding: 0;
+      text-decoration: underline; text-underline-offset: 0.2em; }
+    .primary:focus-visible, .secondary:focus-visible { outline: 3px solid #f3deb4; outline-offset: 3px; }
   </style>
 </head>
 <body>
   <div class="rule" aria-hidden="true"></div>
   <main>
-    <img src="/brand/logo-160.webp" srcset="/brand/logo-160.webp 1x, /brand/logo-320.webp 2x" width="120" height="120" alt="PRB logo" />
+    <img src="/brand/logo-160.webp" srcset="/brand/logo-160.webp 1x, /brand/logo-320.webp 2x" width="104" height="104" alt="PRB logo" />
     <h1>${title}</h1>
     <p>${message}</p>
     <div class="actions">${actions}</div>

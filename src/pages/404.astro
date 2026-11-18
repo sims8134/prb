@@ -2,57 +2,43 @@
 import Base from "../layouts/Base.astro";
 ---
 
-<Base
-  title="Page not found | People's Republic of Bulgaria"
-  description="This page is not here any more."
-  path="/404"
->
+<Base title="Page not found | People's Republic of Bulgaria" description="This page is not here any more." path="/404" noindex>
   <main class="lost">
-    <img src="/brand/logo-160.webp" srcset="/brand/logo-160.webp 1x, /brand/logo-320.webp 2x" width="120" height="120" alt="PRB logo" />
+    <img class="lost__seal" src="/brand/logo-160.webp" srcset="/brand/logo-160.webp 160w, /brand/logo-320.webp 320w" sizes="104px" width="104" height="104" alt="PRB logo" />
+    <p class="label">№ 404</p>
     <h1>This page is not here any more</h1>
-    <p>The site now fits on a single page. The latest video is waiting for you there.</p>
-    <a class="lost__cta" href="/">Go to the latest video</a>
+    <p class="lost__text">The site now fits on a single page. The latest video is waiting for you there.</p>
+    <a class="cta" href="/">Go to the latest video</a>
   </main>
 </Base>
 
 <style>
   .lost {
-    max-width: 34rem;
-    margin: 0 auto;
-    padding: 2.5rem 1.25rem;
-    text-align: center;
+    width: 100%;
+    padding: 3rem var(--gutter) 4rem;
   }
-  img {
+  .lost__seal {
     display: block;
-    margin: 0 auto 1rem;
+    margin-bottom: 1.5rem;
+    rotate: -8deg;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
+  }
+  .label {
+    margin: 0 0 0.5rem;
   }
   h1 {
-    margin: 0 0 0.75rem;
+    margin: 0 0 1rem;
+    max-width: 14ch;
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: clamp(1.6rem, 7vw, 2.2rem);
-    line-height: 1.15;
+    font-size: clamp(2.6rem, 11vw, 7.5rem);
+    line-height: 0.92;
     text-transform: uppercase;
-    color: var(--bordeaux);
+    color: var(--cream);
   }
-  p {
-    margin: 0 0 1.5rem;
-  }
-  .lost__cta {
-    display: inline-flex;
-    align-items: center;
-    min-height: 48px;
-    padding: 0 1.25rem;
-    border-radius: 4px;
-    background: var(--bordeaux);
-    color: var(--paper);
-    text-decoration: none;
-    font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .lost__cta:focus-visible {
-    outline-color: var(--ink);
+  .lost__text {
+    margin: 0 0 1.75rem;
+    max-width: 32rem;
+    color: var(--muted);
   }
 </style>
