@@ -1,5 +1,6 @@
 ---
 import { siteContent, supportedLangs } from "../data/site";
+import "../styles/fonts.css"; // Oswald + Roboto hosted on this site (same rules as Google Fonts)
 
 const {
   lang = "en",
@@ -40,7 +41,9 @@ const heroStyle = heroImage
   <meta property="og:type" content="website" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content="https://peoplesrepublicofbulgaria.com/home/og.png" />
+  <meta property="og:image" content="https://peoplesrepublicofbulgaria.com/brand/og-1200x630.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:url" content={`${SITE}/${lang}${subPath}`} />
   <meta property="og:site_name" content="People's Republic of Bulgaria" />
   <meta property="og:locale" content={lang === "fr" ? "fr_FR" : lang === "es" ? "es_ES" : lang === "bg" ? "bg_BG" : "en_US"} />
@@ -49,7 +52,7 @@ const heroStyle = heroImage
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content="https://peoplesrepublicofbulgaria.com/home/og.png" />
+  <meta name="twitter:image" content="https://peoplesrepublicofbulgaria.com/brand/og-1200x630.jpg" />
 
  <!-- Hreflang -->
   {supportedLangs.map((l) => (
@@ -60,15 +63,12 @@ const heroStyle = heroImage
 <!-- Canonical -->
   <link rel="canonical" href={`${SITE}/${lang}${subPath}`} />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;700&display=swap"
-    rel="stylesheet"/>
+  <!-- Fonts: hosted on this site, see src/styles/fonts.css -->
 
   <!-- Favicon -->
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/brand/favicon-32.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
   <!-- Structured Data -->
   <script type="application/ld+json" set:html={JSON.stringify({
@@ -319,7 +319,7 @@ const heroStyle = heroImage
     </div>
   </div>
 
-  <img class="logo" src="/png/PRB_logo.png" alt="People's Republic Of Bulgaria" />
+  <img class="logo" src="/brand/logo-320.webp" srcset="/brand/logo-160.webp 160w, /brand/logo-320.webp 320w" sizes="150px" width="150" height="150" alt="People's Republic Of Bulgaria" />
   <h1>People's Republic Of Bulgaria</h1>
   <p class="tagline">{t.home.tagline}</p>
 </div>
@@ -361,7 +361,7 @@ const heroStyle = heroImage
         <a href={item.href}>{item.label}</a>
       ))}
       <a href={`/${lang}#newsletter`}>Newsletter</a>
-      <a href="https://buymeacoffee.com/peoplesrepublicofbulgaria" target="_blank" rel="noopener noreferrer">☕ Support us</a>
+      <a href="https://buymeacoffee.com/peoplesrepublicofbulgaria" target="_blank" rel="noopener noreferrer">☕ Support the channel</a>
     </div>
 
     <p id="copyright-text">{footer.copyright}</p>

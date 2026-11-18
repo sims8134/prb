@@ -7,17 +7,25 @@ import {
   buildNav,
   buildFooter,
 } from "../../data/site";
-import { getPlaylistVideos } from "../../data/youtube";
+import VideoFacade from "../../components/VideoFacade.astro";
+import { getLatestVideo } from "../../lib/latest-video";
 
-export function getStaticPaths() {
-  return supportedLangs.map((lang) => ({ params: { lang } }));
+// Rendered on the server so the latest video updates by itself (public channel feed, no API key).
+export const prerender = false;
+
+// Only the four site languages exist: anything else is a 404, not a copy of the English page.
+if (!supportedLangs.includes(Astro.params.lang as (typeof supportedLangs)[number])) {
+  return new Response(null, { status: 404 });
 }
 
 const lang = getLangFromParams(Astro.params.lang);
 const t = siteContent[lang];
 
-const latestVideos = await getPlaylistVideos(import.meta.env.PLAYLIST_LATEST);
-const latestVideo = latestVideos[0] ?? null;
+const latest = await getLatestVideo();
+const latestVideo = latest ? { videoId: latest.id, title: latest.title, video: latest } : null;
+
+// CDN keeps the page 30 min, then serves the old copy while refreshing it.
+Astro.response.headers.set("Cache-Control", "public, max-age=0, s-maxage=1800, stale-while-revalidate=86400");
 ---
 
 <MainLayout
@@ -346,12 +354,7 @@ const latestVideo = latestVideos[0] ?? null;
   {latestVideo ? (
     <>
       <div class="video-embed">
-        <iframe
-          src={`https://www.youtube.com/embed/${latestVideo.videoId}?rel=0`}
-          title={latestVideo.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
+        <VideoFacade video={latestVideo.video} playLabel={{ en: "Play", fr: "Lecture", es: "Reproducir", bg: "Пусни" }[lang]} />
       </div>
 
       <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
