@@ -3,9 +3,13 @@ interface Props {
   title: string;
   description: string;
   path: string;
+  /** Prototypes and other pages that must stay out of search engines. */
+  noindex?: boolean;
+  /** Thin green + red rule at the top and bottom of the page. */
+  rules?: boolean;
 }
 
-const { title, description, path } = Astro.props;
+const { title, description, path, noindex = false, rules = true } = Astro.props;
 const SITE = "https://peoplesrepublicofbulgaria.com";
 const url = `${SITE}${path}`;
 const ogImage = `${SITE}/brand/og-1200x630.jpg`;
@@ -18,7 +22,7 @@ const ogImage = `${SITE}/brand/og-1200x630.jpg`;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={url} />
+    {noindex ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href={url} />}
     <meta name="theme-color" content="#F3DEB4" />
 
     <meta property="og:type" content="website" />
@@ -40,9 +44,9 @@ const ogImage = `${SITE}/brand/og-1200x630.jpg`;
     <link rel="preload" href="/fonts/source-serif-4-400-latin.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
-    <div class="rule" aria-hidden="true"></div>
+    {rules && <div class="rule" aria-hidden="true"></div>}
     <slot />
-    <div class="rule rule--bottom" aria-hidden="true"></div>
+    {rules && <div class="rule rule--bottom" aria-hidden="true"></div>}
   </body>
 </html>
 

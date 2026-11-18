@@ -1,0 +1,337 @@
+---
+// PROTOTYPE A: "Night broadcast". Temporary, not linked, not indexed.
+import Base from "../../layouts/Base.astro";
+import VideoFacade from "../../components/VideoFacade.astro";
+import { CHANNEL_URL, getLatestVideo, romanDate, spokenDate } from "../../lib/latest-video";
+
+export const prerender = false;
+const video = await getLatestVideo();
+Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
+Astro.response.headers.set("Cache-Control", "public, max-age=0, s-maxage=1800, stale-while-revalidate=86400");
+const srcset = (ext: string) => [640, 1080, 1600, 2000].map((w) => `/photos/missiles-duo-${w}.${ext} ${w}w`).join(", ");
+---
+
+<Base title="Prototype A | People's Republic of Bulgaria" description="Prototype A" path="/proto/a" noindex rules={false}>
+  <main class="night">
+    <section class="hero">
+      <picture class="hero__photo">
+        <source type="image/avif" srcset={srcset("avif")} sizes="(min-width: 900px) 50vw, 100vw" />
+        <source type="image/webp" srcset={srcset("webp")} sizes="(min-width: 900px) 50vw, 100vw" />
+        <img
+          src="/photos/missiles-duo-1080.webp"
+          width="1080"
+          height="1440"
+          alt="A twin missile launcher on a tracked vehicle, seen from the front, under a heavy sky"
+          fetchpriority="high"
+        />
+      </picture>
+      <span class="hero__shot" aria-hidden="true">Shot on the ground · 6 XI 2021</span>
+
+      <img class="seal" src="/brand/logo-160.webp" srcset="/brand/logo-160.webp 160w, /brand/logo-320.webp 320w" sizes="104px" width="104" height="104" alt="PRB logo" />
+
+      <div class="hero__text">
+        <h1 class="hero__title">
+          <span>People's</span>
+          <span>Republic of</span>
+          <span>Bulgaria</span>
+        </h1>
+        <p class="hero__line">Archive mixes and urbex from Bulgaria's Cold War years, on YouTube.</p>
+        <a class="hero__down" href="#latest">Watch the latest video <span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+
+    <section class="show" id="latest" aria-labelledby="latest-title">
+      <h2 class="show__head" id="latest-title">
+        <span class="show__num" aria-hidden="true">№ 01</span>
+        <span>Latest video</span>
+        <span class="show__live" aria-hidden="true">Now showing</span>
+      </h2>
+      <div class="show__grid">
+        <VideoFacade video={video} />
+        <div class="show__meta">
+          {video && <p class="show__title">{video.title}</p>}
+          {
+            video && (
+              <p class="show__date">
+                <time datetime={video.published.toISOString()}>
+                  <span aria-hidden="true">{romanDate(video.published)}</span>
+                  <span class="sr-only">{spokenDate(video.published)}</span>
+                </time>
+                <span aria-hidden="true"> · </span>Grab a coffee, press play.
+              </p>
+            )
+          }
+          <a class="cta" href={`${CHANNEL_URL}?sub_confirmation=1`}>Subscribe on YouTube</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  :global(body) {
+    background: #140405;
+    color: #f3deb4;
+  }
+  .night {
+    --night: #140405;
+    --cream: #f3deb4;
+    --muted: #d9c39a; /* 12:1 on --night */
+    --vf-frame: #5a0e0c;
+    --vf-ink: #f3deb4;
+  }
+  .night :global(a) {
+    color: var(--cream);
+  }
+  .night :global(:focus-visible) {
+    outline-color: var(--cream);
+  }
+
+  /* HERO: full screen on a phone, two halves on a computer */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero__photo,
+  .hero__photo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .hero__photo {
+    z-index: -2;
+  }
+  .hero__photo img {
+    object-fit: cover;
+    object-position: 50% 30%;
+    animation: settle 9s cubic-bezier(0.15, 0.6, 0.2, 1) both;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(20, 4, 5, 0) 25%, rgba(20, 4, 5, 0.72) 58%, #140405 88%);
+  }
+  .hero__shot {
+    position: absolute;
+    top: 1.1rem;
+    left: 1.1rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: rgba(20, 4, 5, 0.72);
+    padding: 0.35rem 0.6rem;
+  }
+  .seal {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    width: 104px;
+    height: 104px;
+    rotate: -8deg;
+    filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.55));
+  }
+  @supports (animation-timeline: scroll()) {
+    .seal {
+      animation: turn linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+  }
+  .hero__text {
+    padding: 0 1.1rem 2.2rem;
+  }
+  .hero__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(3.1rem, 15.5vw, 8.6rem);
+    line-height: 0.9;
+    letter-spacing: -0.005em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .hero__title span {
+    display: block;
+    animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .hero__title span:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+  .hero__title span:nth-child(3) {
+    animation-delay: 0.24s;
+  }
+  .hero__line {
+    margin: 1rem 0 0;
+    max-width: 30rem;
+    font-size: clamp(1.15rem, 4.6vw, 1.6rem);
+    line-height: 1.35;
+    color: var(--cream);
+  }
+  .hero__down {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+  }
+
+  /* LATEST VIDEO */
+  .show {
+    padding: 2.5rem 1.1rem 3.5rem;
+  }
+  .show__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.9rem;
+    margin: 0 0 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.9rem, 8vw, 4rem);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .show__num {
+    font-size: 0.42em;
+    letter-spacing: 0.14em;
+    color: #c99a4c; /* 7:1 on --night */
+  }
+  .show__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.32em;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+  }
+  .show__live::before {
+    content: "";
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 50%;
+    background: #e2492f;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  .show__grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .show__title {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 1.25;
+  }
+  .show__date {
+    margin: 0;
+    color: var(--muted);
+  }
+  .show__date time {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #c99a4c;
+  }
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    margin-top: 1.25rem;
+    padding: 0 1.75rem;
+    background: var(--cream);
+    color: #5a0e0c !important;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .cta:hover {
+    background: #ffffff;
+  }
+
+  @media (min-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+    .hero__photo {
+      left: 50%;
+      width: 50%;
+    }
+    .hero::after {
+      background: linear-gradient(90deg, #140405 50%, rgba(20, 4, 5, 0.25) 62%, rgba(20, 4, 5, 0) 75%);
+    }
+    .hero__shot {
+      left: auto;
+      right: 1.5rem;
+      top: auto;
+      bottom: 1.5rem;
+    }
+    .seal {
+      top: auto;
+      right: auto;
+      left: calc(50% - 64px);
+      bottom: 3rem;
+      width: 128px;
+      height: 128px;
+    }
+    .hero__text {
+      padding: 4rem 3rem 4rem clamp(2rem, 5vw, 6rem);
+    }
+    .hero__title {
+      font-size: clamp(4rem, 8.4vw, 10rem);
+    }
+    .show {
+      padding: 5rem clamp(2rem, 5vw, 6rem) 6rem;
+    }
+    .show__grid {
+      grid-template-columns: 2fr 1fr;
+      align-items: end;
+      gap: 2.5rem;
+    }
+  }
+
+  @keyframes settle {
+    from {
+      transform: scale(1.14);
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.35em);
+    }
+  }
+  @keyframes turn {
+    to {
+      rotate: 52deg;
+    }
+  }
+  @keyframes pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+</style>

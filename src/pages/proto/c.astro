@@ -1,0 +1,295 @@
+---
+// PROTOTYPE C: "Poster". Temporary, not linked, not indexed.
+import Base from "../../layouts/Base.astro";
+import VideoFacade from "../../components/VideoFacade.astro";
+import { CHANNEL_URL, getLatestVideo, romanDate, spokenDate } from "../../lib/latest-video";
+
+export const prerender = false;
+const video = await getLatestVideo();
+Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
+Astro.response.headers.set("Cache-Control", "public, max-age=0, s-maxage=1800, stale-while-revalidate=86400");
+---
+
+<Base title="Prototype C | People's Republic of Bulgaria" description="Prototype C" path="/proto/c" noindex rules={false}>
+  <main class="affiche">
+    <section class="poster">
+      <div class="bands" aria-hidden="true"><span></span><span></span></div>
+
+      <div class="poster__head">
+        <img class="poster__logo" src="/brand/logo-160.webp" srcset="/brand/logo-160.webp 160w, /brand/logo-320.webp 320w" sizes="64px" width="64" height="64" alt="PRB logo" />
+        <h1 class="poster__name">People's Republic of Bulgaria</h1>
+      </div>
+
+      <div class="poster__letters" aria-hidden="true">PRB</div>
+      <span class="sr-only">Photo inside the letters: two tall panel-block towers joined by a bridge of flats, against a blue sky.</span>
+
+      <div class="poster__foot">
+        <p class="poster__line">Archive mixes and urbex from Bulgaria's Cold War years, on YouTube.</p>
+        <p class="poster__credit" aria-hidden="true"><b>№ 01</b> In the letters: panel blocks, 20 VIII 2023</p>
+      </div>
+
+      <div class="bands bands--bottom" aria-hidden="true"><span></span><span></span></div>
+    </section>
+
+    <section class="bill" id="latest" aria-labelledby="latest-title">
+      <h2 class="bill__head" id="latest-title"><span class="bill__num" aria-hidden="true">№ 01</span> Latest video</h2>
+      <div class="bill__grid">
+        <VideoFacade video={video} />
+        <div class="bill__meta">
+          {video && <p class="bill__title">{video.title}</p>}
+          {
+            video && (
+              <p class="bill__date">
+                <time datetime={video.published.toISOString()}>
+                  <span aria-hidden="true">{romanDate(video.published)}</span>
+                  <span class="sr-only">{spokenDate(video.published)}</span>
+                </time>
+                <span aria-hidden="true"> · </span>Grab a coffee, press play.
+              </p>
+            )
+          }
+          <a class="cta" href={`${CHANNEL_URL}?sub_confirmation=1`}>Subscribe on YouTube</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style>
+  .affiche {
+    --vf-frame: #f3deb4;
+    --vf-ink: #5a0e0c;
+  }
+
+  .poster {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  @media (min-width: 900px) {
+    .poster {
+      min-height: 100svh;
+    }
+  }
+
+  /* The green and red rule of the logo, at poster scale */
+  .bands {
+    display: grid;
+    flex: none;
+  }
+  .bands span {
+    display: block;
+    height: 14px;
+    transform-origin: left;
+    animation: unroll 1s cubic-bezier(0.7, 0, 0.2, 1) both;
+  }
+  .bands span:first-child {
+    background: var(--green);
+  }
+  .bands span:last-child {
+    background: var(--red);
+    animation-delay: 0.12s;
+  }
+  .bands--bottom {
+    margin-top: auto;
+  }
+  .bands--bottom span:first-child {
+    background: var(--red);
+    transform-origin: right;
+  }
+  .bands--bottom span:last-child {
+    background: var(--green);
+    transform-origin: right;
+  }
+
+  .poster__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.1rem 0;
+  }
+  .poster__logo {
+    width: 64px;
+    height: 64px;
+    flex: none;
+  }
+  .poster__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.15rem, 4.9vw, 2.6rem);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--bordeaux);
+  }
+
+  /* Giant letters filled with the photo, which drifts slowly inside them */
+  .poster__letters {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 58vw;
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin: 0.06em 0 0;
+    color: var(--bordeaux);
+    user-select: none;
+  }
+  @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .poster__letters {
+      color: transparent;
+      background-image: url("/photos/blocks-1080.webp");
+      background-image: image-set(url("/photos/blocks-1080.avif") type("image/avif"), url("/photos/blocks-1080.webp") type("image/webp"));
+      background-size: 135% auto;
+      background-position: 0% 40%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: drift 26s ease-in-out infinite alternate;
+    }
+  }
+
+  .poster__foot {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0.6rem 1.1rem 1.4rem;
+  }
+  .poster__line {
+    margin: 0;
+    font-size: clamp(1.4rem, 6vw, 2.8rem);
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .poster__credit {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+  }
+  .poster__credit b {
+    margin-right: 0.4rem;
+    color: var(--bordeaux);
+  }
+
+  /* The bill: latest video on a bordeaux field */
+  .bill {
+    background: var(--bordeaux);
+    color: var(--paper);
+    padding: 2.5rem 1.1rem 3.5rem;
+  }
+  .bill :global(a) {
+    color: var(--paper);
+  }
+  .bill :global(:focus-visible) {
+    outline-color: var(--paper);
+  }
+  .bill__head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin: 0 0 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.1rem, 9vw, 5rem);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .bill__num {
+    font-size: 0.4em;
+    letter-spacing: 0.14em;
+    color: #e9c98d; /* 7.9:1 on bordeaux */
+  }
+  .bill__grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .bill__title {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 1.25;
+  }
+  .bill__date {
+    margin: 0;
+  }
+  .bill__date time {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #e9c98d;
+  }
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    margin-top: 1.25rem;
+    padding: 0 1.75rem;
+    background: var(--paper);
+    color: var(--bordeaux) !important;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+  .cta:hover {
+    background: #ffffff;
+  }
+
+  @media (min-width: 900px) {
+    .bands span {
+      height: 22px;
+    }
+    .poster__head {
+      padding: 1.5rem clamp(2rem, 4vw, 5rem) 0;
+    }
+    .poster__logo {
+      width: 88px;
+      height: 88px;
+    }
+    .poster__letters {
+      font-size: min(56vw, 78vh);
+    }
+    @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+      .poster__letters {
+        background-image: url("/photos/blocks-1600.webp");
+        background-image: image-set(url("/photos/blocks-1600.avif") type("image/avif"), url("/photos/blocks-1600.webp") type("image/webp"));
+        background-size: 110% auto;
+      }
+    }
+    .poster__foot {
+      grid-template-columns: 2fr 1fr;
+      align-items: end;
+      padding: 0.6rem clamp(2rem, 4vw, 5rem) 2rem;
+    }
+    .poster__credit {
+      text-align: right;
+    }
+    .bill {
+      padding: 5rem clamp(2rem, 4vw, 5rem) 6rem;
+    }
+    .bill__grid {
+      grid-template-columns: 2fr 1fr;
+      align-items: end;
+      gap: 3rem;
+    }
+  }
+
+  @keyframes unroll {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  @keyframes drift {
+    to {
+      background-position: 100% 60%;
+    }
+  }
+</style>

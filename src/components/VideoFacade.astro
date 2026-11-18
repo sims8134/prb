@@ -1,0 +1,111 @@
+---
+// Latest video as a plain link until the visitor clicks, then a youtube-nocookie player.
+// Nothing is requested from YouTube before the click. Colours come from CSS variables
+// set by the page: --vf-frame (border/background) and --vf-ink (play tag text).
+import type { LatestVideo } from "../lib/latest-video";
+import { CHANNEL_URL } from "../lib/latest-video";
+
+interface Props {
+  video: LatestVideo | null;
+}
+const { video } = Astro.props;
+---
+
+{
+  video ? (
+    <div class="vf">
+      <a class="vf__link" href={`https://www.youtube.com/watch?v=${video.id}`} data-video-id={video.id} data-video-title={video.title}>
+        {video.thumbnail && <img src={video.thumbnail} width="480" height="360" alt="" />}
+        <span class="vf__play" aria-hidden="true">Play</span>
+        <span class="sr-only">Play the video: {video.title}</span>
+      </a>
+    </div>
+  ) : (
+    <p class="vf__fallback">
+      The latest video is waiting on <a href={`${CHANNEL_URL}/videos`}>the YouTube channel</a>.
+    </p>
+  )
+}
+
+<style>
+  .vf {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--vf-frame, #5a0e0c);
+    border: 2px solid var(--vf-frame, #5a0e0c);
+    overflow: hidden;
+  }
+  .vf__link,
+  .vf :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .vf__link {
+    display: block;
+  }
+  .vf__link:focus-visible {
+    outline: 3px solid var(--vf-ink, #f3deb4);
+    outline-offset: -7px;
+  }
+  .vf__link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .vf__link:hover img,
+  .vf__link:focus-visible img {
+    transform: scale(1.03);
+  }
+  .vf__play {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 46px;
+    padding: 0 1.1rem 0 0.95rem;
+    background: var(--vf-frame, #5a0e0c);
+    color: var(--vf-ink, #f3deb4);
+    box-shadow: 0 0 0 2px var(--vf-ink, #f3deb4);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .vf__play::before {
+    content: "";
+    border-style: solid;
+    border-width: 8px 0 8px 13px;
+    border-color: transparent transparent transparent currentColor;
+  }
+  .vf__fallback {
+    padding: 1rem;
+    border: 2px solid currentColor;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>("[data-video-id]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+      event.preventDefault();
+      const id = link.dataset.videoId || "";
+      if (!/^[\w-]{11}$/.test(id)) return;
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&hl=en`;
+      iframe.title = link.dataset.videoTitle || "YouTube video";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      link.replaceWith(iframe);
+      iframe.focus();
+    });
+  });
+</script>
