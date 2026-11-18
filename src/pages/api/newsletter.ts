@@ -1,6 +1,13 @@
 import type { APIRoute } from "astro";
 import { Resend } from "resend";
 import crypto from "node:crypto";
+import {
+  getClientIp,
+  isBotSubmission,
+  isDisposableEmail,
+  isRateLimited,
+  isValidEmail,
+} from "../../lib/antibot";
 
 export const prerender = false;
 
@@ -19,34 +26,40 @@ function createToken(email: string) {
   return Buffer.from(`${payload}|${signature}`).toString("base64url");
 }
 
-export const POST: APIRoute = async ({ request }) => {
+function json(body: unknown, status: number) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
     const formData = await request.formData();
 
     const email = String(formData.get("email") || "").trim().toLowerCase();
-    const website = String(formData.get("website") || "").trim();
     const consent = String(formData.get("consent") || "").trim();
 
-    if (website) {
-      return new Response(JSON.stringify({ error: "Spam detected." }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+    // Honeypot filled or form sent too fast: pretend success, send nothing.
+    if (isBotSubmission(formData)) {
+      return json({ success: true }, 200);
+    }
+
+    const ip = getClientIp(request, () => clientAddress);
+    if (isRateLimited("newsletter", ip)) {
+      return json({ error: "Too many attempts. Please try again later." }, 429);
     }
 
     if (!email) {
-      return new Response(JSON.stringify({ error: "Email is required." }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+      return json({ error: "Email is required." }, 400);
     }
 
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if (!emailOk) {
-      return new Response(JSON.stringify({ error: "Please enter a valid email." }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+    if (!isValidEmail(email)) {
+      return json({ error: "Please enter a valid email." }, 400);
+    }
+
+    if (isDisposableEmail(email)) {
+      return json({ error: "Disposable email addresses are not accepted." }, 400);
     }
 
     if (!consent) {
@@ -70,7 +83,7 @@ export const POST: APIRoute = async ({ request }) => {
         <div style="background:#111111;padding:40px 20px;color:#f0ebe0;font-family:Arial,Helvetica,sans-serif;">
           <div style="max-width:640px;margin:0 auto;background:#1a1a1a;border:1px solid #2f2f2f;">
             <div style="padding:32px 24px 20px 24px;text-align:center;">
-              <img src="https://peoplesrepublicofbulgaria.com/png/PRB_logo.png" alt="PRB" width="90" style="display:block;margin:0 auto 16px auto;">
+              <img src="https://peoplesrepublicofbulgaria.com/png/PRB_logo_email.png" alt="PRB" width="90" height="90" style="display:block;margin:0 auto 16px auto;border:0;">
               <h1 style="margin:0;font-size:30px;line-height:1.2;color:#f0ebe0;text-transform:uppercase;">
                 People's Republic of Bulgaria
               </h1>
@@ -106,12 +119,14 @@ export const POST: APIRoute = async ({ request }) => {
       `,
     });
 
-    console.log("Newsletter confirmation email sent:", result);
+    if (result.error) {
+      console.error("Newsletter confirmation email failed:", result.error);
+      return json({ error: "Failed to send confirmation email." }, 502);
+    }
 
-    return new Response(JSON.stringify({ success: true }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    console.log("Newsletter confirmation email sent:", result.data?.id);
+
+    return json({ success: true }, 200);
   } catch (error) {
     console.error("Newsletter API error:", error);
 

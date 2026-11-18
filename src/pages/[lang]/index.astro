@@ -377,8 +377,11 @@ const latestVideo = latestVideos[0] ?? null;
     data-success-hint={t.home.newsletter.successHint}
     data-error={t.home.newsletter.error}
     data-error-network={t.home.newsletter.errorNetwork}
+    data-error-rate-limit={t.home.newsletter.errorRateLimit}
   >
-    <input type="text" name="website" style="display:none !important" tabindex="-1" autocomplete="off" />
+    <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
+      <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    </div>
     <input type="email" name="email" id="newsletter-email" placeholder={t.home.newsletter.placeholder} required />
     <label class="newsletter-consent">
       <input type="checkbox" id="newsletter-consent" name="consent" required />
@@ -423,6 +426,7 @@ const latestVideo = latestVideos[0] ?? null;
 <script>
   const newsletterForm = document.getElementById("newsletter-form");
   const newsletterFeedback = document.getElementById("newsletter-feedback");
+  const newsletterLoadedAt = performance.now();
 
   newsletterForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -433,12 +437,14 @@ const latestVideo = latestVideos[0] ?? null;
       successHint: newsletterForm.dataset.successHint,
       error: newsletterForm.dataset.error,
       errorNetwork: newsletterForm.dataset.errorNetwork,
+      errorRateLimit: newsletterForm.dataset.errorRateLimit,
     };
 
     newsletterFeedback.textContent = msgs.subscribing;
     newsletterFeedback.className = "form-feedback";
 
     const formData = new FormData(newsletterForm);
+    formData.set("elapsed_ms", String(Math.round(performance.now() - newsletterLoadedAt)));
 
     try {
       const res = await fetch("/api/newsletter", {
@@ -446,7 +452,7 @@ const latestVideo = latestVideos[0] ?? null;
         body: formData,
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
         newsletterFeedback.innerHTML = `
@@ -455,6 +461,12 @@ const latestVideo = latestVideos[0] ?? null;
         `;
         newsletterFeedback.className = "form-feedback success";
         newsletterForm.reset();
+      } else if (res.status === 429) {
+        newsletterFeedback.textContent = msgs.errorRateLimit;
+        newsletterFeedback.className = "form-feedback error";
+      } else if (res.status >= 500) {
+        newsletterFeedback.textContent = msgs.error;
+        newsletterFeedback.className = "form-feedback error";
       } else {
         newsletterFeedback.textContent = data.error || msgs.error;
         newsletterFeedback.className = "form-feedback error";
