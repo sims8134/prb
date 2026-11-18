@@ -1,0 +1,202 @@
+---
+// Newsletter sign-up, self-contained (markup + styles + script).
+// To switch to Brevo later, replace this file only: the page just renders
+// <NewsletterForm /> and knows nothing else about the newsletter.
+//
+// Anti-bot protection (checked again on the server in src/lib/antibot.ts):
+// - honeypot field "website", off-screen and hidden from screen readers;
+// - "elapsed_ms" added at submit time: under 3 s, the server ignores the sign-up;
+// - 3 sign-ups per hour per IP, best effort (see src/lib/antibot.ts).
+---
+
+<form class="newsletter" id="newsletter-form" action="/api/newsletter" method="POST" novalidate>
+  <p class="newsletter__intro">
+    New videos and Cold War Bulgaria news, now and then. No spam, and you can leave with one email.
+  </p>
+
+  <div aria-hidden="true" class="newsletter__trap">
+    <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <label class="newsletter__label" for="newsletter-email">Email address</label>
+  <input
+    class="newsletter__input"
+    id="newsletter-email"
+    type="email"
+    name="email"
+    autocomplete="email"
+    inputmode="email"
+    placeholder="you@example.com"
+    required
+  />
+
+  <label class="newsletter__consent">
+    <input type="checkbox" name="consent" required />
+    <span>I agree to receive the PRB newsletter by email and I have read the <a href="/privacy">privacy notice</a>.</span>
+  </label>
+
+  <button class="newsletter__button" type="submit">Sign me up</button>
+
+  <p class="newsletter__feedback" id="newsletter-feedback" role="status" aria-live="polite"></p>
+</form>
+
+<style>
+  .newsletter {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .newsletter__intro {
+    margin: 0 0 0.25rem;
+  }
+  .newsletter__trap {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .newsletter__label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bordeaux);
+  }
+  .newsletter__input {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.625rem 0.875rem;
+    font: inherit;
+    color: var(--ink);
+    background: #fbf1dc;
+    border: 2px solid var(--bordeaux);
+    border-radius: 4px;
+  }
+  .newsletter__input::placeholder {
+    color: #6b5544; /* 5.6:1 on the input background */
+  }
+  .newsletter__consent {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.625rem;
+    align-items: start;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .newsletter__consent input {
+    width: 22px;
+    height: 22px;
+    margin: 0.15rem 0 0;
+    accent-color: var(--bordeaux);
+  }
+  .newsletter__button {
+    justify-self: start;
+    min-height: 48px;
+    padding: 0.625rem 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bordeaux);
+    background: transparent;
+    border: 2px solid var(--bordeaux);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .newsletter__button:hover {
+    background: var(--bordeaux);
+    color: var(--paper);
+  }
+  .newsletter__button[disabled] {
+    cursor: progress;
+    opacity: 0.7;
+  }
+  .newsletter__feedback {
+    margin: 0;
+    min-height: 1.6em;
+    font-size: 1rem;
+  }
+  .newsletter__feedback[data-state="error"] {
+    color: var(--red);
+  }
+</style>
+
+<script>
+  const MESSAGES = {
+    sending: "Signing you up...",
+    success: "Almost there: check your inbox and click the confirmation link.",
+    successHint:
+      "Don't see it? Please also check your spam folder and, if it's there, mark it as \"Not spam\" so the next ones reach you.",
+    invalid: "Please enter a valid email address.",
+    consent: "Please tick the box to agree to the newsletter.",
+    rateLimit: "Too many attempts. Please try again in an hour.",
+    server: "The confirmation email could not be sent. Please try again later.",
+    network: "Unable to sign you up right now. Please try again later.",
+  };
+
+  const form = document.getElementById("newsletter-form") as HTMLFormElement | null;
+  const feedback = document.getElementById("newsletter-feedback");
+  const loadedAt = performance.now();
+
+  function show(state: "info" | "success" | "error", text: string, hint?: string) {
+    if (!feedback) return;
+    feedback.dataset.state = state;
+    feedback.textContent = text;
+    if (hint) {
+      const small = document.createElement("span");
+      small.style.display = "block";
+      small.style.marginTop = "0.25rem";
+      small.textContent = hint;
+      feedback.append(small);
+    }
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email = form.elements.namedItem("email") as HTMLInputElement;
+    const consent = form.elements.namedItem("consent") as HTMLInputElement;
+    const button = form.querySelector("button[type=submit]") as HTMLButtonElement;
+
+    if (!email.validity.valid) {
+      show("error", MESSAGES.invalid);
+      email.focus();
+      return;
+    }
+    if (!consent.checked) {
+      show("error", MESSAGES.consent);
+      consent.focus();
+      return;
+    }
+
+    const data = new FormData(form);
+    data.set("elapsed_ms", String(Math.round(performance.now() - loadedAt)));
+
+    show("info", MESSAGES.sending);
+    button.disabled = true;
+
+    try {
+      const res = await fetch("/api/newsletter", { method: "POST", body: data });
+      const body = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        show("success", MESSAGES.success, MESSAGES.successHint);
+        form.reset();
+      } else if (res.status === 429) {
+        show("error", MESSAGES.rateLimit);
+      } else if (res.status >= 500) {
+        show("error", MESSAGES.server);
+      } else {
+        show("error", body.error || MESSAGES.invalid);
+      }
+    } catch {
+      show("error", MESSAGES.network);
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>

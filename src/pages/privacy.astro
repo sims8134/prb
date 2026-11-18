@@ -1,0 +1,88 @@
+---
+import Base from "../layouts/Base.astro";
+
+const CONTACT = "contact@peoplesrepublicofbulgaria.com";
+---
+
+<Base
+  title="Legal notice & privacy | People's Republic of Bulgaria"
+  description="Who runs peoplesrepublicofbulgaria.com, what data is collected and how to have it deleted."
+  path="/privacy"
+>
+  <main class="legal">
+    <a class="legal__back" href="/">Back to PRB</a>
+    <h1>Legal notice &amp; privacy</h1>
+
+    <dl>
+      <dt>Who runs this site</dt>
+      <dd>Simon Beltran, a private individual, Sofia, Bulgaria. Contact: <a href={`mailto:${CONTACT}`}>{CONTACT}</a></dd>
+
+      <dt>Hosting</dt>
+      <dd>Vercel.</dd>
+
+      <dt>What I collect</dt>
+      <dd>Your email address, only if you sign up for the newsletter.</dd>
+
+      <dt>Why</dt>
+      <dd>To send you the newsletter. Nothing else.</dd>
+
+      <dt>Who handles it</dt>
+      <dd>Resend, the service that sends the newsletter emails.</dd>
+
+      <dt>How long</dt>
+      <dd>Until you unsubscribe.</dd>
+
+      <dt>Unsubscribe, access or deletion</dt>
+      <dd>Just send an email to <a href={`mailto:${CONTACT}`}>{CONTACT}</a>.</dd>
+
+      <dt>Cookies and tracking</dt>
+      <dd>No tracking tools on this site. The YouTube video only loads after you click it, and YouTube may then set its own cookies.</dd>
+    </dl>
+  </main>
+</Base>
+
+<style>
+  .legal {
+    width: 100%;
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 1rem 1.25rem 1.5rem;
+  }
+  .legal__back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.9375rem;
+  }
+  h1 {
+    margin: 0.5rem 0 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.6rem, 6.5vw, 2.1rem);
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--bordeaux);
+  }
+  dl {
+    margin: 0;
+  }
+  dt {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+  }
+  dd {
+    margin: 0.125rem 0 0.75rem;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+</style>

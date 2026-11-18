@@ -34,13 +34,37 @@ function verifyToken(token: string) {
   return email;
 }
 
-export const GET: APIRoute = async ({ url, redirect }) => {
-  try {
-    const token = url.searchParams.get("token");
+const SUBSCRIBE_URL = "https://www.youtube.com/channel/UCoqg7QUUHZJUG-r3oH1B1Sg?sub_confirmation=1";
 
-    if (!token) {
-      return new Response("Missing token.", { status: 400 });
-    }
+const escapeHtml = (s: string) =>
+  s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
+// Step 1, the link in the email: only shows a button. Link scanners (Outlook Safe
+// Links, antivirus, corporate gateways) open every link, so a GET must not subscribe.
+export const GET: APIRoute = async ({ url }) => {
+  const token = url.searchParams.get("token") || "";
+  try {
+    verifyToken(token);
+  } catch {
+    return failurePage("This confirmation link is invalid or has expired (links last 24 hours).", 400);
+  }
+
+  return statusPage(
+    "One tap to go",
+    "Confirm that you want the PRB newsletter, and you're on the list.",
+    200,
+    `<form method="POST" action="/api/newsletter/confirm">
+      <input type="hidden" name="token" value="${escapeHtml(token)}" />
+      <button type="submit" class="primary">Confirm my subscription</button>
+    </form>`
+  );
+};
+
+// Step 2, the button: a real person clicked, now the address is recorded.
+export const POST: APIRoute = async ({ request }) => {
+  try {
+    const form = await request.formData();
+    const token = String(form.get("token") || "");
 
     const email = verifyToken(token);
 
@@ -57,7 +81,7 @@ export const GET: APIRoute = async ({ url, redirect }) => {
       if (!alreadyExists) {
         console.error("Newsletter contact creation failed:", result.error);
         return failurePage(
-          "Your subscription could not be recorded. Please try again later or contact us at contact@peoplesrepublicofbulgaria.com.",
+          "Your subscription could not be recorded. Please try again in a moment, or write to contact@peoplesrepublicofbulgaria.com.",
           502
         );
       }
@@ -65,128 +89,78 @@ export const GET: APIRoute = async ({ url, redirect }) => {
 
     console.log("Newsletter contact confirmed:", result.data?.id ?? "already exists");
 
-    return new Response(
-      `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Subscription confirmed</title>
-        <style>
-          body {
-            margin: 0;
-            background: #111;
-            color: #f0ebe0;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-          }
-          .box {
-            max-width: 640px;
-            width: 100%;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            padding: 32px;
-            text-align: center;
-          }
-          h1 {
-            margin: 0 0 16px 0;
-            color: #D62612;
-            text-transform: uppercase;
-          }
-          p {
-            color: #ccc;
-            line-height: 1.7;
-            margin: 0 0 20px 0;
-          }
-          a {
-            display: inline-block;
-            padding: 12px 18px;
-            background: #D62612;
-            color: white;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-weight: bold;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="box">
-          <h1>Subscription confirmed</h1>
-          <p>Your newsletter subscription has been confirmed successfully.</p>
-          <a href="/">Back to website</a>
-        </div>
-      </body>
-      </html>
-      `,
-      {
-        status: 200,
-        headers: { "Content-Type": "text/html; charset=utf-8" },
-      }
+    return statusPage(
+      "You're on the list",
+      "Thanks for confirming. Grab a coffee, the next newsletter is on its way. While you wait, the channel is one tap away.",
+      200,
+      `<a class="primary" href="${SUBSCRIBE_URL}">Subscribe on YouTube</a>
+      <a class="secondary" href="/">Back to PRB</a>`
     );
   } catch (error) {
     console.error("Newsletter confirm error:", error);
 
-    return failurePage("The confirmation link is invalid or expired.", 400);
+    return failurePage("This confirmation link is invalid or has expired (links last 24 hours).", 400);
   }
 };
 
 function failurePage(message: string, status: number) {
-    return new Response(
-      `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Confirmation failed</title>
-        <style>
-          body {
-            margin: 0;
-            background: #111;
-            color: #f0ebe0;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-          }
-          .box {
-            max-width: 640px;
-            width: 100%;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            padding: 32px;
-            text-align: center;
-          }
-          h1 {
-            margin: 0 0 16px 0;
-            color: #D62612;
-            text-transform: uppercase;
-          }
-          p {
-            color: #ccc;
-            line-height: 1.7;
-            margin: 0;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="box">
-          <h1>Confirmation failed</h1>
-          <p>${message}</p>
-        </div>
-      </body>
-      </html>
-      `,
-      {
-        status,
-        headers: { "Content-Type": "text/html; charset=utf-8" },
-      }
-    );
+  return statusPage(
+    "That did not work",
+    message,
+    status,
+    `<a class="primary" href="/#newsletter">Sign up again</a>
+    <a class="secondary" href="/">Back to PRB</a>`
+  );
+}
+
+// Same look as the home page: cream paper, bordeaux, green and red rule, logo.
+function statusPage(title: string, message: string, status: number, actions: string) {
+  return new Response(
+    `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>${title} | People's Republic of Bulgaria</title>
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <style>
+    @font-face { font-family: "Oswald"; font-weight: 600; font-display: swap; src: url("/fonts/oswald-600-latin.woff2") format("woff2"); }
+    @font-face { font-family: "Source Serif 4"; font-weight: 400; font-display: swap; src: url("/fonts/source-serif-4-400-latin.woff2") format("woff2"); }
+    body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: #f3deb4; color: #2b1a12;
+      font: 1.125rem/1.6 "Source Serif 4", Georgia, serif; }
+    .rule { height: 8px; background: linear-gradient(#4a6236 0 4px, #8b1f10 4px 8px); }
+    .rule:last-child { margin-top: auto; background: linear-gradient(#8b1f10 0 4px, #4a6236 4px 8px); }
+    main { max-width: 34rem; margin: 0 auto; padding: 2.5rem 1.25rem; text-align: center; }
+    img { display: block; margin: 0 auto 1rem; }
+    h1 { margin: 0 0 0.75rem; font: 600 clamp(1.6rem, 7vw, 2.2rem)/1.15 "Oswald", "Arial Narrow", sans-serif;
+      letter-spacing: 0.02em; text-transform: uppercase; color: #5a0e0c; }
+    p { margin: 0 0 1.5rem; }
+    .actions { display: grid; gap: 0.75rem; justify-items: center; }
+    form { margin: 0; }
+    .primary, .secondary { display: inline-flex; align-items: center; justify-content: center; min-height: 52px;
+      padding: 0 1.5rem; border-radius: 4px; border: 2px solid #5a0e0c; text-decoration: none; cursor: pointer;
+      font: 600 1.0625rem "Oswald", "Arial Narrow", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+    .primary { background: #5a0e0c; color: #f3deb4; }
+    .secondary { background: transparent; color: #5a0e0c; min-height: 44px; border-color: transparent;
+      text-decoration: underline; text-underline-offset: 0.18em; }
+    .primary:focus-visible, .secondary:focus-visible { outline: 3px solid #2b1a12; outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <div class="rule" aria-hidden="true"></div>
+  <main>
+    <img src="/brand/logo-160.webp" srcset="/brand/logo-160.webp 1x, /brand/logo-320.webp 2x" width="120" height="120" alt="PRB logo" />
+    <h1>${title}</h1>
+    <p>${message}</p>
+    <div class="actions">${actions}</div>
+  </main>
+  <div class="rule" aria-hidden="true"></div>
+</body>
+</html>`,
+    {
+      status,
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+    }
+  );
 }

@@ -33,7 +33,9 @@ function json(body: unknown, status: number) {
   });
 }
 
-export const POST: APIRoute = async ({ request, clientAddress }) => {
+export const POST: APIRoute = async (context) => {
+  // clientAddress is read lazily: Astro throws if the host does not provide it.
+  const { request } = context;
   try {
     const formData = await request.formData();
 
@@ -45,7 +47,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       return json({ success: true }, 200);
     }
 
-    const ip = getClientIp(request, () => clientAddress);
+    const ip = getClientIp(request, () => context.clientAddress);
     if (isRateLimited("newsletter", ip)) {
       return json({ error: "Too many attempts. Please try again later." }, 429);
     }
@@ -64,7 +66,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     if (!consent) {
       return new Response(
-        JSON.stringify({ error: "You must accept the privacy policy to subscribe." }),
+        JSON.stringify({ error: "Please tick the box to agree to the newsletter and the privacy notice." }),
         {
           status: 400,
           headers: { "Content-Type": "application/json" },
@@ -78,42 +80,50 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     const result = await resend.emails.send({
       from: "PRB Newsletter <contact@peoplesrepublicofbulgaria.com>",
       to: email,
-      subject: "Confirm your newsletter subscription",
+      subject: "PRB newsletter: one tap to confirm",
+      text: `People's Republic of Bulgaria
+
+Thanks for signing up to the PRB newsletter. One tap to confirm, then you're on the list:
+${confirmUrl}
+
+You will only be subscribed after this confirmation. The link is valid for 24 hours.
+If you did not ask for this, just ignore this email.`,
       html: `
-        <div style="background:#111111;padding:40px 20px;color:#f0ebe0;font-family:Arial,Helvetica,sans-serif;">
-          <div style="max-width:640px;margin:0 auto;background:#1a1a1a;border:1px solid #2f2f2f;">
-            <div style="padding:32px 24px 20px 24px;text-align:center;">
-              <img src="https://peoplesrepublicofbulgaria.com/png/PRB_logo_email.png" alt="PRB" width="90" height="90" style="display:block;margin:0 auto 16px auto;border:0;">
-              <h1 style="margin:0;font-size:30px;line-height:1.2;color:#f0ebe0;text-transform:uppercase;">
+        <div style="background:#F3DEB4;padding:32px 16px;color:#2B1A12;font-family:Georgia,'Times New Roman',serif;">
+          <div style="max-width:560px;margin:0 auto;background:#FBF1DC;border:2px solid #5A0E0C;">
+            <div style="height:4px;background:#4A6236;"></div>
+            <div style="height:4px;background:#8B1F10;"></div>
+            <div style="padding:28px 24px 8px 24px;text-align:center;">
+              <img src="https://peoplesrepublicofbulgaria.com/brand/email-logo-180.png" alt="PRB logo" width="90" height="90" style="display:block;margin:0 auto 14px auto;border:0;">
+              <h1 style="margin:0;font-family:'Arial Narrow',Arial,Helvetica,sans-serif;font-size:24px;line-height:1.2;letter-spacing:1px;color:#5A0E0C;text-transform:uppercase;">
                 People's Republic of Bulgaria
               </h1>
             </div>
 
-            <div style="height:4px;background:#D62612;"></div>
-
-            <div style="padding:28px 24px;">
-              <p style="margin:0 0 16px 0;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:#D62612;font-weight:bold;">
+            <div style="padding:20px 24px 28px 24px;">
+              <p style="margin:0 0 14px 0;font-family:'Arial Narrow',Arial,Helvetica,sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#7A5A1E;font-weight:bold;">
                 Newsletter confirmation
               </p>
 
-              <p style="margin:0 0 18px 0;font-size:16px;line-height:1.8;color:#c7c7c7;">
-                Thank you for your interest. Please confirm your subscription by clicking the button below.
-              </p>
-
-              <p style="margin:0 0 24px 0;font-size:16px;line-height:1.8;color:#c7c7c7;">
-                You will only be subscribed after this confirmation.
+              <p style="margin:0 0 16px 0;font-size:17px;line-height:1.6;">
+                Thanks for signing up to the PRB newsletter. One tap to confirm, then you're on the list.
               </p>
 
               <p style="margin:0 0 24px 0;">
-                <a href="${confirmUrl}" style="display:inline-block;padding:14px 22px;background:#D62612;color:#ffffff;text-decoration:none;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">
+                <a href="${confirmUrl}" style="display:inline-block;padding:14px 22px;background:#5A0E0C;color:#F3DEB4;text-decoration:none;font-family:'Arial Narrow',Arial,Helvetica,sans-serif;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">
                   Confirm subscription
                 </a>
               </p>
 
-              <p style="margin:0;font-size:13px;line-height:1.7;color:#999;">
-                If you did not request this, you can ignore this email.
+              <p style="margin:0 0 8px 0;font-size:15px;line-height:1.6;">
+                You will only be subscribed after this confirmation. The link is valid for 24 hours.
+              </p>
+              <p style="margin:0;font-size:15px;line-height:1.6;color:#5C4636;">
+                If you did not ask for this, just ignore this email.
               </p>
             </div>
+            <div style="height:4px;background:#8B1F10;"></div>
+            <div style="height:4px;background:#4A6236;"></div>
           </div>
         </div>
       `,
@@ -133,7 +143,6 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return new Response(
       JSON.stringify({
         error: "Failed to send confirmation email.",
-        details: error instanceof Error ? error.message : String(error),
       }),
       {
         status: 500,

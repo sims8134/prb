@@ -1,4 +1,4 @@
-// Shared anti-bot helpers for /api/newsletter and /api/contact.
+// Anti-bot helpers for /api/newsletter.
 // No external service, no dependency.
 
 /** Minimum time (ms) between page load and form submission for a human. */

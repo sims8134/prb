@@ -1,0 +1,58 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Page not found | People's Republic of Bulgaria"
+  description="This page is not here any more."
+  path="/404"
+>
+  <main class="lost">
+    <img src="/brand/logo-160.webp" srcset="/brand/logo-160.webp 1x, /brand/logo-320.webp 2x" width="120" height="120" alt="PRB logo" />
+    <h1>This page is not here any more</h1>
+    <p>The site now fits on a single page. The latest video is waiting for you there.</p>
+    <a class="lost__cta" href="/">Go to the latest video</a>
+  </main>
+</Base>
+
+<style>
+  .lost {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem;
+    text-align: center;
+  }
+  img {
+    display: block;
+    margin: 0 auto 1rem;
+  }
+  h1 {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+    line-height: 1.15;
+    text-transform: uppercase;
+    color: var(--bordeaux);
+  }
+  p {
+    margin: 0 0 1.5rem;
+  }
+  .lost__cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 1.25rem;
+    border-radius: 4px;
+    background: var(--bordeaux);
+    color: var(--paper);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .lost__cta:focus-visible {
+    outline-color: var(--ink);
+  }
+</style>

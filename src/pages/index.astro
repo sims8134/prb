@@ -1,4 +1,372 @@
 ---
+import Base from "../layouts/Base.astro";
+import NewsletterForm from "../components/NewsletterForm.astro";
+import { CHANNEL_URL, getLatestVideo, romanDate, spokenDate } from "../lib/latest-video";
+
+// Rendered on the server so the latest video updates by itself.
 export const prerender = false;
-return Astro.redirect('/en');
+
+const video = await getLatestVideo();
+
+// CDN keeps the page 30 min, then serves the old copy while refreshing it.
+Astro.response.headers.set(
+  "Cache-Control",
+  "public, max-age=0, s-maxage=1800, stale-while-revalidate=86400"
+);
+
+const SUBSCRIBE_URL = `${CHANNEL_URL}?sub_confirmation=1`;
+const CONTACT = "contact@peoplesrepublicofbulgaria.com";
 ---
+
+<Base
+  title="People's Republic of Bulgaria | Archive mixes and urbex on YouTube"
+  description="Archive mixes and urbex from Cold War Bulgaria, on YouTube. Watch the latest video, subscribe, and go deeper with Cold War Bulgaria."
+  path="/"
+>
+  <main class="page">
+    <header class="intro">
+      <img
+        class="intro__logo"
+        src="/brand/logo-160.webp"
+        srcset="/brand/logo-160.webp 160w, /brand/logo-320.webp 320w"
+        sizes="96px"
+        width="96"
+        height="96"
+        alt="PRB logo"
+        fetchpriority="high"
+      />
+      <h1 class="intro__name">People's Republic of Bulgaria</h1>
+      <p class="intro__line">Archive mixes and urbex from Cold War Bulgaria, on YouTube.</p>
+    </header>
+
+    <section class="block" aria-labelledby="latest-title">
+      <h2 class="block__title" id="latest-title">
+        <span class="label" aria-hidden="true">№ 01</span>
+        Latest video
+      </h2>
+
+      {
+        video ? (
+          <>
+            <div class="player">
+              <a
+                class="player__facade"
+                href={`https://www.youtube.com/watch?v=${video.id}`}
+                data-video-id={video.id}
+                data-video-title={video.title}
+              >
+                {video.thumbnail && <img src={video.thumbnail} width="480" height="360" alt="" />}
+                <span class="player__button" aria-hidden="true">Play</span>
+                <span class="sr-only">Play the video: {video.title}</span>
+              </a>
+            </div>
+            <p class="video__title">{video.title}</p>
+            <p class="video__meta">
+              <time datetime={video.published.toISOString()}>
+                <span aria-hidden="true">{romanDate(video.published)}</span>
+                <span class="sr-only">{spokenDate(video.published)}</span>
+              </time>
+              <span aria-hidden="true"> · </span>
+              Grab a coffee, press play.
+            </p>
+          </>
+        ) : (
+          <p class="player__fallback">
+            The latest video is waiting on <a href={`${CHANNEL_URL}/videos`}>the YouTube channel</a>.
+          </p>
+        )
+      }
+
+      <a class="cta" href={SUBSCRIBE_URL}>Subscribe on YouTube</a>
+    </section>
+
+    <section class="block" aria-labelledby="deeper-title">
+      <h2 class="block__title" id="deeper-title">
+        <span class="label" aria-hidden="true">№ 02</span>
+        The story behind
+      </h2>
+      <p>
+        Curious about the places and the archives in the videos? Cold War Bulgaria is the online museum
+        behind the channel: the collection, the map, the stories.
+      </p>
+      <a class="link-strong" href="https://coldwarbulgaria.com">Go deeper: Cold War Bulgaria</a>
+    </section>
+
+    <aside class="support" aria-label="Support the channel">
+      <p>If a video made your day, a coffee keeps the next one coming.</p>
+      <a class="link-strong" href="https://buymeacoffee.com/peoplesrepublicofbulgaria">Support the channel</a>
+    </aside>
+
+    <section class="block" id="newsletter" aria-labelledby="newsletter-title">
+      <h2 class="block__title" id="newsletter-title">
+        <span class="label" aria-hidden="true">№ 03</span>
+        Newsletter
+      </h2>
+      <NewsletterForm />
+    </section>
+
+    <nav class="socials" aria-label="PRB on social media">
+      <span class="label">Also on</span>
+      <ul>
+        <li><a href="https://www.instagram.com/peoplesrepublicofbulgaria/">Instagram</a></li>
+        <li><a href="https://www.facebook.com/PeoplesRepublicOfBulgaria/">Facebook</a></li>
+        <li><a href="https://www.tiktok.com/@peoplesrepublicof70">TikTok</a></li>
+      </ul>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <a href={`mailto:${CONTACT}`}>{CONTACT}</a>
+    <a href="/privacy">Legal notice &amp; privacy</a>
+  </footer>
+</Base>
+
+<style>
+  .page {
+    width: 100%;
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 1.25rem 1.25rem 1rem;
+  }
+
+  .intro {
+    text-align: center;
+    padding-bottom: 1.25rem;
+  }
+  .intro__logo {
+    display: block;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 0.625rem;
+  }
+  .intro__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.3rem, 5.6vw, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--bordeaux);
+  }
+  .intro__line {
+    margin: 0.375rem auto 0;
+    max-width: 22rem;
+    font-size: 1.0625rem;
+    line-height: 1.45;
+  }
+
+  .block {
+    padding: 1.25rem 0 1.75rem;
+    border-top: 1px solid var(--gold);
+  }
+  .block p {
+    margin: 0 0 0.75rem;
+  }
+  .block__title {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.375rem;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--bordeaux);
+  }
+  /* Programme style: number and title on one line. */
+  .block__title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  .block__title .label {
+    display: inline;
+    font-size: 0.875rem;
+  }
+
+  /* Video: a plain link until the visitor clicks, then a youtube-nocookie player. */
+  .player {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 0.875rem;
+    background: var(--bordeaux);
+    border: 2px solid var(--bordeaux);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .player__facade,
+  .player :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .player__facade {
+    display: block;
+  }
+  .player__facade:focus-visible {
+    outline-offset: -6px;
+    outline-color: var(--paper);
+  }
+  .player__facade img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* Bottom-left "Play" tag: says what happens, and keeps the thumbnail's own title readable. */
+  .player__button {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1rem 0 0.875rem;
+    border-radius: 4px;
+    background: var(--bordeaux);
+    box-shadow: 0 0 0 2px var(--paper);
+    color: var(--paper);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: transform 0.15s ease;
+  }
+  .player__button::before {
+    content: "";
+    border-style: solid;
+    border-width: 8px 0 8px 13px;
+    border-color: transparent transparent transparent var(--paper);
+  }
+  .player__facade:hover .player__button,
+  .player__facade:focus-visible .player__button {
+    transform: scale(1.08);
+  }
+  .player__fallback {
+    padding: 1rem;
+    border: 2px solid var(--bordeaux);
+    border-radius: 4px;
+  }
+
+  .video__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  .video__meta {
+    font-size: 1rem;
+    color: var(--gold-text);
+  }
+  .video__meta time {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  /* The one primary action of the page. */
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    margin-top: 0.875rem;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--paper);
+    background: var(--bordeaux);
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+  }
+  .cta:hover {
+    background: #3f0907;
+  }
+  .cta:focus-visible {
+    outline-color: var(--ink);
+  }
+
+  .support {
+    padding: 1.25rem 0 1.5rem;
+    border-top: 1px solid var(--gold);
+  }
+  .support p {
+    margin: 0 0 0.25rem;
+  }
+  .link-strong {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .socials {
+    padding: 1.5rem 0 0.5rem;
+    border-top: 1px solid var(--gold);
+    text-align: center;
+  }
+  .socials ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 1.5rem;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .socials a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 1.5rem;
+    padding: 1rem 1.25rem 1.5rem;
+    font-size: 1rem;
+  }
+  .footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+</style>
+
+<script>
+  // Load the player only after the visitor clicks: nothing from YouTube before that.
+  document.querySelectorAll<HTMLAnchorElement>("[data-video-id]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+      event.preventDefault();
+
+      const id = link.dataset.videoId || "";
+      if (!/^[\w-]{11}$/.test(id)) return;
+
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&hl=en`;
+      iframe.title = link.dataset.videoTitle || "YouTube video";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+
+      link.replaceWith(iframe);
+      iframe.focus();
+    });
+  });
+</script>
