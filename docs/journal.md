@@ -1,5 +1,86 @@
 # Journal du site PRB
 
+## 18.11.2026 : modernisation de l'habillage (accueil et éléments communs)
+
+Branche `modernisation/accueil`, créée depuis `main` au commit `b604939`. Non fusionnée.
+
+Le site reste le même : pages, navigation, ordre des sections, textes (`site.ts` n'est pas modifié), quatre langues, images et éléments d'identité, polices Oswald et Roboto, et toute la mécanique (façade vidéo, newsletter, protection anti-robots, pages légales).
+
+### Ce qui a changé
+
+- **Système de design** (`src/layouts/MainLayout.astro`) :
+  - une échelle d'espacements unique, de 4 à 96 px ;
+  - une largeur de contenu de 1160 px ;
+  - des fonds neutres : `#111214`, et `#18191c` pour les surfaces ;
+  - un seul rouge d'accent, `#C8322A`, de la teinte de l'anneau du logo, éclairci pour rester lisible sur fond sombre ;
+  - des angles adoucis (14 px), des ombres légères, et des transitions douces au survol.
+- **Rouge d'accent :** il sert pour les boutons et l'onglet actif (texte blanc à 5,3:1), et pour les grands titres de section (3,5:1, conforme AA pour les grands titres).
+- **En-tête fixe et sobre :**
+  - le petit logo, le nom, le menu et les drapeaux de langue tiennent sur une barre ;
+  - l'onglet actif est une pastille rouge pleine, et un filet rouge souligne la barre ;
+  - sur téléphone, un menu repliable s'ouvre sous la barre et voile la page ; la touche Échap le ferme.
+- **Bandeau d'identité conservé :** image de fond, grand logo, titre, accroche, icônes des réseaux. Son voile est allégé pour que la photo se lise. Sur téléphone, le logo est plus petit et la rangée d'icônes est masquée, puisque les mêmes liens sont dans « Follow us » et dans le pied de page.
+- **Pied de page en colonnes :**
+  - marque, « Explore » (le menu), « Contact » (les liens existants, la newsletter et le soutien) et « Follow us » ;
+  - copyright en bas ;
+  - deux colonnes sur téléphone.
+- **Boutons :** un style principal (`.btn-red`, pastille rouge pleine) et un style secondaire (`.btn-secondary`, contour), définis une seule fois dans le layout. Les redéfinitions locales de `.btn-red` ont été retirées des pages collection, contact et vidéos.
+- **Accueil** (`src/pages/[lang]/index.astro`) :
+  - « Welcome » et « Latest video » sont posés directement sur la page, sans boîte ;
+  - les 4 cartes d'« Explore » ont le même format d'image (16:9) ;
+  - la newsletter est sur deux colonnes sur ordinateur ;
+  - les cartes des réseaux passent en une colonne sur petit téléphone.
+- **Emojis utilisés comme icônes** (« ▶ », « 📺 », « 📩 », « ⚠ », « ☕ ») : ils sont retirés à l'affichage par `src/lib/text.ts`, sans modifier les textes. Ils sont remplacés par des icônes au trait (lecture, grille, flèche, tasse) ou par rien.
+- **Mouvement :**
+  - apparition discrète au défilement, en CSS seul (`animation-timeline: view()`) ;
+  - elle part d'une opacité de 0,35, pour qu'aucun contenu ne soit jamais caché ;
+  - elle est désactivée, comme toutes les transitions, avec `prefers-reduced-motion`.
+- **Images de l'accueil :**
+  - versions AVIF et WebP des 4 visuels de cartes, en chargement différé (la carte « Histoire » passe de 420 Ko à 10 Ko) ;
+  - fond du bandeau en WebP ;
+  - icônes des réseaux en WebP de 64 px (celle d'Instagram passe de 248 Ko à 2 Ko).
+
+  Les fichiers d'origine sont conservés, car d'autres pages les utilisent.
+- **Débordement horizontal sur téléphone :** corrigé. L'accueil mesurait 417 px de large pour un écran de 390 px.
+
+### Vérifications (build servi en local)
+
+- **Build :** passe.
+- **Pages et liens :** les 36 pages répondent 200, et les 117 liens et ressources internes fonctionnent.
+- **Débordement :** aucun, à 360, 390, 768 et 1280 px, sur l'accueil, À propos, Vidéos et Contact.
+- **Accueil, dans les 4 langues :**
+  - contrastes AA sans échec, contre 5 échecs avant ;
+  - navigation au clavier complète, avec un contour visible partout ;
+  - aucun appel à YouTube ni à Google avant le clic, et le lecteur `youtube-nocookie` se charge au clic.
+- **Poids de l'accueil au premier chargement :**
+  - téléphone : 272 Ko, contre 1,24 Mo avant ;
+  - ordinateur : 486 Ko, dont 255 Ko pour la miniature de la vidéo.
+- **Champ piège :** faux succès, sans appel à Resend.
+- **Captures avant et après :** `docs/captures/modernisation-accueil/`.
+
+### Revue adverse
+
+Le juge reconnaît le même site au premier regard. Il trouvait la première version propre, mais anonyme : plus de rouge, un voile trop sombre, des sections toutes enfermées dans une boîte, des contenus calés à gauche dans des cadres trop larges, et des icônes de réseaux présentes trois fois.
+
+**Corrigé :**
+- retour du rouge (onglet actif plein, titres, filet de 3 px) ;
+- voile du bandeau allégé ;
+- Bienvenue et Vidéo sorties de leur boîte ;
+- newsletter sur deux colonnes ;
+- icônes du bandeau masquées sur téléphone, et logo plus petit ;
+- pseudos qui ne se coupent plus en milieu de mot ;
+- pied de page en deux colonnes sur téléphone ;
+- voile sous le menu de téléphone ;
+- texte secondaire plus clair.
+
+**Écarté :**
+- **Retirer le lien « About » en double dans le pied de page :** ce serait supprimer un lien de navigation existant.
+- **Image du bandeau plus nette :** la source ne mesure que 236 × 318 px. Il faudrait une nouvelle image, ce qui sort des règles.
+
+### Reste à faire, hors périmètre de cette étape
+
+Les autres pages gardent leurs propres couleurs dans leur contenu : le rouge `#D62612` en texte, et des gris `#555`, `#666` ou `#888`. Elles ont des échecs de contraste existants : 2 à 14 textes selon la page, minimum 2,5:1. Le nouvel en-tête, le pied de page et les boutons s'y appliquent déjà. Leur contenu sera à harmoniser dans une prochaine étape.
+
 ## 18.11.2026 : mise en production de la retouche
 
 La branche `retouche/site-existant` (`7a99306`) a été fusionnée dans `main` avec un commit de fusion, sans fast-forward : `373eb4f`. Le déploiement Vercel de production est terminé. La branche `refonte/page-unique` reste intacte et non fusionnée.
