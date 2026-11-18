@@ -83,7 +83,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         <div style="background:#111111;padding:40px 20px;color:#f0ebe0;font-family:Arial,Helvetica,sans-serif;">
           <div style="max-width:640px;margin:0 auto;background:#1a1a1a;border:1px solid #2f2f2f;">
             <div style="padding:32px 24px 20px 24px;text-align:center;">
-              <img src="https://peoplesrepublicofbulgaria.com/png/PRB_logo_email.png" alt="PRB" width="90" height="90" style="display:block;margin:0 auto 16px auto;border:0;">
+              <img src="https://peoplesrepublicofbulgaria.com/brand/email-logo-180.png" alt="PRB logo" width="90" height="90" style="display:block;margin:0 auto 16px auto;border:0;">
               <h1 style="margin:0;font-size:30px;line-height:1.2;color:#f0ebe0;text-transform:uppercase;">
                 People's Republic of Bulgaria
               </h1>

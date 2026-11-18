@@ -1,0 +1,94 @@
+---
+// Latest video as a plain link until the visitor clicks, then a youtube-nocookie
+// player in place. The browser requests nothing from YouTube before the click:
+// the thumbnail is served by our own domain (/api/thumb).
+// Styled to sit inside the existing .video-embed box of the home page.
+import { thumbUrl, watchUrl, type LatestVideo } from "../lib/latest-video";
+
+interface Props {
+  video: LatestVideo;
+  playLabel?: string;
+}
+const { video, playLabel = "Play" } = Astro.props;
+---
+
+<a class="vf" href={watchUrl(video.id)} data-video-id={video.id} data-video-title={video.title}>
+  <img
+    src={thumbUrl(video.id, "max")}
+    srcset={`${thumbUrl(video.id, "sd")} 640w, ${thumbUrl(video.id, "max")} 1280w`}
+    sizes="(min-width: 1100px) 1060px, 100vw"
+    width="1280"
+    height="720"
+    alt=""
+    loading="lazy"
+    decoding="async"
+  />
+  <span class="vf__play" aria-hidden="true">▶ {playLabel}</span>
+  <span class="vf__sr">{playLabel}: {video.title}</span>
+</a>
+
+<style>
+  .vf {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background: #000;
+  }
+  .vf img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .vf__play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 14px 26px;
+    background: #d62612;
+    color: #fff;
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    transition: background-color 0.2s ease;
+  }
+  .vf:hover .vf__play,
+  .vf:focus-visible .vf__play {
+    background: #b71f0f;
+  }
+  .vf:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: -6px;
+  }
+  .vf__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>("[data-video-id]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+      event.preventDefault();
+      const id = link.dataset.videoId || "";
+      if (!/^[\w-]{11}$/.test(id)) return;
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      iframe.title = link.dataset.videoTitle || "YouTube video";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      link.replaceWith(iframe);
+      iframe.focus();
+    });
+  });
+</script>
