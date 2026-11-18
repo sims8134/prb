@@ -13,7 +13,10 @@ Branche `refonte/page-unique`, créée depuis `main` au commit `c2ca76d`.
   - № 03, la newsletter ;
   - les liens Instagram, Facebook et TikTok ;
   - le pied de page (mailto et « Legal notice & privacy »).
-- **`/privacy` : « Legal notice & privacy »**, en un écran : éditeur, hébergeur, donnée collectée, finalité, prestataire (Resend), durée, désinscription par email, cookies.
+- **`/privacy` : « Legal notice & privacy »**, une ligne par point, environ un écran et demi sur téléphone :
+  - éditeur, hébergeur, donnée collectée, finalité ;
+  - base légale (consentement), prestataire (Resend), traitement hors de l'UE (Resend et Vercel), adresse IP ;
+  - durée, désinscription et accès par email, retrait du consentement, réclamation auprès de la КЗЛД / CPDP, cookies.
 - **Une page 404** aux couleurs du site, qui renvoie vers la dernière vidéo.
 - **Supprimé :**
   - les 9 pages en 4 langues ;
