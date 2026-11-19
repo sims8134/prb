@@ -1,5 +1,7 @@
 ---
-import { siteContent, supportedLangs } from "../data/site";
+import { siteContent, supportedLangs, type Lang } from "../data/site";
+import { nextSteps, COLD_WAR_BULGARIA_URL, BUY_ME_A_COFFEE_URL } from "../data/next-steps";
+import NextSteps from "../components/NextSteps.astro";
 import "../styles/fonts.css"; // Oswald + Roboto hosted on this site (same rules as Google Fonts)
 
 const {
@@ -13,6 +15,10 @@ const {
 } = Astro.props;
 
 const t = siteContent[lang as keyof typeof siteContent] ?? siteContent["en"];
+const ns = nextSteps[lang as Lang] ?? nextSteps.en;
+// Exit points before the footer on the inner content pages. The home page places them
+// itself (after the video); the legal and privacy pages (active="legal") have none.
+const showNextSteps = !["home", "legal"].includes(active);
 
 // Chemin de la page SANS le préfixe de langue (ex: "/history", ou "" pour l'accueil)
 const SITE = "https://peoplesrepublicofbulgaria.com";
@@ -198,7 +204,7 @@ const heroStyle = heroImage
     margin-right: auto;
   }
   .brand img { width: 40px; height: 40px; }
-  .brand span {
+  .brand > span {
     font-family: 'Oswald', sans-serif;
     font-weight: 600;
     font-size: 1.6rem;
@@ -249,6 +255,16 @@ const heroStyle = heroImage
   }
   .lang-switch a:hover img, .lang-switch a.active img { opacity: 1; }
   .lang-switch a.active img { outline-color: var(--accent); }
+  /* "Support" in the top bar: secondary and quieter than the active tab (outline, muted text) */
+  .topbar-support.btn-secondary {
+    min-height: 40px;
+    padding: 0 1.4rem;
+    gap: 0.5em;
+    font-size: 1.35rem;
+    color: var(--text-2);
+    white-space: nowrap;
+  }
+  .topbar-support.btn-secondary:hover { color: var(--text); }
   .menu-toggle {
     display: none;
     align-items: center;
@@ -266,7 +282,7 @@ const heroStyle = heroImage
   .topbar.is-open .menu-toggle .icon-open { display: none; }
   .topbar.is-open .menu-toggle .icon-close { display: block; }
 
-  @media (max-width: 960px) {
+  @media (max-width: 1023px) {
     .menu-toggle { display: inline-flex; }
     .topbar-inner { gap: var(--s-3); }
     .nav-panel {
@@ -293,13 +309,23 @@ const heroStyle = heroImage
       background: rgba(0, 0, 0, 0.6);
       pointer-events: none;
     }
+    .topbar-support.btn-secondary { display: flex; width: 100%; min-height: 48px; margin-top: var(--s-2); font-size: 1.5rem; }
     .nav-panel .lang-switch { margin-top: var(--s-3); padding-top: var(--s-3); border-top: 1px solid var(--line); }
   }
-  @media (min-width: 961px) {
+  @media (min-width: 1024px) {
     .nav-panel { display: flex; align-items: center; gap: var(--s-4); }
+    /* two-line lockup: the full name stays visible and leaves room for the menu, "Support" and flags in every language */
+    .brand > span { font-size: 1.35rem; line-height: 1.15; letter-spacing: 0.08em; overflow: visible; }
+    .brand-l2 { display: block; }
+  }
+  @media (min-width: 1024px) and (max-width: 1180px) {
+    .topbar-inner { gap: var(--s-3); }
+    .nav-panel { gap: var(--s-2); }
+    .main-nav a { padding: 0 0.8rem; letter-spacing: 0.05em; }
+    .lang-switch a { width: 32px; }
   }
   @media (max-width: 380px) {
-    .brand span { display: none; }
+    .brand > span { display: none; }
   }
 
   /* ---------- Identity banner (image, logo, title, tagline, socials) ---------- */
@@ -462,7 +488,7 @@ const heroStyle = heroImage
     <div class="topbar-inner">
       <a class="brand" href={`/${lang}`}>
         <img src="/brand/logo-160.webp" width="40" height="40" alt="" />
-        <span>People's Republic Of Bulgaria</span>
+        <span>People's Republic <span class="brand-l2">Of Bulgaria</span></span>
       </a>
 
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Menu" data-menu-toggle>
@@ -482,6 +508,12 @@ const heroStyle = heroImage
             ))}
           </ul>
         </nav>
+
+        <a class="btn-secondary topbar-support" href={BUY_ME_A_COFFEE_URL} target="_blank" rel="noopener">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z" /><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" /><path d="M8 3v2M12 3v2" /></svg>
+          {ns.support}
+          <span class="sr-only">({ns.newTab})</span>
+        </a>
 
         <div class="lang-switch">
           <a href="/en" class={lang === "en" ? "active" : ""} data-lang-switch="en" hreflang="en" aria-current={lang === "en" ? "true" : undefined}>
@@ -523,6 +555,7 @@ const heroStyle = heroImage
 
   <main class="page-wrap">
     <slot />
+    {showNextSteps && <NextSteps lang={lang as Lang} compact />}
   </main>
 
   <footer>
@@ -547,9 +580,15 @@ const heroStyle = heroImage
           {footer.links.map((item) => (<li><a href={item.href}>{item.label}</a></li>))}
           <li><a href={`/${lang}#newsletter`}>Newsletter</a></li>
           <li>
-            <a href="https://buymeacoffee.com/peoplesrepublicofbulgaria" target="_blank" rel="noopener noreferrer">
+            <a href={BUY_ME_A_COFFEE_URL} target="_blank" rel="noopener noreferrer">
               <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z" /><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" /><path d="M8 3v2M12 3v2" /></svg>
-              Support the channel
+              {ns.coffee.title}
+            </a>
+          </li>
+          <li>
+            <a href={COLD_WAR_BULGARIA_URL} target="_blank" rel="noopener">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6 9 4z" /><path d="M9 4v14M15 6v6" /></svg>
+              Cold War Bulgaria
             </a>
           </li>
         </ul>

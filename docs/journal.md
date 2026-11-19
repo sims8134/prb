@@ -1,5 +1,42 @@
 # Journal du site PRB
 
+## 19.11.2026 : deux points de sortie « Et ensuite » (Cold War Bulgaria et Buy Me a Coffee)
+
+Toujours sur la branche `modernisation/accueil`, non fusionnée.
+
+### Ce qui a changé
+
+- **Composant partagé** `src/components/NextSteps.astro`, défini une seule fois :
+  - deux cartes, « Go deeper » (bouton principal vers coldwarbulgaria.com) et « Support the channel » (bouton secondaire vers Buy Me a Coffee) ;
+  - côte à côte sur ordinateur, empilées sous 760 px, dans le style des cartes existantes ;
+  - liens ouverts dans un nouvel onglet, annoncés aux lecteurs d'écran ;
+  - textes des quatre langues dans `src/data/next-steps.ts`, avec les deux adresses.
+- **Emplacements :**
+  - accueil : juste après la section vidéo, une seule fois ;
+  - à propos, histoire, collection, tourisme, vidéos, contact : version compacte, en bas, juste avant le pied de page (ajoutée par `MainLayout`) ;
+  - pages légale et confidentialité : absent.
+- **En-tête :**
+  - bouton « Support » en style secondaire (contour, texte atténué), à droite du menu sur ordinateur, en dernier élément du menu sur téléphone ;
+  - pour que tout tienne sur une ligne dans les quatre langues, le nom passe sur deux lignes à partir de 1024 px (« People's Republic / Of Bulgaria »), et le menu repliable s'applique jusqu'à 1023 px au lieu de 960 px ;
+  - entre 1024 et 1180 px, espacements du menu resserrés.
+- **Pied de page :** le lien « Cold War Bulgaria » est ajouté. Le lien Buy Me a Coffee existait déjà ; son libellé est désormais traduit (titre de la deuxième carte).
+- Aucune fenêtre surgissante, aucun bandeau collant, aucune dépendance ajoutée.
+
+### Vérifications
+
+- Build réussi, 36 pages sur 36 en 200.
+- Composant présent une fois sur chaque page de contenu dans les quatre langues (28 pages), absent des 8 pages légale et confidentialité ; sur l'accueil, placé juste après la vidéo.
+- Aucun débordement à 360, 390, 768 et 1280 px sur l'accueil, à propos, histoire, contact et vidéos.
+- En-tête sur une ligne, sans nom tronqué ni libellé coupé, à 1280, 1100 et 1024 px, dans les quatre langues.
+- Contrastes des nouveaux éléments : aucun échec, minimum 5,3:1.
+- Clavier : les nouveaux liens sont atteints dans l'ordre, avec un contour visible.
+- Aucun appel externe avant un clic sur les pages de contenu, sauf la page vidéos, dont les lecteurs YouTube intégrés existaient déjà (contenu de page, non modifié).
+- Captures dans `docs/captures/sorties/`.
+
+### À noter
+
+- La page à propos contient déjà, dans son propre contenu, un bloc Cold War Bulgaria et un bloc « Support the project ». Le composant compact s'y ajoute en bas, comme demandé : les deux sorties y figurent donc deux fois.
+
 ## 18.11.2026 : modernisation de l'habillage (accueil et éléments communs)
 
 Branche `modernisation/accueil`, créée depuis `main` au commit `b604939`. Non fusionnée.

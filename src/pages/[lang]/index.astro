@@ -8,6 +8,7 @@ import {
   buildFooter,
 } from "../../data/site";
 import VideoFacade from "../../components/VideoFacade.astro";
+import NextSteps from "../../components/NextSteps.astro";
 import { getLatestVideo } from "../../lib/latest-video";
 import { noIcon } from "../../lib/text";
 
@@ -349,6 +350,8 @@ const cards = [
     <p class="no-video">{t.home.noVideo}</p>
   )}
 </section>
+
+<NextSteps lang={lang} />
 
 <section class="home-section newsletter-box reveal" id="newsletter" aria-labelledby="newsletter-title">
   <h2 class="section-title" id="newsletter-title">{t.home.newsletter.title}</h2>
