@@ -1,5 +1,27 @@
 # Journal du site PRB
 
+## 21.11.2026 : mise en production de finition/pages-interieures (fusion 5e5a2f6)
+
+`finition/pages-interieures` (`493c526`) est fusionnée dans `main` avec un commit de fusion sans fast-forward, `5e5a2f6`. Vercel indique « Deployment has completed » pour ce commit. `refonte/page-unique` reste intacte et non fusionnée.
+
+Vérifié sur peoplesrepublicofbulgaria.com (navigateur de test son coupé) :
+1. Déploiement terminé pour `5e5a2f6`.
+2. 36 pages sur 36 en 200, et 193 liens et ressources internes, aucun cassé.
+3. Page vidéos :
+   - 40 miniatures sur 40 servies depuis `/thumbs/` et chargées, aucune sur fond neutre ;
+   - vidéo récente (`vTan7o8oKE0`) et vidéo ancienne absente du flux public (`unEzQkIh79c`, onglet Tourism) lancées au clic en `youtube-nocookie`.
+4. Aucun appel externe avant un clic sur les 36 pages.
+5. Collection et tourisme : photo ouverte et refermée à la souris, puis au clavier (Entrée, flèche, Échap) ; focus rendu à la vignette.
+6. Bouton Play à 16 px du bord gauche et du bas : accueil, vidéo en vedette et cartes de la page vidéos.
+7. Crédit SBC Conception sur les 36 pages, lien en 200.
+8. Nouvelle phrase sur les cookies dans les quatre langues de la page légale.
+9. Aucun débordement à 360 et 390 px sur l'accueil et les six pages intérieures.
+10. Contrastes AA : 0 échec sur l'accueil et les six pages, dans les quatre langues (28 pages).
+11. Champ piège : `{"success":true}`, HTTP 200.
+12. Aucune page ne contient « SOC TRADE », « EOOD », « ЕООД » ni « ЕИК ».
+
+Retour en arrière : `git revert -m 1 5e5a2f6` puis `git push origin main`.
+
 ## 21.11.2026 : finition des pages intérieures (branche finition/pages-interieures)
 
 Branche `finition/pages-interieures`, créée depuis `main` (`bfb1323`). Non fusionnée : en attente de validation de l'aperçu.
