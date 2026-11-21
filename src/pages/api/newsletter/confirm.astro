@@ -1,0 +1,207 @@
+---
+// Newsletter double opt-in: the link in the confirmation email lands here (same URL as before,
+// /api/newsletter/confirm?token=...). On success the page shows the message, then the two
+// "What next" cards in their compact form. The confirmation email itself is unchanged.
+import { Resend } from "resend";
+import crypto from "node:crypto";
+import NextSteps from "../../../components/NextSteps.astro";
+import "../../../styles/fonts.css";
+import "../../../styles/base.css";
+
+export const prerender = false;
+
+const resend = new Resend(import.meta.env.RESEND_API_KEY);
+const SECRET = import.meta.env.NEWSLETTER_CONFIRM_SECRET;
+
+function verifyToken(token: string) {
+  const decoded = Buffer.from(token, "base64url").toString("utf8");
+  const parts = decoded.split("|");
+
+  if (parts.length !== 3) {
+    throw new Error("Invalid token.");
+  }
+
+  const [email, expires, signature] = parts;
+  const payload = `${email}|${expires}`;
+
+  const expectedSignature = crypto
+    .createHmac("sha256", SECRET)
+    .update(payload)
+    .digest("hex");
+
+  if (signature !== expectedSignature) {
+    throw new Error("Invalid signature.");
+  }
+
+  if (Date.now() > Number(expires)) {
+    throw new Error("Token expired.");
+  }
+
+  return email;
+}
+
+function failurePage(message: string, status: number) {
+    return new Response(
+      `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Confirmation failed</title>
+        <style>
+          body {
+            margin: 0;
+            background: #111;
+            color: #f0ebe0;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+          }
+          .box {
+            max-width: 640px;
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 32px;
+            text-align: center;
+          }
+          h1 {
+            margin: 0 0 16px 0;
+            color: #D62612;
+            text-transform: uppercase;
+          }
+          p {
+            color: #ccc;
+            line-height: 1.7;
+            margin: 0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="box">
+          <h1>Confirmation failed</h1>
+          <p>${message}</p>
+        </div>
+      </body>
+      </html>
+      `,
+      {
+        status,
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      }
+    );
+}
+
+const token = Astro.url.searchParams.get("token");
+if (!token) {
+  return new Response("Missing token.", { status: 400 });
+}
+
+let email: string;
+try {
+  email = verifyToken(token);
+} catch (error) {
+  console.error("Newsletter confirm error:", error);
+  return failurePage("The confirmation link is invalid or expired.", 400);
+}
+
+try {
+  const result = await resend.contacts.create({
+    email,
+    unsubscribed: false,
+  });
+
+  if (result.error) {
+    // Clicking the link twice must not show an error if the contact already exists.
+    const alreadyExists =
+      result.error.statusCode === 409 || /already exist/i.test(result.error.message);
+
+    if (!alreadyExists) {
+      console.error("Newsletter contact creation failed:", result.error);
+      return failurePage(
+        "Your subscription could not be recorded. Please try again later or contact us at contact@peoplesrepublicofbulgaria.com.",
+        502
+      );
+    }
+  }
+
+  console.log("Newsletter contact confirmed:", result.data?.id ?? "already exists");
+} catch (error) {
+  console.error("Newsletter confirm error:", error);
+  return failurePage("The confirmation link is invalid or expired.", 400);
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Subscription confirmed</title>
+  <style is:global>
+    body {
+      margin: 0;
+      background: #111;
+      color: #f0ebe0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px; /* base.css sets html to 62.5%: keep this page's original text size */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .confirm-wrap {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .box {
+      max-width: 640px;
+      width: 100%;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 32px;
+      text-align: center;
+    }
+    .box h1 {
+      margin: 0 0 16px 0;
+      color: #D62612;
+      text-transform: uppercase;
+    }
+    .box p {
+      color: #ccc;
+      line-height: 1.7;
+      margin: 0 0 20px 0;
+    }
+    .box a {
+      display: inline-block;
+      padding: 12px 18px;
+      background: #D62612;
+      color: white;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    /* the cards keep the site's look: same font as on the site */
+    .confirm-wrap .next-steps { width: 100%; font-family: 'Roboto', sans-serif; color: var(--text); }
+  </style>
+</head>
+<body>
+  <main class="confirm-wrap">
+    <div class="box">
+      <h1>Subscription confirmed</h1>
+      <p>Your newsletter subscription has been confirmed successfully.</p>
+      <a href="/">Back to website</a>
+    </div>
+    <NextSteps lang="en" page="newsletter-confirmation" compact />
+  </main>
+</body>
+</html>

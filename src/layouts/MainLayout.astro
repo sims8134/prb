@@ -1,8 +1,9 @@
 ---
 import { siteContent, supportedLangs, type Lang } from "../data/site";
-import { nextSteps, COLD_WAR_BULGARIA_URL, BUY_ME_A_COFFEE_URL } from "../data/next-steps";
+import { nextSteps, coldWarBulgariaUrl, BUY_ME_A_COFFEE_URL } from "../data/next-steps";
 import NextSteps from "../components/NextSteps.astro";
 import "../styles/fonts.css"; // Oswald + Roboto hosted on this site (same rules as Google Fonts)
+import "../styles/base.css"; // tokens, reset, focus, buttons (shared with the newsletter confirmation page)
 
 const {
   lang = "en",
@@ -12,6 +13,7 @@ const {
   footer = { links: [], copyright: "" },
   active = "",
   heroImage = "",
+  pageName = "", // page of origin for outgoing links (defaults to the path, "home" for the home page)
 } = Astro.props;
 
 const t = siteContent[lang as keyof typeof siteContent] ?? siteContent["en"];
@@ -30,6 +32,7 @@ const pathParts = Astro.url.pathname.replace(/\/$/, "").split("/").filter(Boolea
 // pathParts[0] est la langue (en/fr/es/bg) ; le reste est le chemin
 const pagePath = pathParts.slice(1).join("/");
 const subPath = pagePath ? `/${pagePath}` : "";
+const page = pageName || pagePath || "home";
 
 const heroStyle = heroImage
   ? `background-image: url('${heroImage}'); background-position: center 30%; background-size: cover; background-repeat: no-repeat;`
@@ -101,40 +104,8 @@ const heroStyle = heroImage
   })} />
 
   <style is:global>
-  /* ============================================================
-     Design tokens: one spacing scale, neutral surfaces, one accent
-     (the red of the logo's ring, lifted to read on dark backgrounds).
-     Base: html 62.5%, so 1rem = 10px.
-     ============================================================ */
-  :root {
-    --bg: #111214;
-    --surface: #18191c;
-    --surface-2: #1f2024;
-    --line: rgba(237, 231, 220, 0.1);
-    --line-strong: rgba(237, 231, 220, 0.18);
-    --text: #ede7dc;
-    --text-2: #c9c2b7;   /* 9.9:1 on --surface */
-    --text-3: #a39c92;   /* 6.4:1 on --surface */
-    --accent: #c8322a;   /* the red of the logo ring, lifted. Fills: white text 5.3:1. Large titles: 3.5:1 on --bg */
-    --accent-hover: #a3271f;
-    --accent-text: #f08a7c; /* accent used as text: 7.1:1 on --bg */
-    --accent-link: #e5554a; /* accent red for link text on dark: 5.3:1 on the footer, 5.2:1 on --bg */
 
-    --s-1: 0.4rem; --s-2: 0.8rem; --s-3: 1.2rem; --s-4: 1.6rem; --s-5: 2.4rem;
-    --s-6: 3.2rem; --s-7: 4.8rem; --s-8: 6.4rem; --s-9: 9.6rem;
-
-    --max: 1160px;
-    --gutter: clamp(1.6rem, 4vw, 3.2rem);
-    --radius: 14px;
-    --radius-sm: 10px;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 30px -12px rgba(0, 0, 0, 0.55);
-    --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 18px 40px -14px rgba(0, 0, 0, 0.7);
-    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-    --topbar-h: 64px;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 62.5%; scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-h) + 1.6rem); }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-h) + 1.6rem); }
   body {
     font-family: 'Roboto', sans-serif;
     font-size: 1.6rem;
@@ -143,38 +114,9 @@ const heroStyle = heroImage
     color: var(--text);
     overflow-x: clip; /* nothing may widen the page on phones */
   }
-  a { text-decoration: none; color: inherit; }
   ul { list-style: none; }
   img { display: block; max-width: 100%; }
-  :focus-visible { outline: 3px solid var(--text); outline-offset: 3px; border-radius: 4px; }
-  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .icon { width: 1.15em; height: 1.15em; flex: none; }
 
-  /* ---------- Buttons: one primary, one secondary, the same everywhere ---------- */
-  .btn-red,
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6em;
-    min-height: 44px;
-    padding: 1rem 2rem;
-    border-radius: 999px;
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.45rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    line-height: 1.2;
-    cursor: pointer;
-    transition: background-color 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease);
-  }
-  .btn-red { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
-  /* hover and keyboard focus: primary goes darker (white text 7.3:1), secondary fills with the accent (white text 5.3:1) */
-  .btn-red:hover, .btn-red:focus-visible { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; }
-  .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--line-strong); }
-  .btn-secondary:hover, .btn-secondary:focus-visible { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .btn-red:active, .btn-secondary:active { transform: translateY(1px); }
 
   /* ---------- Fixed top bar ---------- */
   .topbar {
@@ -590,7 +532,7 @@ const heroStyle = heroImage
 
   <main class="page-wrap">
     <slot />
-    {showNextSteps && <NextSteps lang={lang as Lang} compact />}
+    {showNextSteps && <NextSteps lang={lang as Lang} page={page} compact />}
   </main>
 
   <footer>
@@ -621,7 +563,7 @@ const heroStyle = heroImage
             </a>
           </li>
           <li>
-            <a href={COLD_WAR_BULGARIA_URL} target="_blank" rel="noopener">
+            <a href={coldWarBulgariaUrl(lang as Lang, page)} target="_blank" rel="noopener">
               <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6 9 4z" /><path d="M9 4v14M15 6v6" /></svg>
               Cold War Bulgaria
             </a>
