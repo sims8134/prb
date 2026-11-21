@@ -108,6 +108,16 @@ const heroStyle = heroImage
   <style is:global>
 
   html { scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-h) + 1.6rem); }
+
+  /* Scrollbar in the red of the reading progress bar, on the dark background.
+     Thumb #c8322a on #111214: 3.5:1, above the 3:1 needed for a visible control.
+     Firefox and Chrome use the standard properties; Safari uses the ::-webkit rules.
+     Phones keep their own overlay scrollbars. */
+  html { scrollbar-color: var(--accent) var(--bg); scrollbar-width: thin; }
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 999px; border: 3px solid var(--bg); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent-hover); }
   body {
     font-family: 'Roboto', sans-serif;
     font-size: 1.6rem;
