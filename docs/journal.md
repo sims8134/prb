@@ -1,5 +1,23 @@
 # Journal du site PRB
 
+## 21.11.2026 : mise en production de parcours/sorties (fusion 8e2af42)
+
+`parcours/sorties` (`6a89126`) est fusionnée dans `main` avec un commit de fusion sans fast-forward, `8e2af42`. Vercel indique « Deployment has completed » pour ce commit. `refonte/page-unique` reste intacte et non fusionnée.
+
+Vérifié sur peoplesrepublicofbulgaria.com :
+- 36 pages sur 36 en 200. Une adresse inconnue répond 404 avec les deux cartes, en anglais, en français, en espagnol et en bulgare.
+- « Go deeper » adaptée sur histoire, collection et tourisme dans les quatre langues (12 pages). Les 12 liens à ancre arrivent sur `#timeline`, `#museum` ou `#map` dans la langue de la page. Les 52 liens vers coldwarbulgaria.com répondent tous 200.
+- Nouveau texte de soutien sur les 28 pages qui ont les cartes, et bouton vers buymeacoffee.com/peoplesrepublicofbulgaria.
+- Apparence comparée à l'état d'avant la fusion (accueil, histoire, vidéos, contact, et histoire en bulgare, à 390 et 1280 px) :
+  - styles calculés identiques ;
+  - seuls écarts, dus aux textes : la largeur du bouton à libellé plus court (« Open the timeline »), et une ligne de plus pour le texte de soutien (+25 px sur téléphone pour vidéos et contact, +24 px pour histoire en bulgare sur ordinateur).
+- Aucun débordement à 360 et 390 px sur l'accueil, histoire, collection et tourisme.
+- Accueil : aucun appel externe avant un clic ; lecteur `youtube-nocookie` au clic.
+- Champ piège : `{"success":true}`. Lien de confirmation invalide : 400.
+- Aucune page ne contient « SOC TRADE », « EOOD », « ЕООД » ni « ЕИК ».
+
+Retour en arrière : `git revert -m 1 8e2af42` puis `git push origin main`.
+
 ## 21.11.2026 : liens vers coldwarbulgaria.com dans la langue de la page (avant fusion)
 
 Branche `parcours/sorties`.
