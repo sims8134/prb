@@ -1,5 +1,15 @@
 # Journal du site PRB
 
+## 21.11.2026 : barre de défilement rouge (branche finition/scrollbar)
+
+Branche `finition/scrollbar`, créée depuis `main` (`d74b1ea`). Non fusionnée : en attente de validation de l'aperçu.
+
+- Barre de défilement de la page dans le rouge de la barre de progression (`--accent`, `#C8322A`), sur le fond sombre du site.
+- Fine, avec un curseur arrondi, plus foncé au survol (`--accent-hover`).
+- Contraste du curseur sur le fond : 3,5:1, au-dessus des 3:1 demandés pour un élément d'interface.
+- Firefox et Chrome utilisent les propriétés standard (`scrollbar-color`, `scrollbar-width`), Safari les règles `::-webkit-scrollbar`. Les téléphones gardent leur barre système, qui apparaît par-dessus le contenu.
+- Les carrousels de la page vidéos gardent leur barre masquée.
+
 ## 21.11.2026 : mise en production de finition/pages-interieures (fusion 5e5a2f6)
 
 `finition/pages-interieures` (`493c526`) est fusionnée dans `main` avec un commit de fusion sans fast-forward, `5e5a2f6`. Vercel indique « Deployment has completed » pour ce commit. `refonte/page-unique` reste intacte et non fusionnée.
