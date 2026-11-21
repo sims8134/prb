@@ -24,6 +24,8 @@ const ns = nextSteps[lang as Lang] ?? nextSteps.en;
 // Copyright line: "{year}" in the text is replaced by the year (also refreshed in the browser).
 const year = new Date().getFullYear();
 const [copyrightBefore, copyrightAfter = ""] = String(footer.copyright).split("{year}");
+// Site credit, third line of the footer (only the name, no company).
+const credit = { en: "Site made by", fr: "Site réalisé par", es: "Sitio realizado por", bg: "Сайт, изработен от" }[lang as Lang] ?? "Site made by";
 const showNextSteps =!["home", "legal", "about"].includes(active);
 
 // Chemin de la page SANS le préfixe de langue (ex: "/history", ou "" pour l'accueil)
@@ -422,6 +424,8 @@ const heroStyle = heroImage
     border-top: 1px solid var(--line);
   }
   .footer-bottom p { font-size: 1.35rem; color: var(--text-3); }
+  .footer-credit { color: var(--text-2); transition: color 0.2s var(--ease); }
+  .footer-credit:hover, .footer-credit:focus-visible { color: var(--accent-link); }
   @media (max-width: 900px) {
     .footer-inner { grid-template-columns: 1fr 1fr; }
     .footer-brand { grid-column: 1 / -1; }
@@ -592,6 +596,7 @@ const heroStyle = heroImage
     <div class="footer-bottom">
       <p>{t.home.notice}</p>
       <p id="copyright-text">{copyrightBefore}<span data-year>{year}</span>{copyrightAfter}</p>
+      <p>{credit} <a class="footer-credit" href="https://sbcconception.com" target="_blank" rel="noopener">SBC Conception</a></p>
     </div>
   </footer>
 </body>

@@ -1,28 +1,41 @@
 ---
-// Latest video as a plain link until the visitor clicks, then a youtube-nocookie
-// player in place. The browser requests nothing from YouTube before the click:
-// the thumbnail is served by our own domain (/api/thumb).
-// Styled to sit inside the existing .video-embed box of the home page.
-import { thumbUrl, watchUrl, type LatestVideo } from "../lib/latest-video";
+// A video as a plain link until the visitor clicks, then a youtube-nocookie player in place.
+// The browser requests nothing from YouTube before the click.
+// Thumbnail: by default /api/thumb (home page, latest video of the channel feed); the videos
+// page passes files prepared at build time (/thumbs/...). With `thumb={null}` the video is
+// shown with its title and the Play button on a neutral background.
+// The parent sets the 16:9 box (position: relative); the facade fills it.
+import { thumbUrl, watchUrl } from "../lib/latest-video";
 
 interface Props {
-  video: LatestVideo;
+  video: { id: string; title: string };
   playLabel?: string;
+  thumb?: { src: string; srcset?: string } | null;
+  sizes?: string;
+  eager?: boolean;
 }
-const { video, playLabel = "Play" } = Astro.props;
+const { video, playLabel = "Play", thumb, sizes = "(min-width: 1100px) 1060px, 100vw", eager = false } = Astro.props;
+const img =
+  thumb === undefined
+    ? { src: thumbUrl(video.id, "max"), srcset: `${thumbUrl(video.id, "sd")} 640w, ${thumbUrl(video.id, "max")} 1280w` }
+    : thumb;
 ---
 
-<a class="vf" href={watchUrl(video.id)} data-video-id={video.id} data-video-title={video.title}>
-  <img
-    src={thumbUrl(video.id, "max")}
-    srcset={`${thumbUrl(video.id, "sd")} 640w, ${thumbUrl(video.id, "max")} 1280w`}
-    sizes="(min-width: 1100px) 1060px, 100vw"
-    width="1280"
-    height="720"
-    alt=""
-    loading="lazy"
-    decoding="async"
-  />
+<a class:list={["vf", { "vf--noimg": !img }]} href={watchUrl(video.id)} data-video-id={video.id} data-video-title={video.title}>
+  {img ? (
+    <img
+      src={img.src}
+      srcset={img.srcset}
+      sizes={sizes}
+      width="1280"
+      height="720"
+      alt=""
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+    />
+  ) : (
+    <span class="vf__title" aria-hidden="true">{video.title}</span>
+  )}
   <span class="vf__play" aria-hidden="true">
     <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg>
     {playLabel}
@@ -36,6 +49,7 @@ const { video, playLabel = "Play" } = Astro.props;
     inset: 0;
     display: block;
     background: #000;
+    overflow: hidden;
   }
   .vf img {
     width: 100%;
@@ -47,11 +61,31 @@ const { video, playLabel = "Play" } = Astro.props;
   .vf:hover img {
     transform: scale(1.03);
   }
+  /* No thumbnail: neutral background, the title takes its place */
+  .vf--noimg {
+    background: var(--surface-2, #1f2024);
+  }
+  .vf__title {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: 20px;
+    font-family: "Oswald", sans-serif;
+    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 1.3;
+    color: var(--text, #ede7dc);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* Bottom left, with a margin: the title printed in the picture stays visible */
   .vf__play {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: 16px;
+    bottom: 16px;
+    transform-origin: left bottom;
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -71,7 +105,7 @@ const { video, playLabel = "Play" } = Astro.props;
   .vf:hover .vf__play,
   .vf:focus-visible .vf__play {
     background: var(--accent-hover, #951c15);
-    transform: translate(-50%, -50%) scale(1.04);
+    transform: scale(1.04);
   }
   .vf:focus-visible {
     outline: 3px solid #fff;
@@ -100,6 +134,7 @@ const { video, playLabel = "Play" } = Astro.props;
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
       iframe.allowFullscreen = true;
       iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      iframe.style.cssText = "position:absolute;inset:0;width:100%;height:100%;border:0";
       link.replaceWith(iframe);
       iframe.focus();
     });

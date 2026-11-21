@@ -1,0 +1,97 @@
+/* Inner content pages (about, history, collection, tourism, videos, contact).
+   Nothing new: the rules of the home page, written once for the six pages.
+   Tokens come from src/styles/base.css; 1rem = 10px. */
+
+/* Content width: the layout's <main class="page-wrap"> already sets the home width
+   (1160px and its gutters). An inner .page-wrap no longer narrows it again. */
+.page-wrap .page-wrap { max-width: none; margin: 0; padding: 0; }
+
+/* Page title and lead: the home "Welcome" title and text */
+.page-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(2.8rem, 3.4vw, 3.6rem);
+  line-height: 1.1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-bottom: var(--s-3);
+}
+.page-subtitle {
+  max-width: 70ch;
+  font-size: clamp(1.6rem, 1.5vw, 1.8rem);
+  line-height: 1.7;
+  color: var(--text-2);
+  margin-bottom: var(--s-6);
+}
+
+/* Section titles: the home section titles (red, large: 3.5:1, AA for large text) */
+.section-label,
+.content-h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(2.2rem, 2.6vw, 2.8rem);
+  line-height: 1.2;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  margin: var(--s-7) 0 var(--s-5);
+}
+
+/* Notice: the quiet italic note of the home page, in a soft box */
+.notice-box {
+  padding: var(--s-4) var(--s-5);
+  margin-bottom: var(--s-7);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 1.45rem;
+  line-height: 1.7;
+  font-style: italic;
+  color: var(--text-3);
+}
+
+/* Cards: the home cards (surface, soft corners, light shadow, red outline on hover and focus) */
+.content-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.content-card:hover,
+.content-card:focus-within,
+a.content-card:focus-visible { border-color: var(--accent); box-shadow: var(--shadow-hover); }
+
+/* Round icon of a card, as in the "What next" cards */
+.content-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+}
+.content-icon svg { width: 24px; height: 24px; }
+
+/* Links inside text: underlined, red on hover and focus like the footer links */
+.prose-link {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 0.2em;
+  transition: color 0.2s var(--ease), text-decoration-color 0.2s var(--ease);
+}
+.prose-link:hover,
+.prose-link:focus-visible { color: var(--accent-link); text-decoration-color: currentColor; }
+
+/* Plain links that stand alone (an email address): no underline, same red hover */
+.plain-link {
+  color: var(--text);
+  transition: color 0.2s var(--ease);
+  overflow-wrap: anywhere;
+}
+.plain-link:hover,
+.plain-link:focus-visible { color: var(--accent-link); }

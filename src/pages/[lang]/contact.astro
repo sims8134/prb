@@ -1,5 +1,7 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
+import { noIcon } from "../../lib/text";
+import "../../styles/content.css";
 import {
   supportedLangs,
   siteContent,
@@ -22,8 +24,8 @@ const copy = {
     emailTitle: "Email",
     emailText: "For any question about the collection, tourism, the store or the website:",
     follow: "Follow us",
-    igText: "Instagram — Photos, collection, urbex",
-    ytText: "YouTube — videos, urbex, edits",
+    igText: "Instagram: Photos, collection, urbex",
+    ytText: "YouTube: videos, urbex, edits",
     fbText: "Facebook Page",
   },
   fr: {
@@ -32,8 +34,8 @@ const copy = {
     emailTitle: "Email",
     emailText: "Pour toute question concernant la collection, le tourisme, la boutique ou le site :",
     follow: "Suivez-nous",
-    igText: "Instagram — Photos, collection, urbex",
-    ytText: "YouTube — vidéos, urbex, montages",
+    igText: "Instagram : Photos, collection, urbex",
+    ytText: "YouTube : vidéos, urbex, montages",
     fbText: "Page Facebook",
   },
   es: {
@@ -42,8 +44,8 @@ const copy = {
     emailTitle: "Email",
     emailText: "Para cualquier pregunta sobre la colección, el turismo, la tienda o el sitio web:",
     follow: "Síguenos",
-    igText: "Instagram — Fotos, colección, urbex",
-    ytText: "YouTube — vídeos, urbex, edits",
+    igText: "Instagram: Fotos, colección, urbex",
+    ytText: "YouTube: vídeos, urbex, edits",
     fbText: "Página de Facebook",
   },
   bg: {
@@ -52,8 +54,8 @@ const copy = {
     emailTitle: "Имейл",
     emailText: "За въпроси относно колекцията, туризма, магазина или уебсайта:",
     follow: "Последвайте ни",
-    igText: "Instagram — Снимки, колекция, urbex",
-    ytText: "YouTube — видеа, urbex, монтажи",
+    igText: "Instagram: Снимки, колекция, urbex",
+    ytText: "YouTube: видеа, urbex, монтажи",
     fbText: "Facebook страница",
   },
 }[lang];
@@ -70,205 +72,134 @@ const copy = {
 >
 
 <style>
-.page-wrap {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 30px 20px 60px;
+/* Shared rules (title, lead, cards, links): src/styles/content.css. */
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: var(--s-5);
+  align-items: stretch;
 }
-
-.page-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 2.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #f0ebe0;
-  border-bottom: 3px solid #D62612;
-  padding-bottom: 10px;
-  margin-bottom: 28px;
-}
-
-.page-subtitle {
-  font-size: 1.5rem;
-  color: #888;
-  margin-bottom: 28px;
-  line-height: 1.7;
-}
-
-.form-feedback {
-  margin-top: 14px;
-  font-size: 1.4rem;
-  text-align: center;
-  min-height: 24px;
-}
-
-.form-feedback.success {
-  color: #4caf50;
-}
-
-.form-feedback.error {
-  color: #D62612;
-}
-
 .contact-card {
-  background: #242424;
-  border: 1px solid #333;
-  padding: 30px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.contact-card, .socials-card { transition: border-color 0.2s var(--ease); }
-.contact-card:hover, .contact-card:focus-within,
-.socials-card:hover, .socials-card:focus-within { border-color: var(--accent); }
-
-.contact-card .icon {
-  font-size: 3.6rem;
-  margin-bottom: 14px;
-}
-
-.contact-card h3 {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #f0ebe0;
-  margin-bottom: 10px;
-}
-
-.contact-card p {
-  font-size: 1.45rem;
-  color: #888;
-  line-height: 1.7;
-  margin-bottom: 14px;
-}
-
-.contact-card a.email-link {
-  display: inline-block;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #D62612;
-  word-break: break-all;
-}
-
-.contact-card a.email-link:hover {
-  text-decoration: underline;
-}
-
-.socials-card {
-  background: #242424;
-  border: 1px solid #333;
-  padding: 24px;
-  margin-bottom: 20px;
-}
-
-.socials-card h3 {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #f0ebe0;
-  margin-bottom: 16px;
-  border-left: 4px solid #D62612;
-  padding-left: 12px;
-}
-
-.social-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  padding: clamp(2.4rem, 3.5vw, 3.6rem);
+  text-align: center;
 }
-
+.contact-card h2,
+.socials-card h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.2rem;
+  line-height: 1.2;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+.contact-card p {
+  max-width: 44ch;
+  font-size: 1.55rem;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+.contact-card .plain-link {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.socials-card { padding: clamp(2.4rem, 3.5vw, 3.6rem); }
+.socials-card h2 { margin-bottom: var(--s-4); }
+.social-list { display: grid; gap: var(--s-3); }
 .social-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px;
-  background: #1a1a1a;
-  border: 1px solid #2e2e2e;
+  gap: var(--s-4);
+  padding: var(--s-3) var(--s-4);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
 }
-
-.social-item { transition: border-color 0.2s var(--ease); }
 .social-item:hover,
-.social-item:focus-visible {
-  border-color: var(--accent);
-}
-
-.social-item img {
-  height: 26px;
-  width: auto;
-}
-
-.social-item span {
-  font-size: 1.45rem;
-  color: #aaa;
-}
-
+.social-item:focus-visible { border-color: var(--accent); transform: translateY(-2px); }
+.social-item img { height: 26px; width: 32px; object-fit: contain; flex: none; }
+.social-item div { min-width: 0; }
 .social-item strong {
-  color: #f0ebe0;
   display: block;
   font-size: 1.5rem;
+  color: var(--text);
+  overflow-wrap: anywhere;
 }
+.social-item span { font-size: 1.4rem; color: var(--text-3); }
 .newsletter-box {
-  background: #242424;
-  border: 1px solid #333;
-  padding: 28px;
-  margin-bottom: 20px;
+  margin-top: var(--s-5);
+  padding: clamp(2.4rem, 4vw, 4rem);
 }
-
-.newsletter-box h3 {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #D62612;
-  border-bottom: 2px solid #333;
-  padding-bottom: 8px;
-  margin-bottom: 16px;
-}
-
+.newsletter-box h2 { margin-top: 0; }
 .newsletter-text {
-  font-size: 1.45rem;
-  color: #aaa;
+  max-width: 62ch;
+  font-size: 1.6rem;
   line-height: 1.7;
-  margin-bottom: 16px;
+  color: var(--text-2);
+  margin-bottom: var(--s-5);
 }
-
 .newsletter-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--s-3);
+  align-items: flex-start;
+  max-width: 560px;
 }
-
 .newsletter-form input[type="email"] {
   width: 100%;
-  max-width: 400px;
-  background: #1a1a1a;
-  border: 1px solid #444;
-  color: #f0ebe0;
+  min-height: 48px;
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text);
   font-family: 'Roboto', sans-serif;
-  font-size: 1.5rem;
-  padding: 10px 14px;
-  outline: none;
+  font-size: 1.6rem;
+  padding: 1rem 1.4rem;
+  transition: border-color 0.2s var(--ease);
 }
-
-.newsletter-form input[type="email"]:focus {
-  border-color: #D62612;
-}
-
+.newsletter-form input[type="email"]::placeholder { color: var(--text-3); }
+.newsletter-form input[type="email"]:focus { border-color: var(--text-2); }
 .newsletter-consent {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  font-size: 1.35rem;
-  color: #aaa;
+  gap: var(--s-3);
+  font-size: 1.45rem;
   line-height: 1.6;
+  color: var(--text-2);
+  margin-bottom: var(--s-2);
 }
-
-@media (max-width: 560px) {
-  .social-item {
-    align-items: flex-start;
+.newsletter-consent input { width: 20px; height: 20px; margin-top: 2px; flex: 0 0 auto; accent-color: var(--accent); }
+.form-feedback { margin-top: var(--s-4); font-size: 1.5rem; line-height: 1.6; color: var(--text-2); }
+.form-feedback:empty { display: none; }
+.form-feedback.success { color: #9ad3a5; }
+.form-feedback.error { color: var(--accent-text); }
+.form-feedback .hint { font-size: 1.35rem; color: var(--text-3); }
+@media (min-width: 900px) {
+  .newsletter-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    column-gap: var(--s-7);
+    grid-template-rows: auto 1fr auto;
+    align-items: start;
   }
+  .newsletter-box h2, .newsletter-box .newsletter-text { grid-column: 1; }
+  .newsletter-box .newsletter-form { grid-column: 2; grid-row: 1 / span 2; max-width: none; }
+  .newsletter-box .form-feedback { grid-column: 2; grid-row: 3; }
+}
+@media (max-width: 800px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .newsletter-form .btn-red { width: 100%; }
+  .social-item strong { font-size: 1.3rem; overflow-wrap: normal; }
 }
 </style>
 
@@ -276,17 +207,18 @@ const copy = {
   <h1 class="page-title">{copy.title}</h1>
   <p class="page-subtitle">{copy.subtitle}</p>
 
-  <div class="contact-card">
-    <div class="icon">✉️</div>
-    <h3>{copy.emailTitle}</h3>
+  <div class="contact-grid">
+  <div class="contact-card content-card">
+    <span class="content-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3.5 6.5 12 13l8.5-6.5" /></svg></span>
+    <h2>{copy.emailTitle}</h2>
     <p>{copy.emailText}</p>
-    <a href="mailto:contact@peoplesrepublicofbulgaria.com" class="email-link">
+    <a href="mailto:contact@peoplesrepublicofbulgaria.com" class="plain-link">
       contact@peoplesrepublicofbulgaria.com
     </a>
   </div>
 
-  <div class="socials-card">
-    <h3>{copy.follow}</h3>
+  <div class="socials-card content-card">
+    <h2>{copy.follow}</h2>
     <div class="social-list">
       <a href="https://www.instagram.com/peoplesrepublicofbulgaria/" target="_blank" rel="noopener noreferrer" class="social-item">
         <img src="/png/instagram.webp" alt="Instagram" />
@@ -320,29 +252,31 @@ const copy = {
       </a>
     </div>
   </div>
-  <div class="newsletter-box">
-    <h3>{t.home.newsletter.title}</h3>
+  </div>
+  <div class="newsletter-box content-card">
+    <h2 class="content-h2">{t.home.newsletter.title}</h2>
     <p class="newsletter-text">{t.home.newsletter.text}</p>
 
     <form id="newsletter-form" action="/api/newsletter" method="POST" class="newsletter-form"
       data-subscribing={t.home.newsletter.subscribing}
-      data-success={t.home.newsletter.success}
+      data-success={noIcon(t.home.newsletter.success)}
       data-success-hint={t.home.newsletter.successHint}
-      data-error={t.home.newsletter.error}
-      data-error-network={t.home.newsletter.errorNetwork}
-      data-error-rate-limit={t.home.newsletter.errorRateLimit}
+      data-error={noIcon(t.home.newsletter.error)}
+      data-error-network={noIcon(t.home.newsletter.errorNetwork)}
+      data-error-rate-limit={noIcon(t.home.newsletter.errorRateLimit)}
     >
       <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;">
         <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
       </div>
-      <input type="email" name="email" placeholder={t.home.newsletter.placeholder} required />
+      <label class="sr-only" for="contact-newsletter-email">{t.home.newsletter.placeholder}</label>
+      <input type="email" name="email" id="contact-newsletter-email" placeholder={t.home.newsletter.placeholder} required />
       <label class="newsletter-consent">
         <input type="checkbox" name="consent" required />
         {t.home.newsletter.consent}
       </label>
       <button type="submit" class="btn-red">{t.home.newsletter.button}</button>
     </form>
-    <div id="newsletter-feedback" class="form-feedback"></div>
+    <div id="newsletter-feedback" class="form-feedback" role="status" aria-live="polite"></div>
   </div>
 </div>
 
@@ -380,7 +314,7 @@ const copy = {
       if (res.ok) {
         newsletterFeedback.innerHTML = `
           ${msgs.success}<br>
-          <span style="font-size:1.3rem;color:#888;">${msgs.successHint}</span>
+          <span class="hint">${msgs.successHint}</span>
         `;
         newsletterFeedback.className = "form-feedback success";
         newsletterForm.reset();

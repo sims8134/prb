@@ -1,0 +1,181 @@
+---
+// Photo grid + lightbox, shared by the collection and tourism pages.
+// Same pictures and behaviour as before, now usable with the keyboard: each photo is a
+// button, the lightbox controls are buttons, Escape closes and gives focus back.
+import type { Lang } from "../data/site";
+
+interface Props {
+  images: string[];
+  altPrefix: string;
+  lang: Lang;
+}
+const { images, altPrefix, lang } = Astro.props;
+const l = {
+  en: { open: "Open photo", close: "Close", prev: "Previous photo", next: "Next photo" },
+  fr: { open: "Ouvrir la photo", close: "Fermer", prev: "Photo précédente", next: "Photo suivante" },
+  es: { open: "Abrir la foto", close: "Cerrar", prev: "Foto anterior", next: "Foto siguiente" },
+  bg: { open: "Отворете снимката", close: "Затвори", prev: "Предишна снимка", next: "Следваща снимка" },
+}[lang];
+---
+
+<div class="photo-grid">
+  {images.map((src, index) => (
+    <button type="button" class="photo-item" data-index={index} aria-label={`${l.open} ${index + 1} / ${images.length}`}>
+      <img src={src} alt={`${altPrefix} ${index + 1}`} loading="lazy" decoding="async" />
+    </button>
+  ))}
+</div>
+
+<div class="lightbox" data-lightbox role="dialog" aria-modal="true" aria-label={altPrefix} hidden>
+  <button type="button" class="lb-btn lb-close" data-lb-close aria-label={l.close}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+  </button>
+  <button type="button" class="lb-btn lb-prev" data-lb-prev aria-label={l.prev}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
+  </button>
+  <img class="lightbox-img" data-lb-img src="" alt="" />
+  <button type="button" class="lb-btn lb-next" data-lb-next aria-label={l.next}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+  </button>
+  <span class="lightbox-counter" data-lb-counter aria-live="polite"></span>
+</div>
+
+<style>
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--s-3);
+    margin-bottom: var(--s-7);
+  }
+  .photo-item {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+  .photo-item:hover,
+  .photo-item:focus-visible { border-color: var(--accent); box-shadow: var(--shadow-hover); }
+  .photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease);
+  }
+  .photo-item:hover img { transform: scale(1.04); }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--s-6) var(--s-4);
+    background: rgba(8, 8, 9, 0.94);
+  }
+  .lightbox[hidden] { display: none; }
+  .lightbox-img {
+    max-width: min(90vw, 1400px);
+    max-height: 84vh;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+  }
+  .lb-btn {
+    position: fixed;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: rgba(17, 18, 20, 0.7);
+    color: var(--text);
+    cursor: pointer;
+    transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .lb-btn svg { width: 24px; height: 24px; }
+  .lb-btn:hover,
+  .lb-btn:focus-visible { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .lb-close { top: var(--s-4); right: var(--s-4); }
+  .lb-prev { left: var(--s-3); top: 50%; transform: translateY(-50%); }
+  .lb-next { right: var(--s-3); top: 50%; transform: translateY(-50%); }
+  .lightbox-counter {
+    position: fixed;
+    bottom: var(--s-4);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    color: var(--text-2);
+  }
+  @media (max-width: 800px) {
+    .photo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 560px) {
+    .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
+  }
+</style>
+
+<script>
+  const box = document.querySelector<HTMLElement>("[data-lightbox]");
+  const items = [...document.querySelectorAll<HTMLButtonElement>(".photo-item")];
+  if (box && items.length) {
+    const img = box.querySelector<HTMLImageElement>("[data-lb-img]")!;
+    const counter = box.querySelector<HTMLElement>("[data-lb-counter]")!;
+    const closeBtn = box.querySelector<HTMLButtonElement>("[data-lb-close]")!;
+    const sources = items.map((b) => b.querySelector("img")!);
+    let cur = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = () => {
+      img.src = sources[cur].currentSrc || sources[cur].src;
+      img.alt = sources[cur].alt;
+      counter.textContent = `${cur + 1} / ${items.length}`;
+    };
+    const open = (i: number) => {
+      cur = i;
+      opener = items[i];
+      show();
+      box.hidden = false;
+      document.body.style.overflow = "hidden";
+      closeBtn.focus();
+    };
+    const close = () => {
+      box.hidden = true;
+      document.body.style.overflow = "";
+      opener?.focus();
+    };
+    const move = (d: number) => {
+      cur = (cur + d + items.length) % items.length;
+      show();
+    };
+
+    items.forEach((b, i) => b.addEventListener("click", () => open(i)));
+    closeBtn.addEventListener("click", close);
+    box.querySelector("[data-lb-prev]")!.addEventListener("click", () => move(-1));
+    box.querySelector("[data-lb-next]")!.addEventListener("click", () => move(1));
+    box.addEventListener("click", (e) => { if (e.target === box) close(); });
+    document.addEventListener("keydown", (e) => {
+      if (box.hidden) return;
+      if (e.key === "ArrowRight") move(1);
+      if (e.key === "ArrowLeft") move(-1);
+      if (e.key === "Escape") close();
+      if (e.key === "Tab") {
+        // keep the focus inside the open lightbox
+        const f = [...box.querySelectorAll<HTMLElement>("button")];
+        const i = f.indexOf(document.activeElement as HTMLElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+  }
+</script>
