@@ -1,5 +1,21 @@
 # Journal du site PRB
 
+## 21.11.2026 : mise en production de la modernisation (fusion 75bb4ce)
+
+`modernisation/accueil` (`1f10ee5`) est fusionnée dans `main` avec un commit de fusion sans fast-forward, `75bb4ce`. Vercel indique « Deployment has completed » pour ce commit. `refonte/page-unique` reste intacte et non fusionnée.
+
+Vérifié sur peoplesrepublicofbulgaria.com :
+- 36 pages sur 36 en 200 dans les quatre langues.
+- Les deux cartes sont en ligne sur l'accueil et en bas de la page histoire, avec les liens vers coldwarbulgaria.com et buymeacoffee.com/peoplesrepublicofbulgaria. Le composant est présent sur les 24 pages prévues et absent des pages à propos, légale et confidentialité.
+- Le bouton « Support » de l'en-tête mène au bon lien. Le menu de téléphone s'ouvre et se ferme, au bouton et avec Échap.
+- Au survol et au focus clavier, le bouton secondaire passe au rouge `#C8322A` et le bouton principal au rouge foncé `#A3271F`. La bordure des cartes passe au rouge, sans décalage de la mise en page.
+- Aucun débordement à 360 et 390 px sur l'accueil, vidéos, collection et contact, ni sur l'accueil et histoire à 768 et 1280 px.
+- Accueil : aucun appel externe avant un clic, et le lecteur `youtube-nocookie` se charge au clic.
+- Champ piège : `{"success":true}`, HTTP 200, avec l'en-tête Origin du site. Sans cet en-tête, l'API répond 403, comme prévu.
+- Aucune page ne contient « SOC TRADE », « EOOD », « ЕООД » ni « ЕИК ».
+
+Retour en arrière : `git revert -m 1 75bb4ce` puis `git push origin main`.
+
 ## 21.11.2026 : survols rouges et retrait du composant sur la page à propos (avant fusion)
 
 Branche `modernisation/accueil`.
