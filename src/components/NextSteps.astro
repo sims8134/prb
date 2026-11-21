@@ -4,14 +4,19 @@
 // before the footer (added by MainLayout). Not on the legal and privacy pages.
 // Plain links, nothing is requested from the two external sites before a click.
 import type { Lang } from "../data/site";
-import { nextSteps, COLD_WAR_BULGARIA_URL, BUY_ME_A_COFFEE_URL } from "../data/next-steps";
+import { nextSteps, coldWarBulgariaUrl, DEEPER_ANCHORS, BUY_ME_A_COFFEE_URL, type DeeperPage } from "../data/next-steps";
 
 interface Props {
   lang: Lang;
   compact?: boolean;
+  /** Page of origin: picks the "Go deeper" variant (history, collection, tourism) and tags the link. */
+  page?: string;
 }
-const { lang, compact = false } = Astro.props;
+const { lang, compact = false, page = "home" } = Astro.props;
 const n = nextSteps[lang] ?? nextSteps.en;
+const anchor = DEEPER_ANCHORS[page as DeeperPage];
+const deeper = anchor ? { ...n.deeper, ...n.deeperFor[page as DeeperPage] } : n.deeper;
+const deeperHref = coldWarBulgariaUrl(page, anchor);
 ---
 
 <section class:list={["next-steps", { "is-compact": compact }]} aria-label={n.label}>
@@ -21,12 +26,12 @@ const n = nextSteps[lang] ?? nextSteps.en;
         <!-- folded map with a pin: timeline, museum, map -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6 9 4z" /><path d="M9 4v14M15 6v6" /><path d="M18 15.5c0 1.6-2 3.5-2 3.5s-2-1.9-2-3.5a2 2 0 0 1 4 0z" /></svg>
       </span>
-      <h2>{n.deeper.title}</h2>
+      <h2>{deeper.title}</h2>
     </div>
-    <p>{n.deeper.text}</p>
+    <p>{deeper.text}</p>
     <div class="ns-action">
-      <a class="btn-red" href={COLD_WAR_BULGARIA_URL} target="_blank" rel="noopener">
-        {n.deeper.button}
+      <a class="btn-red" href={deeperHref} target="_blank" rel="noopener">
+        {deeper.button}
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
         <span class="sr-only">({n.newTab})</span>
       </a>

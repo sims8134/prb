@@ -7,6 +7,7 @@ import {
   buildNav,
   buildFooter,
 } from "../../data/site";
+import { coldWarBulgariaUrl } from "../../data/next-steps";
 
 export function getStaticPaths() {
   return supportedLangs.map((lang) => ({ params: { lang } }));
@@ -333,7 +334,7 @@ const t = siteContent[lang];
       <img src="/home/musee2.jpg" alt="Cold War Bulgaria Museum" />
       <img src="/home/musee3.jpg" alt="Cold War Bulgaria Museum" />
     </div>
-    <a href="https://coldwarbulgaria.com" target="_blank" rel="noopener noreferrer" class="btn-project">
+    <a href={coldWarBulgariaUrl("about")} target="_blank" rel="noopener noreferrer" class="btn-project">
       {
         lang === "fr" ? "Découvrir Cold War Bulgaria →"
         : lang === "es" ? "Descubrir Cold War Bulgaria →"

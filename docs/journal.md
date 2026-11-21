@@ -1,5 +1,44 @@
 # Journal du site PRB
 
+## 21.11.2026 : parcours visiteur, sorties adaptées par page (branche parcours/sorties)
+
+Branche `parcours/sorties`, créée depuis `main` (`80a09a7`). Non fusionnée. Aucun changement visuel sur les pages existantes : les styles calculés d'une vingtaine d'éléments sont identiques à la production sur vidéos, histoire et contact (bg).
+
+### Ancres de coldwarbulgaria.com (vérifiées le 21.11.2026)
+
+- `#timeline`, `#museum` et `#map` existent sur `/en`, et aussi sur `/fr`, `/es` et `/bg`.
+- La racine du domaine redirige toujours vers `/en` (302), quelle que soit la langue du navigateur, en conservant les paramètres utm.
+- Les trois cartes adaptées sont donc en place.
+
+### Ce qui a changé
+
+- **Carte « Go deeper » adaptée :** histoire vers `#timeline`, collection vers `#museum`, tourisme vers `#map`, dans les quatre langues. L'accueil, vidéos et contact gardent la carte générale.
+- **Carte « Support the channel » :** nouveau texte sur toutes les pages, dans les quatre langues.
+- **Page de confirmation de la newsletter :**
+  - même adresse (`/api/newsletter/confirm`) et même aspect ;
+  - elle devient une page Astro (`confirm.astro` remplace `confirm.ts`) pour afficher les deux cartes compactes sous le message de succès ;
+  - logique du jeton et de Resend inchangée ;
+  - l'email de confirmation n'est pas modifié (`newsletter.ts` intact).
+- **Nouvelle page 404** (`src/pages/404.astro`) : dans la langue de l'adresse, avec un message, un bouton de retour à l'accueil et les deux cartes.
+- **Mesure :** tous les liens vers coldwarbulgaria.com portent `utm_source=prb`, `utm_medium=site` et `utm_campaign` égal au nom de la page d'origine. Cela concerne :
+  - les cartes ;
+  - le lien du pied de page ;
+  - le bouton de la page à propos ;
+  - la confirmation de la newsletter (`newsletter-confirmation`) et la 404 (`404`).
+
+  Aucun outil de mesure n'est ajouté.
+- **CSS commun** (variables, remise à zéro, focus, `.sr-only`, `.icon`, boutons) déplacé tel quel de `MainLayout` vers `src/styles/base.css`, pour être partagé avec la page de confirmation.
+
+### Vérifications sur le build
+
+Sortie Vercel servie en local, avec des secrets factices et les appels à Resend interceptés : aucun contact n'a été créé.
+
+- 36 pages sur 36 en 200, et 114 liens internes, aucun cassé.
+- 14 liens différents vers coldwarbulgaria.com : tous en 200, paramètres conservés après la redirection vers `/en`, et `#timeline`, `#museum`, `#map` amènent bien leur section en haut de l'écran.
+- Aucun débordement à 360 et 390 px sur histoire, collection, tourisme (en et bg), la confirmation et la 404 (en et fr).
+- Aucun appel externe avant un clic sur ces pages et sur l'accueil.
+- 404 en 404 pour `/en/…`, `/fr/…`, `/bg/…` et `/de`, avec les cartes une fois. Jeton invalide sur la confirmation : 400.
+
 ## 21.11.2026 : mise en production de accueil/ordre-sections (fusion 2f6536a)
 
 `accueil/ordre-sections` (`bea8e83`) est fusionnée dans `main` avec un commit de fusion sans fast-forward, `2f6536a`. Vercel indique « Deployment has completed » pour ce commit. `refonte/page-unique` reste intacte et non fusionnée.
