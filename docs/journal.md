@@ -1,5 +1,24 @@
 # Journal du site PRB
 
+## 21.11.2026 : survols rouges et retrait du composant sur la page à propos (avant fusion)
+
+Branche `modernisation/accueil`.
+
+- **Boutons, partout :**
+  - au survol et au focus clavier, le bouton secondaire (dont « Support » et « Buy me a coffee ») se remplit du rouge d'accent `#C8322A`, texte blanc : contraste 5,3:1 ;
+  - le bouton principal passe au rouge foncé `#A3271F`, texte blanc : 7,3:1 ;
+  - aucune teinte n'a eu besoin d'être ajustée ;
+  - le bouton « playlist » de la page vidéos (`.btn-outline`) suit la même règle ;
+  - les transitions sont désactivées si le visiteur demande moins d'animations (règle globale existante).
+- **Cartes, partout :** bordure rouge d'accent au survol et au focus clavier, sans changement d'épaisseur. Cela concerne les cartes de l'accueil et des réseaux, les deux cartes de sortie, les miniatures de la page vidéos, les photos de collection et de tourisme, et les cartes de la page contact.
+- **Page à propos :** le composant des deux cartes est retiré dans les quatre langues, car son contenu a déjà ces deux sorties.
+- **Non modifiés :** les boutons propres au contenu de la page à propos (jaune Buy Me a Coffee, lien Cold War Bulgaria), le bouton blanc d'abonnement et les onglets de la page vidéos.
+- **Vérifié sur le build** (sortie Vercel servie en local, pas le serveur de développement) :
+  - 36 pages sur 36 en 200 ;
+  - composant présent une fois sur l'accueil, histoire, collection, tourisme, vidéos et contact dans les quatre langues, absent d'à propos, légale et confidentialité ;
+  - aucun débordement à 360, 390, 768 et 1280 px sur l'accueil et histoire ;
+  - survol et focus clavier conformes, sans décalage de la mise en page.
+
 ## 19.11.2026 : deux points de sortie « Et ensuite » (Cold War Bulgaria et Buy Me a Coffee)
 
 Toujours sur la branche `modernisation/accueil`, non fusionnée.

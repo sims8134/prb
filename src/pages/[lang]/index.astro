@@ -113,7 +113,7 @@ const cards = [
   overflow: hidden;
   transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
 }
-.home-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
+.home-card:hover, .home-card:focus-visible { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--accent); }
 .home-card picture { display: block; overflow: hidden; }
 .home-card img {
   width: 100%;
@@ -145,7 +145,7 @@ const cards = [
   margin-bottom: var(--s-4);
 }
 .home-card-body .btn-secondary { margin-top: auto; align-self: flex-start; }
-.home-card:hover .btn-secondary { border-color: var(--text-2); }
+.home-card:hover .btn-secondary, .home-card:focus-visible .btn-secondary { background: var(--accent); border-color: var(--accent); color: #fff; }
 
 /* Latest video */
 .video-wrap { }
@@ -267,7 +267,7 @@ const cards = [
   border-radius: var(--radius);
   transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
 }
-.social-card:hover { transform: translateY(-3px); border-color: var(--line-strong); box-shadow: var(--shadow); }
+.social-card:hover, .social-card:focus-visible { transform: translateY(-3px); border-color: var(--accent); box-shadow: var(--shadow); }
 .social-card img { width: 32px; height: 32px; object-fit: contain; }
 .social-card strong {
   font-family: 'Oswald', sans-serif;

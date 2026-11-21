@@ -17,8 +17,9 @@ const {
 const t = siteContent[lang as keyof typeof siteContent] ?? siteContent["en"];
 const ns = nextSteps[lang as Lang] ?? nextSteps.en;
 // Exit points before the footer on the inner content pages. The home page places them
-// itself (after the video); the legal and privacy pages (active="legal") have none.
-const showNextSteps = !["home", "legal"].includes(active);
+// itself (after the video); the legal and privacy pages (active="legal") have none, and
+// neither does the about page, whose own content already has both exits.
+const showNextSteps = !["home", "legal", "about"].includes(active);
 
 // Chemin de la page SANS le préfixe de langue (ex: "/history", ou "" pour l'accueil)
 const SITE = "https://peoplesrepublicofbulgaria.com";
@@ -165,9 +166,10 @@ const heroStyle = heroImage
     transition: background-color 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease);
   }
   .btn-red { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
-  .btn-red:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  /* hover and keyboard focus: primary goes darker (white text 7.3:1), secondary fills with the accent (white text 5.3:1) */
+  .btn-red:hover, .btn-red:focus-visible { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; }
   .btn-secondary { background: transparent; color: var(--text); border: 1px solid var(--line-strong); }
-  .btn-secondary:hover { border-color: var(--text-2); background: rgba(237, 231, 220, 0.04); }
+  .btn-secondary:hover, .btn-secondary:focus-visible { background: var(--accent); border-color: var(--accent); color: #fff; }
   .btn-red:active, .btn-secondary:active { transform: translateY(1px); }
 
   /* ---------- Fixed top bar ---------- */
@@ -264,7 +266,7 @@ const heroStyle = heroImage
     color: var(--text-2);
     white-space: nowrap;
   }
-  .topbar-support.btn-secondary:hover { color: var(--text); }
+  .topbar-support.btn-secondary:hover, .topbar-support.btn-secondary:focus-visible { color: #fff; }
   .menu-toggle {
     display: none;
     align-items: center;

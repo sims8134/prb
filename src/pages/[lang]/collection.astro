@@ -103,8 +103,10 @@ const images = [
   cursor: pointer;
 }
 
-.photo-item:hover {
-  border-color: #D62612;
+.photo-item { transition: border-color 0.2s var(--ease); }
+.photo-item:hover,
+.photo-item:focus-within {
+  border-color: var(--accent);
 }
 
 .photo-item img {

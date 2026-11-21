@@ -117,6 +117,10 @@ const copy = {
   text-align: center;
 }
 
+.contact-card, .socials-card { transition: border-color 0.2s var(--ease); }
+.contact-card:hover, .contact-card:focus-within,
+.socials-card:hover, .socials-card:focus-within { border-color: var(--accent); }
+
 .contact-card .icon {
   font-size: 3.6rem;
   margin-bottom: 14px;
@@ -184,8 +188,10 @@ const copy = {
   border: 1px solid #2e2e2e;
 }
 
-.social-item:hover {
-  border-color: #D62612;
+.social-item { transition: border-color 0.2s var(--ease); }
+.social-item:hover,
+.social-item:focus-visible {
+  border-color: var(--accent);
 }
 
 .social-item img {

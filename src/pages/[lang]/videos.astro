@@ -303,9 +303,12 @@ const categories = await Promise.all(
   letter-spacing: 0.06em;
 }
 
-.btn-outline:hover {
-  color: #f0ebe0;
-  border-color: #888;
+.btn-outline { transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease); }
+.btn-outline:hover,
+.btn-outline:focus-visible {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
 }
 
 .section-label {
@@ -325,8 +328,10 @@ const categories = await Promise.all(
   cursor: pointer;
 }
 
-.thumb-card:hover {
-  border-color: #D62612;
+.thumb-card { transition: border-color 0.2s var(--ease); }
+.thumb-card:hover,
+.thumb-card:focus-within {
+  border-color: var(--accent);
 }
 
 .thumb-img {

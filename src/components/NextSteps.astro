@@ -72,7 +72,7 @@ const n = nextSteps[lang] ?? nextSteps.en;
     overflow: hidden;
     transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
   }
-  .ns-card:hover { border-color: var(--line-strong); box-shadow: var(--shadow-hover); }
+  .ns-card:hover, .ns-card:focus-within { border-color: var(--accent); box-shadow: var(--shadow-hover); }
   /* the research card carries the red line of the top bar */
   .ns-card--deeper::before {
     content: "";
