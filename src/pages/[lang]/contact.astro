@@ -117,6 +117,10 @@ const copy = {
   text-align: center;
 }
 
+.contact-card, .socials-card { transition: border-color 0.2s var(--ease); }
+.contact-card:hover, .contact-card:focus-within,
+.socials-card:hover, .socials-card:focus-within { border-color: var(--accent); }
+
 .contact-card .icon {
   font-size: 3.6rem;
   margin-bottom: 14px;
@@ -184,8 +188,10 @@ const copy = {
   border: 1px solid #2e2e2e;
 }
 
-.social-item:hover {
-  border-color: #D62612;
+.social-item { transition: border-color 0.2s var(--ease); }
+.social-item:hover,
+.social-item:focus-visible {
+  border-color: var(--accent);
 }
 
 .social-item img {
@@ -259,21 +265,6 @@ const copy = {
   line-height: 1.6;
 }
 
-.btn-red {
-  display: inline-block;
-  padding: 10px 18px;
-  background: #D62612;
-  color: #fff;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  width: fit-content;
-}
-
-.btn-red:hover { background: #9B1B0C; }
 @media (max-width: 560px) {
   .social-item {
     align-items: flex-start;
