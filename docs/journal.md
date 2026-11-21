@@ -1,5 +1,25 @@
 # Journal du site PRB
 
+## 21.11.2026 : mise en production de accueil/ordre-sections (fusion 2f6536a)
+
+`accueil/ordre-sections` (`bea8e83`) est fusionnée dans `main` avec un commit de fusion sans fast-forward, `2f6536a`. Vercel indique « Deployment has completed » pour ce commit. `refonte/page-unique` reste intacte et non fusionnée.
+
+Vérifié sur peoplesrepublicofbulgaria.com :
+- 36 pages sur 36 en 200, et 112 liens et ressources internes, aucun cassé.
+- Accueil : bandeau, vidéo, puis les deux cartes, Explore, Newsletter, Follow us. Le bloc « Welcome » a disparu.
+- Barre de progression à 0, 50 et 100 % sur l'accueil et sur histoire, en natif, avec « moins d'animations » et avec le repli par script.
+- Survols :
+  - contour rouge sur les onglets, les icônes du bandeau et du pied de page, « Follow us » et les cartes ;
+  - liens du pied de page en `#E5554A` (5,3:1) ;
+  - « Buy me a coffee » en rouge plein (5,3:1).
+- Pied de page : mention culturelle et copyright avec l'année en cours sur les 36 pages, sans « About » en double. Pas de crédit SBC Conception (non ajouté, voir plus bas).
+- Aucun débordement à 360 et 390 px sur l'accueil, vidéos, collection et contact.
+- Accueil : aucun appel externe avant un clic ; lecteur `youtube-nocookie` au clic.
+- Champ piège : `{"success":true}`, HTTP 200.
+- Aucune page ne contient « SOC TRADE », « EOOD », « ЕООД » ni « ЕИК ».
+
+Retour en arrière : `git revert -m 1 2f6536a` puis `git push origin main`.
+
 ## 21.11.2026 : barre de progression, survols rouges, cartes identiques, pied de page
 
 Branche `accueil/ordre-sections`, à la suite du commit `5767ee0`. L'ordre des sections et le retrait du bloc « Welcome » étaient déjà faits ; je ne les ai pas refaits.
