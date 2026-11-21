@@ -37,7 +37,7 @@ function decodeXml(s: string): string {
 }
 
 /** The site never shows long or en dashes, even inside YouTube titles. */
-function cleanTitle(s: string): string {
+export function cleanTitle(s: string): string {
   return s.replace(/\s+[—–]\s+/g, ": ").replace(/[—–]/g, "-").trim();
 }
 

@@ -1,5 +1,95 @@
 # Journal du site PRB
 
+## 21.11.2026 : finition des pages intérieures (branche finition/pages-interieures)
+
+Branche `finition/pages-interieures`, créée depuis `main` (`bfb1323`). Non fusionnée : en attente de validation de l'aperçu.
+
+### Ce qui a changé
+
+- **Système commun des pages intérieures** (`src/styles/content.css`, chargé par les six pages) :
+  - largeur de contenu de l'accueil : la zone intérieure de 700 à 1100 px ne rétrécit plus le gabarit ;
+  - titre et chapeau de page ;
+  - titres de section rouges ;
+  - encadré de mention ;
+  - cartes : fond, angles, ombre, contour rouge au survol et au focus ;
+  - icône ronde ;
+  - liens dans le texte, soulignés, rouges au survol et au focus (`#E5554A`, comme le pied de page).
+- **À propos :**
+  - photo et images du musée aux angles adoucis ;
+  - titres rouges sans barre ;
+  - bouton jaune « Buy me a coffee » passé en bouton principal ;
+  - lien Cold War Bulgaria en bouton secondaire ;
+  - emoji ☕ remplacé par l'icône de tasse au trait ;
+  - lien Instagram du texte avec le survol rouge.
+- **Histoire :** frise aux variables du système (ligne et points rouges), dates en rouge éclairci lisible en petit texte (5,2:1), images arrondies, chargement différé.
+- **Collection et tourisme :**
+  - nouvelle galerie partagée (`src/components/PhotoGallery.astro`) : vignettes en boutons, lightbox avec boutons, focus enfermé, Échap, flèches, retour du focus, chargement différé ;
+  - sur tourisme, les deux encarts de contact deviennent des cartes, avec l'email en lien sobre.
+- **Vidéos :**
+  - lecteurs YouTube intégrés remplacés par la façade au clic de l'accueil, en `youtube-nocookie` ;
+  - onglets en bouton principal (catégorie choisie) et secondaire ;
+  - boutons « Watch » et « Playlist » du système ;
+  - carrousel en cartes ;
+  - bloc d'abonnement rouge et bouton blanc remplacés par une carte et le bouton principal ;
+  - emojis des onglets retirés ;
+  - le texte sous une miniature lance aussi la vidéo.
+- **Miniatures préparées au build** (`src/lib/video-thumbs.ts`, `src/pages/thumbs/[file].ts`) :
+  - téléchargées une fois par build et publiées en WebP sur le domaine (`/thumbs/<id>-<largeur>.webp`) : 320 et 640 px pour les cartes, 640 et 1280 px pour la vidéo en vedette ;
+  - une miniature introuvable ne fait pas échouer le build : la vidéo s'affiche avec son titre et le bouton Play sur fond neutre ;
+  - résultat : 78 fichiers pour 40 vidéos, aucune vidéo sans miniature ;
+  - l'API YouTube n'est plus appelée qu'une fois par playlist et par build ;
+  - `/api/thumb` n'est pas modifiée.
+- **Contact :**
+  - cartes email et réseaux côte à côte sur ordinateur, emoji ✉️ remplacé par une icône au trait ;
+  - newsletter alignée sur celle de l'accueil : champ, étiquette accessible, message annoncé, emojis retirés des messages.
+- **Bouton Play** (accueil et vidéos) : en bas à gauche de la miniature, avec 16 px de marge, même taille et même style. Toute la miniature reste cliquable.
+- **Titres YouTube** de la page vidéos : nettoyés des tirets longs, comme sur l'accueil.
+- **Tirets longs :** 124 remplacements dans les quatre langues, par une ponctuation simple :
+  - « | » dans les titres d'onglet ;
+  - « : » pour les intitulés ;
+  - virgule ou parenthèses pour les incises ;
+  - point pour les suites de phrase.
+
+  Les tirets moyens des plages de dates (1944–1990) sont conservés.
+- **Page légale :** nouvelle phrase sur les cookies dans les quatre langues (« No tracking tools on this site. Videos only load after you click them. »).
+- **Crédit** sur une troisième ligne du pied de page, sur toutes les pages : « Site made by SBC Conception » et ses traductions, lien vers sbcconception.com dans un nouvel onglet, survol rouge.
+
+### Vérifications sur le build (sortie Vercel servie en local)
+
+- 36 pages sur 36 en 200, et 193 liens et ressources internes, aucun cassé.
+- Contrastes AA sur les six pages dans les quatre langues : 152 échecs avant (production), 0 après.
+- Aucun débordement à 360, 390, 768 et 1280 px sur les six pages, plus vidéos (bg), contact (fr) et à propos (es) à 360 et 390 px.
+- Clavier :
+  - tous les éléments atteints, avec un contour visible : à propos 36, histoire 35, collection 47, tourisme 49, vidéos 58, contact 43 ;
+  - lightbox : ouverture avec Entrée, focus sur « Fermer », flèches, fermeture avec Échap, retour du focus sur la vignette.
+- Aucun appel externe avant un clic sur les 36 pages. Avant : la page vidéos faisait 11 appels à YouTube, dans chaque langue.
+- Les vidéos se lancent au clic, y compris loin du bouton Play :
+  - accueil ;
+  - vidéo en vedette ;
+  - image et texte d'une carte ;
+  - autre onglet.
+- Poids de la page vidéos sur téléphone, premier écran : 1 967 Ko avant, 889 Ko après (dont 255 Ko pour la miniature en vedette en 1280 px, choisie pour un écran de densité 2).
+- Crédit présent dans les quatre langues, lien en 200. Aucune mention de société.
+- Champ piège : `{"success":true}`, sans appel à Resend.
+
+### Juge (sous-agent sans rôle dans la fabrication, captures téléphone et ordinateur)
+
+Verdict : « plutôt oui », le site paraît unique. Page qui détonnait le plus : à propos.
+
+- **Corrigé :**
+  - à propos : colonne de 960 px à côté de la photo, et espace sous le titre ;
+  - tourisme : emoji 🗺 de l'encart remplacé par l'icône de carte au trait ;
+  - encadrés de mention en pleine largeur, identiques sur les trois pages ;
+  - contact : cartes email et réseaux de même hauteur, pseudo YouTube qui ne se coupe plus sur téléphone ;
+  - newsletter (contact et accueil) : texte placé juste sous le titre ;
+  - vidéos : flèches du carrousel dans la gouttière à partir de 1300 px.
+- **Écarté :**
+  - zones d'images vides : défaut de capture (grosses photos pas encore chargées). En défilement réel, toutes les images se chargent : à propos 4/4, histoire 13/13, collection 12/12, tourisme 12/12 ;
+  - bandeau compact sur les pages intérieures : le bandeau commun fait partie de l'habillage validé, et le brief interdisait de toucher à l'ordre des sections et aux images ;
+  - paire de cartes sur à propos : retirée volontairement de cette page lors d'une validation précédente ;
+  - bouton Play plus petit sur les vignettes : taille et style à garder, selon la consigne ;
+  - double encart email sur tourisme : deux rôles différents (introduction et appel de fin), contenu inchangé.
+
 ## 21.11.2026 : mise en production de parcours/sorties (fusion 8e2af42)
 
 `parcours/sorties` (`6a89126`) est fusionnée dans `main` avec un commit de fusion sans fast-forward, `8e2af42`. Vercel indique « Deployment has completed » pour ce commit. `refonte/page-unique` reste intacte et non fusionnée.

@@ -1,5 +1,6 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
+import "../../styles/content.css";
 import {
   supportedLangs,
   siteContent,
@@ -63,10 +64,10 @@ const timeline = [
     date: "15 Sept.\n1946",
     image: "/history/2-Referendum.jpg",
     title: {
-      en: "Referendum — People's Republic",
-      fr: "Référendum — République populaire",
-      es: "Referéndum — República Popular",
-      bg: "Референдум — Народна република",
+      en: "Referendum: People's Republic",
+      fr: "Référendum : République populaire",
+      es: "Referéndum: República Popular",
+      bg: "Референдум: Народна република",
     },
     text: {
       en: "The 1946 referendum takes place on September 15th. The country is declared a People's Republic.",
@@ -265,183 +266,122 @@ const timeline = [
 >
 
 <style>
-.page-wrap {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 30px 20px;
-}
-
-.page-title {
-  font-family: 'Oswald', sans-serif;
-  font-size: 2.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #f0ebe0;
-  border-bottom: 3px solid #D62612;
-  padding-bottom: 10px;
-  margin-bottom: 8px;
-}
-
-.page-subtitle {
-  font-size: 1.45rem;
-  color: #888;
-  margin-bottom: 10px;
-  line-height: 1.6;
-  font-style: italic;
-}
-
-.notice-box {
-  background: #242424;
-  border-left: 4px solid #D62612;
-  padding: 14px 18px;
-  margin-bottom: 34px;
-  font-size: 1.35rem;
-  color: #888;
-  font-style: italic;
-  line-height: 1.7;
-}
-
+/* Shared rules (title, lead, notice): src/styles/content.css. The timeline is specific to this page. */
 .timeline {
   position: relative;
-  padding-left: 0;
 }
-
 .timeline::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 110px;
   top: 0;
   bottom: 0;
   width: 3px;
-  background: #D62612;
+  border-radius: 3px;
+  background: var(--accent);
 }
-
 .timeline-item {
   display: flex;
-  gap: 0;
-  margin-bottom: 0;
   position: relative;
 }
-
 .tl-date {
   width: 110px;
   flex-shrink: 0;
-  padding: 22px 16px 22px 0;
+  padding: var(--s-5) var(--s-4) var(--s-5) 0;
   text-align: right;
 }
-
 .tl-date span {
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.45rem;
-  font-weight: 700;
-  color: #D62612;
-  line-height: 1.2;
   display: block;
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: var(--accent-link); /* small red text: the lifted red (5.2:1) */
   white-space: pre-line;
 }
-
 .tl-dot {
   width: 20px;
   flex-shrink: 0;
   display: flex;
   align-items: flex-start;
-  padding-top: 28px;
+  padding-top: 29px;
   position: relative;
   z-index: 1;
 }
-
 .tl-dot::before {
-  content: '';
+  content: "";
   width: 14px;
   height: 14px;
-  border-radius: 50%;
-  background: #D62612;
-  border: 3px solid #1a1a1a;
   margin-left: 3px;
   flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
 }
-
 .tl-content {
   flex: 1;
-  padding: 18px 0 18px 22px;
-  border-bottom: 1px solid #2a2a2a;
+  padding: var(--s-4) 0 var(--s-4) var(--s-5);
+  border-bottom: 1px solid var(--line);
 }
-
-.timeline-item:last-child .tl-content {
-  border-bottom: none;
-}
-
+.timeline-item:last-child .tl-content { border-bottom: none; }
 .tl-content-inner {
   display: flex;
-  gap: 18px;
+  gap: var(--s-5);
   align-items: flex-start;
 }
-
 .tl-img {
-  width: 120px;
+  width: 140px;
   flex-shrink: 0;
-  border: 1px solid #333;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
 }
-
 .tl-img img {
   width: 100%;
-  height: 90px;
+  aspect-ratio: 4 / 3;
+  height: auto;
   object-fit: cover;
   display: block;
 }
-
 .tl-text h3 {
   font-family: 'Oswald', sans-serif;
-  font-size: 1.8rem;
+  font-size: 2rem;
+  line-height: 1.25;
   font-weight: 700;
-  color: #f0ebe0;
-  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  margin-bottom: var(--s-2);
 }
-
 .tl-text p {
-  font-size: 1.4rem;
-  color: #aaa;
-  line-height: 1.75;
+  max-width: 70ch;
+  font-size: 1.55rem;
+  line-height: 1.7;
+  color: var(--text-2);
 }
-
 @media (max-width: 680px) {
-  .timeline::before {
-    left: 0;
-  }
-
-  .tl-date {
-    width: auto;
-    padding: 16px 0 0;
-    text-align: left;
-  }
-
-  .tl-dot {
-    display: none;
-  }
-
+  .timeline::before { display: none; }
+  .tl-dot { display: none; }
   .timeline-item {
     flex-direction: column;
-    padding-left: 14px;
-    border-left: 3px solid #D62612;
-    margin-bottom: 20px;
+    padding-left: var(--s-4);
+    border-left: 3px solid var(--accent);
+    margin-bottom: var(--s-5);
   }
-
+  .tl-date {
+    width: auto;
+    padding: var(--s-2) 0 0;
+    text-align: left;
+  }
+  .tl-date span { white-space: normal; }
   .tl-content {
-    padding: 8px 0 0;
+    padding: var(--s-2) 0 0;
     border-bottom: none;
   }
-
-  .tl-content-inner {
-    flex-direction: column;
-  }
-
-  .tl-img {
-    width: 100%;
-  }
-
-  .tl-img img {
-    height: 160px;
-  }
+  .tl-content-inner { flex-direction: column; gap: var(--s-3); }
+  .tl-img { width: 100%; }
+  .tl-img img { aspect-ratio: 16 / 9; }
 }
 </style>
 
@@ -462,7 +402,7 @@ const timeline = [
         <div class="tl-content">
           <div class="tl-content-inner">
             <div class="tl-img">
-              <img src={item.image} alt={item.title[lang]} />
+              <img src={item.image} alt={item.title[lang]} loading="lazy" decoding="async" />
             </div>
 
             <div class="tl-text">
