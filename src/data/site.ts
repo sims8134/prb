@@ -15,7 +15,7 @@ export const siteContent = {
       privacy: "Privacy Policy",
     },
     footer: {
-      copyright: "© People's Republic of Bulgaria — All rights reserved",
+      copyright: "© {year} People's Republic of Bulgaria. All rights reserved.",
     },
     home: {
       title: "People's Republic of Bulgaria — History, Collection & Cold War Bulgaria",
@@ -103,7 +103,7 @@ export const siteContent = {
       privacy: "Politique de confidentialité",
     },
     footer: {
-      copyright: "© People's Republic of Bulgaria — Tous droits réservés",
+      copyright: "© {year} People's Republic of Bulgaria. Tous droits réservés.",
     },
     home: {
       title: "République Populaire de Bulgarie — Histoire, Collection & Guerre Froide",
@@ -191,7 +191,7 @@ export const siteContent = {
       privacy: "Política de privacidad",
     },
     footer: {
-      copyright: "© People's Republic of Bulgaria — Todos los derechos reservados",
+      copyright: "© {year} People's Republic of Bulgaria. Todos los derechos reservados.",
     },
     home: {
       title: "República Popular de Bulgaria — Historia, Colección y Guerra Fría",
@@ -279,7 +279,7 @@ export const siteContent = {
       privacy: "Политика за поверителност",
     },
     footer: {
-      copyright: "© People's Republic of Bulgaria — Всички права запазени",
+      copyright: "© {year} People's Republic of Bulgaria. Всички права запазени.",
     },
     home: {
       title: "Народна република България — История, Колекция и Студена война",
@@ -375,7 +375,6 @@ export function buildFooter(lang: Lang, t: typeof siteContent[Lang]) {
     copyright: t.footer.copyright,
     links: [
       { href: `/${lang}/contact`, label: t.nav.contact },
-      { href: `/${lang}/about`, label: t.nav.about },
       { href: `/${lang}/legal`, label: t.nav.legal },
       { href: `/${lang}/privacy`, label: t.nav.privacy },
     ],
