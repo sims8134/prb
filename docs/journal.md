@@ -1,5 +1,28 @@
 # Journal du site PRB
 
+## 21.11.2026 : nouvel ordre des sections de l'accueil
+
+Branche `accueil/ordre-sections`, créée depuis `main` (`cc2722b`). Non fusionnée.
+
+### Ce qui a changé
+
+- **Accueil, dans les quatre langues :** bandeau d'identité, dernière vidéo avec ses deux boutons, les deux cartes « Go deeper » et « Support the channel », Explore, Newsletter, Follow us.
+- **Bloc « Welcome » supprimé de l'accueil :** son titre et sa phrase répétaient le bandeau. Ses règles CSS, devenues inutiles, sont retirées.
+- **Mention « This website has been created for cultural and historical purposes only. »** dans le pied de page de toutes les pages, juste au-dessus du copyright, dans sa traduction existante (`t.home.notice`). Aucun texte ni style modifié.
+
+### Vérifications sur le build (sortie Vercel servie en local)
+
+- 36 pages sur 36 en 200. La mention figure dans le pied de page des 36 pages. Histoire et collection, en anglais et en français, la contenaient déjà dans leur propre contenu.
+- Ordre identique dans les quatre langues, à 390 et 1280 px.
+- Écarts entre sections : 64 px partout, une fois les animations d'apparition terminées.
+- Téléphone, 390 × 844 px, sans défiler :
+  - le titre « Latest video » est à 483 px du haut de l'écran ;
+  - la vidéo occupe la plage de 533 à 735 px ;
+  - elle est donc entièrement visible au premier écran.
+- Aucun débordement à 360, 390, 768 et 1280 px sur l'accueil.
+- Aucun appel externe avant un clic ; le lecteur `youtube-nocookie` se lance au clic.
+- Captures dans `docs/captures/ordre-sections/`.
+
 ## 21.11.2026 : mise en production de la modernisation (fusion 75bb4ce)
 
 `modernisation/accueil` (`1f10ee5`) est fusionnée dans `main` avec un commit de fusion sans fast-forward, `75bb4ce`. Vercel indique « Deployment has completed » pour ce commit. `refonte/page-unique` reste intacte et non fusionnée.
