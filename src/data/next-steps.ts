@@ -3,10 +3,10 @@
 import type { Lang } from "./site";
 
 export const COLD_WAR_BULGARIA_URL = "https://coldwarbulgaria.com";
-/** Link to Cold War Bulgaria, tagged with the page of origin (no tracking runs on this site). */
-export function coldWarBulgariaUrl(campaign: string, anchor?: string): string {
+/** Link to Cold War Bulgaria in the page's language (/en, /fr, /es, /bg), tagged with the page of origin (no tracking runs on this site). */
+export function coldWarBulgariaUrl(lang: Lang, campaign: string, anchor?: string): string {
   const q = new URLSearchParams({ utm_source: "prb", utm_medium: "site", utm_campaign: campaign || "home" });
-  return `${COLD_WAR_BULGARIA_URL}/?${q}${anchor ? "#" + anchor : ""}`;
+  return `${COLD_WAR_BULGARIA_URL}/${lang}?${q}${anchor ? "#" + anchor : ""}`;
 }
 
 /** Pages whose "Go deeper" card points to a precise section of Cold War Bulgaria. */

@@ -16,7 +16,7 @@ const { lang, compact = false, page = "home" } = Astro.props;
 const n = nextSteps[lang] ?? nextSteps.en;
 const anchor = DEEPER_ANCHORS[page as DeeperPage];
 const deeper = anchor ? { ...n.deeper, ...n.deeperFor[page as DeeperPage] } : n.deeper;
-const deeperHref = coldWarBulgariaUrl(page, anchor);
+const deeperHref = coldWarBulgariaUrl(lang, page, anchor);
 ---
 
 <section class:list={["next-steps", { "is-compact": compact }]} aria-label={n.label}>

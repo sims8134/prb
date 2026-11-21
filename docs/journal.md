@@ -1,5 +1,17 @@
 # Journal du site PRB
 
+## 21.11.2026 : liens vers coldwarbulgaria.com dans la langue de la page (avant fusion)
+
+Branche `parcours/sorties`.
+
+- **Liens selon la langue :** chaque lien vers coldwarbulgaria.com pointe vers `/en`, `/fr`, `/es` ou `/bg` selon la langue de la page, avec la même ancre et les mêmes paramètres utm. Cela concerne les cartes, le pied de page, le bouton de la page à propos et la 404. La page de confirmation, en anglais, pointe vers `/en`.
+- **Vérifié sur le build** (secrets factices, appels à Resend interceptés) :
+  - 36 pages sur 36 en 200, et 114 liens internes, aucun cassé ;
+  - 53 liens différents vers coldwarbulgaria.com, tous en 200, arrivés dans la bonne langue (`<html lang>` et chemin) ;
+  - `#timeline`, `#museum` et `#map` amènent leur section en haut de l'écran dans les quatre langues ;
+  - textes adaptés (12 pages) et nouveau texte de soutien (29 pages) conformes ;
+  - aucun débordement à 360 et 390 px sur histoire, collection, tourisme, la confirmation et la 404.
+
 ## 21.11.2026 : parcours visiteur, sorties adaptées par page (branche parcours/sorties)
 
 Branche `parcours/sorties`, créée depuis `main` (`80a09a7`). Non fusionnée. Aucun changement visuel sur les pages existantes : les styles calculés d'une vingtaine d'éléments sont identiques à la production sur vidéos, histoire et contact (bg).
