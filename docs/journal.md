@@ -1,5 +1,41 @@
 # Journal du site PRB
 
+## 21.11.2026 : barre de progression, survols rouges, cartes identiques, pied de page
+
+Branche `accueil/ordre-sections`, à la suite du commit `5767ee0`. L'ordre des sections et le retrait du bloc « Welcome » étaient déjà faits ; je ne les ai pas refaits.
+
+### Ce qui a changé
+
+- **Barre de progression de lecture :**
+  - le filet rouge sous l'en-tête se remplit de gauche à droite avec le défilement, sur toutes les pages ;
+  - animation CSS liée au défilement (`animation-timeline: scroll(root block)`, sur `transform` seulement), avec un repli de quelques lignes de script (`--progress`, limité à une mise à jour par image) ;
+  - elle reste active quand le visiteur demande moins d'animations.
+- **Menu :** au survol et au focus clavier, un onglet prend un contour rouge de 2 px. L'onglet actif reste rouge plein, et « Support » garde son survol.
+- **Icônes des réseaux :** contour rouge au survol et au focus, dans le bandeau et dans le pied de page. Dans « Follow us », c'était déjà le cas.
+- **Cartes « Go deeper » et « Support the channel » :**
+  - la barre rouge permanente et l'icône teintée sont retirées : au repos, les deux cartes sont identiques ;
+  - contour rouge au survol et au focus (déjà en place) ;
+  - « Buy me a coffee » passe en bouton principal rouge plein, sur l'accueil comme dans la version compacte.
+- **Pied de page :**
+  - liens en rouge au survol et au focus clavier, avec une transition douce ;
+  - le rouge d'accent `#C8322A` ne donnait que 3,6:1 sur le fond du pied de page : il est éclairci en `#E5554A`, soit 5,3:1 ;
+  - lien « About » en double retiré de la colonne Contact ;
+  - nouvelle ligne de copyright, « © {année} People's Republic of Bulgaria. All rights reserved. », dans les quatre langues, sans tiret long. L'année est calculée au build, puis mise à jour dans le navigateur.
+- **Crédit SBC Conception non ajouté :** sbcconception.com mentionne « SOC TRADE » sur sa page d'accueil, et « SOC TRADE BULGARIA EOOD » dans `privacy.html`.
+
+### Vérification 1 (sortie Vercel du build servie en local)
+
+- 36 pages sur 36 en 200, et 112 liens et ressources internes, aucun cassé.
+- Barre de progression à 0, 50 et 100 % en haut, au milieu et en bas, sur l'accueil et sur histoire, dans trois cas :
+  - Chrome ;
+  - Chrome avec « moins d'animations » ;
+  - un navigateur sans animations liées au défilement, simulé (repli par script).
+- Vidéo sur téléphone (390 × 844 px), sans défiler : titre à 483 px, vidéo de 533 à 735 px.
+- Aucun débordement à 360, 390, 768 et 1280 px sur l'accueil et sur histoire, pied de page compris.
+- Contrastes : liens du pied de page au survol 5,3:1 ; « Buy me a coffee » 5,3:1. Contour de focus visible sur tous les éléments modifiés.
+- Copyright avec l'année en cours dans les quatre langues.
+- Aucun appel externe avant un clic ; lecteur `youtube-nocookie` au clic.
+
 ## 21.11.2026 : nouvel ordre des sections de l'accueil
 
 Branche `accueil/ordre-sections`, créée depuis `main` (`cc2722b`). Non fusionnée.

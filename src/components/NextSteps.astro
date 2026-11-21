@@ -44,7 +44,7 @@ const n = nextSteps[lang] ?? nextSteps.en;
     </div>
     <p>{n.coffee.text}</p>
     <div class="ns-action">
-      <a class="btn-secondary" href={BUY_ME_A_COFFEE_URL} target="_blank" rel="noopener">
+      <a class="btn-red" href={BUY_ME_A_COFFEE_URL} target="_blank" rel="noopener">
         {n.coffee.button}
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
         <span class="sr-only">({n.newTab})</span>
@@ -73,14 +73,6 @@ const n = nextSteps[lang] ?? nextSteps.en;
     transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
   }
   .ns-card:hover, .ns-card:focus-within { border-color: var(--accent); box-shadow: var(--shadow-hover); }
-  /* the research card carries the red line of the top bar */
-  .ns-card--deeper::before {
-    content: "";
-    position: absolute;
-    left: 0; right: 0; top: 0;
-    height: 3px;
-    background: var(--accent);
-  }
   .ns-head {
     display: flex;
     align-items: center;
@@ -98,7 +90,6 @@ const n = nextSteps[lang] ?? nextSteps.en;
     border: 1px solid var(--line-strong);
     color: var(--text);
   }
-  .ns-card--deeper .ns-icon { color: var(--accent-text); border-color: rgba(200, 50, 42, 0.5); }
   .ns-icon svg { width: 22px; height: 22px; }
   .ns-card h2 {
     font-family: 'Oswald', sans-serif;
