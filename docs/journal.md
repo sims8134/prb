@@ -1,5 +1,17 @@
 # Journal du site PRB
 
+## 21.11.2026 : mise en production de la barre de défilement rouge (fusion 7ed70a8)
+
+`finition/scrollbar` (`f1c158c`) est fusionnée dans `main` avec un commit de fusion sans fast-forward, `7ed70a8`. Vercel indique « Deployment has completed » pour ce commit.
+
+Vérifié sur peoplesrepublicofbulgaria.com :
+- 36 pages sur 36 en 200 ;
+- la règle de la barre de défilement est chargée sur les 36 pages ;
+- champ piège : `{"success":true}` ;
+- aucune page ne contient « SOC TRADE », « EOOD », « ЕООД » ni « ЕИК ».
+
+Retour en arrière : `git revert -m 1 7ed70a8` puis `git push origin main`.
+
 ## 21.11.2026 : barre de défilement rouge (branche finition/scrollbar)
 
 Branche `finition/scrollbar`, créée depuis `main` (`d74b1ea`). Non fusionnée : en attente de validation de l'aperçu.
